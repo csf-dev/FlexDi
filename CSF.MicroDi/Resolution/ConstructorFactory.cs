@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace CSF.MicroDi.Kernel
+namespace CSF.MicroDi.Resolution
 {
   public class ConstructorFactory : IFactoryAdapter
   {

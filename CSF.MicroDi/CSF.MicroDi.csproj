@@ -31,39 +31,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registration\IRegistrationHelper.cs" />
-    <Compile Include="Registration\IAsBuilder.cs" />
-    <Compile Include="Registration\IRegistrationOptionsBuilder.cs" />
-    <Compile Include="Registration\IAsBuilderWithMultiplicity.cs" />
-    <Compile Include="Registration\IRegistrationOptionsBuilderWithMultiplicity.cs" />
-    <Compile Include="Kernel\IServiceRegistration.cs" />
-    <Compile Include="Kernel\Multiplicity.cs" />
-    <Compile Include="Kernel\ResolutionRequest.cs" />
-    <Compile Include="Kernel\IServiceRegistrationProvider.cs" />
-    <Compile Include="Kernel\Registry.cs" />
-    <Compile Include="Kernel\ServiceRegistrationKey.cs" />
-    <Compile Include="Kernel\IRegistersServices.cs" />
-    <Compile Include="Kernel\RegistryStack.cs" />
-    <Compile Include="Kernel\IRegistersServicesWithScope.cs" />
-    <Compile Include="Registration\RegistrationHelper.cs" />
-    <Compile Include="Registration\RegistrationBuilder.cs" />
-    <Compile Include="Kernel\ServiceRegistration.cs" />
-    <Compile Include="Kernel\TypedRegistration.cs" />
-    <Compile Include="Kernel\FactoryRegistration`1.cs" />
-    <Compile Include="Kernel\TypeRegistration.cs" />
-    <Compile Include="Kernel\InstanceRegistration.cs" />
-    <Compile Include="Kernel\FactoryRegistration.cs" />
-    <Compile Include="Registration\IBulkRegistrationProvider.cs" />
-    <Compile Include="Kernel\IResolutionContext.cs" />
-    <Compile Include="Kernel\IFactoryAdapter.cs" />
-    <Compile Include="Kernel\ConstructorFactory.cs" />
-    <Compile Include="Kernel\DelegateFactory.cs" />
-    <Compile Include="Kernel\ISelectsConstructor.cs" />
-    <Compile Include="Kernel\ConstructorWithMostParametersSelector.cs" />
+    <Compile Include="Builders\IRegistrationHelper.cs" />
+    <Compile Include="Builders\IAsBuilder.cs" />
+    <Compile Include="Builders\IRegistrationOptionsBuilder.cs" />
+    <Compile Include="Builders\IAsBuilderWithMultiplicity.cs" />
+    <Compile Include="Builders\IRegistrationOptionsBuilderWithMultiplicity.cs" />
+    <Compile Include="Registration\IServiceRegistration.cs" />
+    <Compile Include="Registration\Multiplicity.cs" />
+    <Compile Include="Registration\IServiceRegistrationProvider.cs" />
+    <Compile Include="Registration\Registry.cs" />
+    <Compile Include="Registration\ServiceRegistrationKey.cs" />
+    <Compile Include="Registration\IRegistersServices.cs" />
+    <Compile Include="Registration\RegistryStack.cs" />
+    <Compile Include="Registration\IRegistersServicesWithScope.cs" />
+    <Compile Include="Builders\RegistrationHelper.cs" />
+    <Compile Include="Builders\RegistrationBuilder.cs" />
+    <Compile Include="Registration\ServiceRegistration.cs" />
+    <Compile Include="Registration\TypedRegistration.cs" />
+    <Compile Include="Registration\FactoryRegistration`1.cs" />
+    <Compile Include="Registration\TypeRegistration.cs" />
+    <Compile Include="Registration\InstanceRegistration.cs" />
+    <Compile Include="Registration\FactoryRegistration.cs" />
+    <Compile Include="Builders\IBulkRegistrationProvider.cs" />
+    <Compile Include="Resolution\IResolutionContext.cs" />
+    <Compile Include="Resolution\ResolutionRequest.cs" />
+    <Compile Include="Resolution\ConstructorFactory.cs" />
+    <Compile Include="Resolution\DelegateFactory.cs" />
+    <Compile Include="Resolution\IFactoryAdapter.cs" />
+    <Compile Include="Resolution\ConstructorWithMostParametersSelector.cs" />
+    <Compile Include="Resolution\ISelectsConstructor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Builders\" />
     <Folder Include="Registration\" />
-    <Folder Include="Kernel\" />
+    <Folder Include="Resolution\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

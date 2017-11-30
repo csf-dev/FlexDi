@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using CSF.MicroDi.Resolution;
 
-namespace CSF.MicroDi.Kernel
+namespace CSF.MicroDi.Registration
 {
   public class TypeRegistration : TypedRegistration
   {

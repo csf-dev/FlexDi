@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace CSF.MicroDi.Kernel
+namespace CSF.MicroDi.Resolution
 {
   public interface ISelectsConstructor
   {

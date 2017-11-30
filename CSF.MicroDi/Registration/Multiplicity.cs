@@ -1,5 +1,5 @@
 ﻿using System;
-namespace CSF.MicroDi.Kernel
+namespace CSF.MicroDi.Registration
 {
   public enum Multiplicity
   {

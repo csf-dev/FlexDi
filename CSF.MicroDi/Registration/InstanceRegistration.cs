@@ -1,5 +1,7 @@
 ﻿using System;
-namespace CSF.MicroDi.Kernel
+using CSF.MicroDi.Resolution;
+
+namespace CSF.MicroDi.Registration
 {
   public class InstanceRegistration : TypedRegistration
   {

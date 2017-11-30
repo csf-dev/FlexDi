@@ -2,8 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using CSF.MicroDi.Resolution;
 
-namespace CSF.MicroDi.Kernel
+namespace CSF.MicroDi.Registration
 {
   public class Registry : IServiceRegistrationProvider
   {

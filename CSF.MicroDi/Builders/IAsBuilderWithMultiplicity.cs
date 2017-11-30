@@ -1,5 +1,5 @@
 ﻿using System;
-namespace CSF.MicroDi.Registration
+namespace CSF.MicroDi.Builders
 {
   public interface IAsBuilderWithMultiplicity
   {

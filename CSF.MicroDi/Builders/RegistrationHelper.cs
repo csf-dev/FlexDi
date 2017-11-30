@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CSF.MicroDi.Kernel;
+using CSF.MicroDi.Registration;
 
-namespace CSF.MicroDi.Registration
+namespace CSF.MicroDi.Builders
 {
   public class RegistrationHelper : IRegistrationHelper, IBulkRegistrationProvider
   {
