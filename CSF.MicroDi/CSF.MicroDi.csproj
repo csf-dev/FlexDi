@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F7CE689A-C595-4EE0-A6BD-AF46D2D9F99C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CSF.MicroDi</RootNamespace>
+    <AssemblyName>CSF.MicroDi</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registration\IRegistrationHelper.cs" />
+    <Compile Include="Registration\IAsBuilder.cs" />
+    <Compile Include="Registration\IRegistrationOptionsBuilder.cs" />
+    <Compile Include="Registration\IAsBuilderWithMultiplicity.cs" />
+    <Compile Include="Registration\IRegistrationOptionsBuilderWithMultiplicity.cs" />
+    <Compile Include="Kernel\IServiceRegistration.cs" />
+    <Compile Include="Kernel\Multiplicity.cs" />
+    <Compile Include="Kernel\ResolutionRequest.cs" />
+    <Compile Include="Kernel\IServiceRegistrationProvider.cs" />
+    <Compile Include="Kernel\Registry.cs" />
+    <Compile Include="Kernel\ServiceRegistrationKey.cs" />
+    <Compile Include="Kernel\IRegistersServices.cs" />
+    <Compile Include="Kernel\RegistryStack.cs" />
+    <Compile Include="Kernel\IRegistersServicesWithScope.cs" />
+    <Compile Include="Registration\RegistrationHelper.cs" />
+    <Compile Include="Registration\RegistrationBuilder.cs" />
+    <Compile Include="Kernel\ServiceRegistration.cs" />
+    <Compile Include="Kernel\TypedRegistration.cs" />
+    <Compile Include="Kernel\FactoryRegistration`1.cs" />
+    <Compile Include="Kernel\TypeRegistration.cs" />
+    <Compile Include="Kernel\InstanceRegistration.cs" />
+    <Compile Include="Kernel\FactoryRegistration.cs" />
+    <Compile Include="Registration\IBulkRegistrationProvider.cs" />
+    <Compile Include="Kernel\IResolutionContext.cs" />
+    <Compile Include="Kernel\IFactoryAdapter.cs" />
+    <Compile Include="Kernel\ConstructorFactory.cs" />
+    <Compile Include="Kernel\DelegateFactory.cs" />
+    <Compile Include="Kernel\ISelectsConstructor.cs" />
+    <Compile Include="Kernel\ConstructorWithMostParametersSelector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Registration\" />
+    <Folder Include="Kernel\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
