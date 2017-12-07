@@ -7,10 +7,12 @@ namespace CSF.MicroDi.Resolution
 
     public string Name { get; private set; }
 
-    public ResolutionRequest WithoutName()
+    public ResolutionRequest GetCopyWithoutName()
     {
       return new ResolutionRequest(ServiceType, null);
     }
+
+    public ResolutionRequest(Type serviceType) : this(serviceType, null) {}
 
     public ResolutionRequest(Type serviceType, string name)
     {

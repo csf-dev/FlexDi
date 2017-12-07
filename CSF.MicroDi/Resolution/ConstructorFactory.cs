@@ -8,6 +8,8 @@ namespace CSF.MicroDi.Resolution
   {
     readonly ConstructorInfo ctor;
 
+    public ConstructorInfo Constructor => ctor;
+
     public object Execute(object[] parameters)
     {
       return ctor.Invoke(parameters);

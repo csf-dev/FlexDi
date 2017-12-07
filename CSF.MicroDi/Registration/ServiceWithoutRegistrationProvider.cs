@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using CSF.MicroDi.Resolution;
+
+namespace CSF.MicroDi.Registration
+{
+  public class ServiceWithoutRegistrationProvider : IServiceRegistrationProvider
+  {
+    public virtual bool CanFulfilRequest(ResolutionRequest request)
+    {
+      if(request == null)
+        throw new ArgumentNullException(nameof(request));
+
+      return true;
+    }
+
+    public virtual IServiceRegistration Get(ResolutionRequest request)
+    {
+      if(request == null)
+        throw new ArgumentNullException(nameof(request));
+      
+      return new TypeRegistration(request.ServiceType) {
+        Name = request.Name,
+        ServiceType = request.ServiceType,
+        Multiplicity = Multiplicity.Shared
+      };
+    }
+
+    public virtual IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType)
+    {
+      if(serviceType == null)
+        throw new ArgumentNullException(nameof(serviceType));
+
+      return new [] { Get(new ResolutionRequest(serviceType, null)) };
+    }
+  }
+}

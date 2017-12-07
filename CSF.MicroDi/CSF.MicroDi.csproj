@@ -63,6 +63,7 @@
     <Compile Include="Resolution\ICachesResolvedObjects.cs" />
     <Compile Include="Registration\DuplicateRegistrationException.cs" />
     <Compile Include="Resolution\Resolver.cs" />
+    <Compile Include="Registration\ServiceWithoutRegistrationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

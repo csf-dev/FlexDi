@@ -7,7 +7,7 @@ namespace CSF.MicroDi.Resolution
 {
   public class Resolver : IResolutionContext
   {
-    readonly IServiceRegistrationProvider registrationProvider;
+    readonly IServiceRegistrationProvider registrationProvider, unregisteredServiceProvider;
 
     public virtual object Resolve(ResolutionRequest request)
     {
@@ -37,32 +37,14 @@ namespace CSF.MicroDi.Resolution
       if(request == null)
         throw new ArgumentNullException(nameof(request));
 
-      IServiceRegistration output;
+      if(registrationProvider.CanFulfilRequest(request))
+        return registrationProvider.Get(request);
 
-      output = registrationProvider.Get(request);
-      if(output != null)
-        return output;
+      var requestWithoutName = request.GetCopyWithoutName();
+      if(registrationProvider.CanFulfilRequest(requestWithoutName))
+        return registrationProvider.Get(requestWithoutName);
 
-      output = GetRegistrationWithoutName(request);
-      if(output != null)
-        return output;
-
-      return GetFallbackRegistration(request);
-    }
-
-    protected virtual IServiceRegistration GetRegistrationWithoutName(ResolutionRequest request)
-    {
-      var requestWithoutName = request.WithoutName();
-      return registrationProvider.Get(requestWithoutName);
-    }
-
-    protected virtual IServiceRegistration GetFallbackRegistration(ResolutionRequest request)
-    {
-      return new TypeRegistration(request.ServiceType) {
-        Name = request.Name,
-        ServiceType = request.ServiceType,
-        Multiplicity = Multiplicity.Shared
-      };
+      return unregisteredServiceProvider.Get(request);
     }
 
     protected virtual ResolutionRequest ConvertToResolutionRequest(ParameterInfo parameter)
@@ -71,6 +53,18 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(parameter));
       
       return new ResolutionRequest(parameter.ParameterType, parameter.Name);
+    }
+
+    public Resolver(IServiceRegistrationProvider registrationProvider) : this(registrationProvider, null) {}
+
+    public Resolver(IServiceRegistrationProvider registrationProvider,
+                    IServiceRegistrationProvider unregisteredServiceProvider)
+    {
+      if(registrationProvider == null)
+        throw new ArgumentNullException(nameof(registrationProvider));
+
+      this.registrationProvider = registrationProvider;
+      this.unregisteredServiceProvider = unregisteredServiceProvider?? new ServiceWithoutRegistrationProvider();
     }
   }
 }

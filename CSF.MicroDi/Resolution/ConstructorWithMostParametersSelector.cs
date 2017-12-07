@@ -7,6 +7,8 @@ namespace CSF.MicroDi.Resolution
 {
   public class ConstructorWithMostParametersSelector : ISelectsConstructor
   {
+    readonly bool includeNonPublicConstructors;
+
     public ConstructorInfo SelectConstructor(Type type)
     {
       if(type == null)
@@ -24,7 +26,17 @@ namespace CSF.MicroDi.Resolution
     }
 
     IEnumerable<ConstructorInfo> GetAllConstructors(Type type)
-      => type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      => type.GetConstructors(GetBindingFlags());
+
+    BindingFlags GetBindingFlags()
+    {
+      var flags = BindingFlags.Public | BindingFlags.Instance;
+
+      if(includeNonPublicConstructors)
+        flags = flags | BindingFlags.NonPublic;
+
+      return flags;
+    }
 
     void AssertAConstructorIsFound(Type type, ConstructorInfo ctor)
     {
@@ -42,6 +54,13 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentException($"The type {type.FullName} has multiple constructors with {paramCount} parameter(s).{Environment.NewLine}" +
                                     "The type must have only a single constructor which has the greatest number of parameters.", nameof(type));
       }
+    }
+
+    public ConstructorWithMostParametersSelector() : this(false) {}
+
+    public ConstructorWithMostParametersSelector(bool includeNonPublicConstructors)
+    {
+      this.includeNonPublicConstructors = includeNonPublicConstructors;
     }
   }
 }

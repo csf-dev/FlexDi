@@ -8,6 +8,8 @@ namespace CSF.MicroDi.Resolution
   {
     readonly Delegate factory;
 
+    public Delegate Delegate => factory;
+
     public object Execute(object[] parameters)
     {
       return factory.DynamicInvoke(parameters);
