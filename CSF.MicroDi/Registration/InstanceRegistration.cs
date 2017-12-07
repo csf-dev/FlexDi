@@ -33,6 +33,7 @@ namespace CSF.MicroDi.Registration
         throw new ArgumentNullException(nameof(implementation));
 
       this.implementation = implementation;
+      SetMultiplicity(Multiplicity.Shared);
     }
   }
 }

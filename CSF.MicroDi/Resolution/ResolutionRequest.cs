@@ -7,6 +7,11 @@ namespace CSF.MicroDi.Resolution
 
     public string Name { get; private set; }
 
+    public ResolutionRequest WithoutName()
+    {
+      return new ResolutionRequest(ServiceType, null);
+    }
+
     public ResolutionRequest(Type serviceType, string name)
     {
       if(serviceType == null)

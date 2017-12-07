@@ -43,7 +43,11 @@ namespace CSF.MicroDi.Registration
       if(request == null)
         throw new ArgumentNullException(nameof(request));
 
-      return providers.Select(x => x.Get(request)).FirstOrDefault(x => x != null);
+      var provider = providers.FirstOrDefault(x => x.CanFulfilRequest(request));
+      if(provider == null)
+        return null;
+      
+      return provider.Get(request);
     }
 
     public IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType)

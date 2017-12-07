@@ -60,6 +60,9 @@
     <Compile Include="Resolution\IFactoryAdapter.cs" />
     <Compile Include="Resolution\ConstructorWithMostParametersSelector.cs" />
     <Compile Include="Resolution\ISelectsConstructor.cs" />
+    <Compile Include="Resolution\ICachesResolvedObjects.cs" />
+    <Compile Include="Registration\DuplicateRegistrationException.cs" />
+    <Compile Include="Resolution\Resolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

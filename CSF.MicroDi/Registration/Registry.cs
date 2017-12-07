@@ -6,7 +6,7 @@ using CSF.MicroDi.Resolution;
 
 namespace CSF.MicroDi.Registration
 {
-  public class Registry : IServiceRegistrationProvider
+  public class Registry : IRegistersServices
   {
     readonly ConcurrentDictionary<ServiceRegistrationKey,IServiceRegistration> registrations;
 
@@ -26,7 +26,7 @@ namespace CSF.MicroDi.Registration
       var key = ServiceRegistrationKey.ForRegistration(registration);
       var result = registrations.TryAdd(key, registration);
       if(!result)
-        throw new InvalidOperationException($"The registry must not already contain a duplicate registration: {registration.ToString()}");
+        throw new DuplicateRegistrationException($"The registry must not already contain a duplicate registration: {registration.ToString()}");
     }
 
     public IServiceRegistration Get(ServiceRegistrationKey key)
