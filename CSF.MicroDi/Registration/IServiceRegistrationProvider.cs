@@ -11,5 +11,7 @@ namespace CSF.MicroDi.Registration
     IServiceRegistration Get(ResolutionRequest request);
 
     IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType);
+
+    IReadOnlyCollection<IServiceRegistration> GetAll();
   }
 }

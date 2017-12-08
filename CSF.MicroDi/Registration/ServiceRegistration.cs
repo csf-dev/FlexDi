@@ -6,6 +6,7 @@ namespace CSF.MicroDi.Registration
   public abstract class ServiceRegistration : IServiceRegistration
   {
     Multiplicity multiplicity;
+    bool disposeWithContainer;
 
     public virtual Multiplicity Multiplicity
     {
@@ -17,6 +18,12 @@ namespace CSF.MicroDi.Registration
 
     public virtual Type ServiceType { get; set; }
 
+    public virtual bool DisposeWithContainer
+    {
+      get { return disposeWithContainer; }
+      set { disposeWithContainer = value; }
+    }
+
     public abstract object CreateInstance(IResolutionContext context);
 
     protected void SetMultiplicity(Multiplicity multiplicity) => this.multiplicity = multiplicity;
@@ -24,6 +31,7 @@ namespace CSF.MicroDi.Registration
     public ServiceRegistration()
     {
       multiplicity = Multiplicity.Shared;
+      disposeWithContainer = true;
     }
   }
 }

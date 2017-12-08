@@ -27,7 +27,8 @@ namespace CSF.MicroDi.Tests.Resolution
         .Returns(instance);
 
       // Act
-      var result = sut.Resolve(request);
+      object result;
+      sut.Resolve(request, out result);
 
       // Assert
       Assert.That(result, Is.SameAs(instance));
@@ -58,7 +59,8 @@ namespace CSF.MicroDi.Tests.Resolution
           .Returns(instance);
 
       // Act
-      var result = sut.Resolve(request);
+      object result;
+      sut.Resolve(request, out result);
 
       // Assert
       Assert.That(result, Is.SameAs(instance));
@@ -90,7 +92,8 @@ namespace CSF.MicroDi.Tests.Resolution
           .Returns(instance);
 
       // Act
-      var result = sut.Resolve(request);
+      object result;
+      sut.Resolve(request, out result);
 
       // Assert
       Assert.That(result, Is.SameAs(instance));
@@ -106,7 +109,8 @@ namespace CSF.MicroDi.Tests.Resolution
           .Returns(false);
 
       // Act
-      var result = sut.Resolve(new ResolutionRequest(typeof(ParentService)));
+      object result;
+      sut.Resolve(new ResolutionRequest(typeof(ParentService)), out result);
 
       // Assert
       Assert.That(result, Is.Not.Null);

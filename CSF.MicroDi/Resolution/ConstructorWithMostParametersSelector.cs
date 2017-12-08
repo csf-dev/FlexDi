@@ -41,7 +41,7 @@ namespace CSF.MicroDi.Resolution
     void AssertAConstructorIsFound(Type type, ConstructorInfo ctor)
     {
       if(ctor == null)
-        throw new ArgumentException($"The type {type.FullName} must have at least one constructor.", nameof(type));
+        throw new ArgumentException($"The type {type.FullName} must have at least one constructor. Interfaces must be registered with a concrete implementation.", nameof(type));
     }
 
     void AssertConstructorIsNotAmbiguous(Type type,

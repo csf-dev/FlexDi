@@ -58,6 +58,11 @@ namespace CSF.MicroDi.Registration
       return providers.SelectMany(x => x.GetAll(serviceType)).ToArray();
     }
 
+    public IReadOnlyCollection<IServiceRegistration> GetAll()
+    {
+      return providers.SelectMany(x => x.GetAll()).ToArray();
+    }
+
     public IRegistersServicesWithScope CreateChildScope(IRegistersServices provider)
     {
       if(provider == null)

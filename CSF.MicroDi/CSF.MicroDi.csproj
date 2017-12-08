@@ -60,10 +60,22 @@
     <Compile Include="Resolution\IFactoryAdapter.cs" />
     <Compile Include="Resolution\ConstructorWithMostParametersSelector.cs" />
     <Compile Include="Resolution\ISelectsConstructor.cs" />
-    <Compile Include="Resolution\ICachesResolvedObjects.cs" />
     <Compile Include="Registration\DuplicateRegistrationException.cs" />
     <Compile Include="Resolution\Resolver.cs" />
     <Compile Include="Registration\ServiceWithoutRegistrationProvider.cs" />
+    <Compile Include="Resolution\ICachesResolvedServiceInstances.cs" />
+    <Compile Include="Resolution\IFulfilsResolutionRequests.cs" />
+    <Compile Include="Resolution\ResolvedServiceCache.cs" />
+    <Compile Include="Resolution\ObjectPoolingResolver.cs" />
+    <Compile Include="Resolution\ICachesResolvedServiceInstancesWithScope.cs" />
+    <Compile Include="Resolution\ResolvedServiceCacheStack.cs" />
+    <Compile Include="Resolution\IDisposesOfResolvedInstances.cs" />
+    <Compile Include="Resolution\ServiceInstanceDisposer.cs" />
+    <Compile Include="IContainer.cs" />
+    <Compile Include="Container.cs" />
+    <Compile Include="IResolvesServices.cs" />
+    <Compile Include="Resolution\ResolutionException.cs" />
+    <Compile Include="IReceivesRegistrations.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

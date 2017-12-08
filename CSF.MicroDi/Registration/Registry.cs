@@ -52,6 +52,11 @@ namespace CSF.MicroDi.Registration
         .ToArray();
     }
 
+    public IReadOnlyCollection<IServiceRegistration> GetAll()
+    {
+      return registrations.Values.ToArray();
+    }
+
     IServiceRegistration IServiceRegistrationProvider.Get(ResolutionRequest request)
     {
       if(request == null)

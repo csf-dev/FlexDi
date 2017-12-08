@@ -11,6 +11,8 @@ namespace CSF.MicroDi.Registration
 
     string Name { get; }
 
+    bool DisposeWithContainer { get; }
+
     object CreateInstance(IResolutionContext context);
   }
 }

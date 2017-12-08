@@ -9,13 +9,18 @@ namespace CSF.MicroDi.Resolution
   {
     readonly IServiceRegistrationProvider registrationProvider, unregisteredServiceProvider;
 
-    public virtual object Resolve(ResolutionRequest request)
+    public virtual bool Resolve(ResolutionRequest request, out object output)
     {
       if(request == null)
         throw new ArgumentNullException(nameof(request));
-      
+
+      output = null;
       var registration = GetRegistration(request);
-      return registration.CreateInstance(this);
+      if(registration == null)
+        return false;
+      
+      output = CreateInstance(registration);
+      return true;
     }
 
     public virtual object Resolve(IFactoryAdapter factory)
@@ -30,6 +35,21 @@ namespace CSF.MicroDi.Resolution
         .ToArray();
 
       return factory.Execute(resolvedParameters);
+    }
+
+    protected virtual object Resolve(ResolutionRequest request)
+    {
+      object output;
+      Resolve(request, out output);
+      return output;
+    }
+
+    protected virtual object CreateInstance(IServiceRegistration registration)
+    {
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+      
+      return registration.CreateInstance(this);
     }
 
     protected virtual IServiceRegistration GetRegistration(ResolutionRequest request)

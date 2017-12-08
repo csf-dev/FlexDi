@@ -33,5 +33,10 @@ namespace CSF.MicroDi.Registration
 
       return new [] { Get(new ResolutionRequest(serviceType, null)) };
     }
+
+    public virtual IReadOnlyCollection<IServiceRegistration> GetAll()
+    {
+      throw new NotSupportedException($"This type does not support use of {nameof(GetAll)} with no parameters.");
+    }
   }
 }
