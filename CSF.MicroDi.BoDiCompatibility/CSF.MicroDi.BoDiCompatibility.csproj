@@ -28,6 +28,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -35,6 +36,9 @@
     <Compile Include="IObjectContainer.cs" />
     <Compile Include="ObjectContainer.cs" />
     <Compile Include="RegistrationFormatter.cs" />
+    <Compile Include="BoDiConfigurationSection.cs" />
+    <Compile Include="ContainerRegistrationCollection.cs" />
+    <Compile Include="ContainerRegistrationConfigElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">

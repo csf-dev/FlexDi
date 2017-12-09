@@ -14,27 +14,25 @@ namespace BoDi
 
     public void RegisterTypeAs<TInterface>(Type implementationType, string name = null) where TInterface : class
     {
-      container.AddRegistrations(x => {
-        x.RegisterType(implementationType)
-         .As<TInterface>()
-         .WithName(name);
-      });
+      RegisterTypeAs(implementationType, typeof(TInterface), name);
     }
 
     public void RegisterTypeAs<TType, TInterface>(string name = null) where TType : class, TInterface
     {
-      container.AddRegistrations(x => {
-        x.RegisterType(typeof(TType))
-         .As(typeof(TInterface))
-         .WithName(name);
-      });
+      RegisterTypeAs(typeof(TType), typeof(TInterface), name);
     }
 
     public void RegisterTypeAs(Type implementationType, Type interfaceType)
     {
+      RegisterTypeAs(implementationType, interfaceType, null);
+    }
+
+    void RegisterTypeAs(Type implementationType, Type interfaceType, string name)
+    {
       container.AddRegistrations(x => {
         x.RegisterType(implementationType)
-         .As(interfaceType);
+         .As(interfaceType)
+         .WithName(name);
       });
     }
 
@@ -107,25 +105,35 @@ namespace BoDi
     }
 
     #if !BODI_LIMITEDRUNTIME && !BODI_DISABLECONFIGFILESUPPORT
-    //public void RegisterFromConfiguration()
-    //{
-    //  var section = (BoDiConfigurationSection)ConfigurationManager.GetSection("boDi");
-    //  if (section == null)
-    //    return;
 
-    //  RegisterFromConfiguration(section.Registrations);
-    //}
+    public void RegisterFromConfiguration()
+    {
+      var section = (BoDiConfigurationSection) System.Configuration.ConfigurationManager.GetSection("boDi");
+      if (section == null)
+        return;
 
-    //public void RegisterFromConfiguration(ContainerRegistrationCollection containerRegistrationCollection)
-    //{
-    //  if (containerRegistrationCollection == null)
-    //    return;
+      RegisterFromConfiguration(section.Registrations);
+    }
 
-    //  foreach (ContainerRegistrationConfigElement registrationConfigElement in containerRegistrationCollection)
-    //  {
-    //    RegisterFromConfiguration(registrationConfigElement);
-    //  }
-    //}
+    public void RegisterFromConfiguration(ContainerRegistrationCollection containerRegistrationCollection)
+    {
+      if (containerRegistrationCollection == null)
+        return;
+
+      foreach (ContainerRegistrationConfigElement registrationConfigElement in containerRegistrationCollection)
+      {
+        RegisterFromConfiguration(registrationConfigElement);
+      }
+    }
+
+    void RegisterFromConfiguration(ContainerRegistrationConfigElement registrationConfigElement)
+    {
+      var interfaceType = Type.GetType(registrationConfigElement.Interface, true);
+      var implementationType = Type.GetType(registrationConfigElement.Implementation, true);
+      var name = string.IsNullOrEmpty(registrationConfigElement.Name) ? null : registrationConfigElement.Name;
+
+      RegisterTypeAs(implementationType, interfaceType, name);
+    }
 
     #endif
 
