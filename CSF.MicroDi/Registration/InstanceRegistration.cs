@@ -7,7 +7,9 @@ namespace CSF.MicroDi.Registration
   {
     readonly object implementation;
 
-    public override Type ImplementationType => implementation.GetType();
+    public virtual object Implementation => implementation;
+
+    public override Type ImplementationType => Implementation.GetType();
 
     public override Multiplicity Multiplicity
     {
@@ -22,10 +24,7 @@ namespace CSF.MicroDi.Registration
       }
     }
 
-    public override object CreateInstance(IResolutionContext context)
-    {
-      return implementation;
-    }
+    public override object CreateInstance(IResolutionContext context) => Implementation;
 
     public InstanceRegistration(object implementation)
     {

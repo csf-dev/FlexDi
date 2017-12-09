@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CSF.MicroDi.Builders;
 using CSF.MicroDi.Registration;
 using CSF.MicroDi.Resolution;
@@ -63,6 +64,44 @@ namespace CSF.MicroDi
     {
       var request = new ResolutionRequest(serviceType, name);
       return resolver.Resolve(request, out output);
+    }
+
+    public IReadOnlyCollection<T> ResolveAll<T>()
+    {
+      return ResolveAll(typeof(T)).Cast<T>().ToArray();
+    }
+
+    public IReadOnlyCollection<object> ResolveAll(Type serviceType)
+    {
+      return registry
+        .GetAll(serviceType)
+        .Select(x => Resolve(x.ServiceType, x.Name))
+        .ToArray();
+    }
+
+    #endregion
+
+    #region IContainer implementation
+
+    public bool HasRegistration<T>(string name = null)
+    {
+      return HasRegistration(typeof(T), name);
+    }
+
+    public bool HasRegistration(Type serviceType, string name = null)
+    {
+      var request = new ResolutionRequest(serviceType, name);
+      return registry.CanFulfilRequest(request);
+    }
+
+    public IReadOnlyCollection<IServiceRegistration> GetRegistrations()
+    {
+      return registry.GetAll();
+    }
+
+    public IReadOnlyCollection<IServiceRegistration> GetRegistrations(Type serviceType)
+    {
+      return registry.GetAll(serviceType);
     }
 
     #endregion
