@@ -216,10 +216,8 @@ namespace CSF.MicroDi
                      IFulfilsResolutionRequests resolver = null,
                      IDisposesOfResolvedInstances disposer = null)
     {
-      if(registry == null)
-        throw new ArgumentNullException(nameof(registry));
-      if(cache == null)
-        throw new ArgumentNullException(nameof(cache));
+      if(container == null)
+        throw new ArgumentNullException(nameof(container));
 
       disposedValue = false;
 
