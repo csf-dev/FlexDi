@@ -5,7 +5,7 @@ using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution
 {
-  public class Resolver : IResolutionContext
+  public class Resolver : IResolver
   {
     readonly IServiceRegistrationProvider registrationProvider, unregisteredServiceProvider;
 
@@ -37,6 +37,21 @@ namespace CSF.MicroDi.Resolution
       return factory.Execute(resolvedParameters);
     }
 
+    public virtual IServiceRegistration GetRegistration(ResolutionRequest request)
+    {
+      if(request == null)
+        throw new ArgumentNullException(nameof(request));
+
+      if(registrationProvider.CanFulfilRequest(request))
+        return registrationProvider.Get(request);
+
+      var requestWithoutName = request.GetCopyWithoutName();
+      if(registrationProvider.CanFulfilRequest(requestWithoutName))
+        return registrationProvider.Get(requestWithoutName);
+
+      return unregisteredServiceProvider.Get(request);
+    }
+
     protected virtual object Resolve(ResolutionRequest request)
     {
       object output;
@@ -50,21 +65,6 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(registration));
       
       return registration.CreateInstance(this);
-    }
-
-    protected virtual IServiceRegistration GetRegistration(ResolutionRequest request)
-    {
-      if(request == null)
-        throw new ArgumentNullException(nameof(request));
-
-      if(registrationProvider.CanFulfilRequest(request))
-        return registrationProvider.Get(request);
-
-      var requestWithoutName = request.GetCopyWithoutName();
-      if(registrationProvider.CanFulfilRequest(requestWithoutName))
-        return registrationProvider.Get(requestWithoutName);
-
-      return unregisteredServiceProvider.Get(request);
     }
 
     protected virtual ResolutionRequest ConvertToResolutionRequest(ParameterInfo parameter)

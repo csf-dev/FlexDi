@@ -3,11 +3,14 @@ using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution
 {
-  public class ObjectPoolingResolver : Resolver
+  public class ObjectPoolingResolver : IResolver
   {
     readonly ICachesResolvedServiceInstancesWithScope cache;
+    readonly IResolver resolver;
 
-    public override bool Resolve(ResolutionRequest request, out object output)
+    public virtual object Resolve(IFactoryAdapter factory) => resolver.Resolve(factory);
+
+    public virtual bool Resolve(ResolutionRequest request, out object output)
     {
       if(request == null)
         throw new ArgumentNullException(nameof(request));
@@ -17,7 +20,7 @@ namespace CSF.MicroDi.Resolution
       if(TryGetFromCache(registration, out output))
         return true;
 
-      if(!base.Resolve(request, out output))
+      if(!resolver.Resolve(request, out output))
       {
         output = null;
         return false;
@@ -26,6 +29,9 @@ namespace CSF.MicroDi.Resolution
       AddToCacheIfApplicable(registration, output);
       return true;
     }
+
+    public virtual IServiceRegistration GetRegistration(ResolutionRequest request)
+      => resolver.GetRegistration(request);
 
     protected virtual bool TryGetFromCache(IServiceRegistration registration, out object cachedInstance)
     {
@@ -55,10 +61,13 @@ namespace CSF.MicroDi.Resolution
       cache.Add(key, instance);
     }
 
-    public ObjectPoolingResolver(IServiceRegistrationProvider registrationProvider,
-                                 IServiceRegistrationProvider unregisteredServiceProvider = null,
-                                 ICachesResolvedServiceInstancesWithScope cache = null) : base(registrationProvider, unregisteredServiceProvider)
+    public ObjectPoolingResolver(IResolver resolver,
+                                 ICachesResolvedServiceInstancesWithScope cache = null)
     {
+      if(resolver == null)
+        throw new ArgumentNullException(nameof(resolver));
+
+      this.resolver = resolver;
       this.cache = cache ?? new ResolvedServiceCacheStack(new ResolvedServiceCache());
     }
   }

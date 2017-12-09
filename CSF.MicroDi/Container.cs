@@ -130,7 +130,7 @@ namespace CSF.MicroDi
       registry = scopedRegistry ?? new RegistryStack(currentRegistry);
       cache = scopedCache ?? new ResolvedServiceCacheStack(currentCache);
 
-      this.resolver = resolver ?? new ObjectPoolingResolver(registry, cache: cache);
+      this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
       this.disposer = disposer ?? new ServiceInstanceDisposer();
     }
 
@@ -153,7 +153,7 @@ namespace CSF.MicroDi
       registry = container.registry.CreateChildScope(currentRegistry);
       cache = container.cache.CreateChildScope(currentCache);
 
-      this.resolver = resolver ?? new ObjectPoolingResolver(registry, cache: cache);
+      this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
       this.disposer = disposer ?? new ServiceInstanceDisposer();
     }
 

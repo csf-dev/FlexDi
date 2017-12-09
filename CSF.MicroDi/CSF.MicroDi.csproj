@@ -76,6 +76,7 @@
     <Compile Include="IResolvesServices.cs" />
     <Compile Include="Resolution\ResolutionException.cs" />
     <Compile Include="IReceivesRegistrations.cs" />
+    <Compile Include="Resolution\IResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
