@@ -10,6 +10,8 @@ namespace CSF.MicroDi.Resolution
 
     public ConstructorInfo Constructor => ctor;
 
+    public bool RequiresParameterResolution => true;
+
     public object Execute(object[] parameters)
     {
       return ctor.Invoke(parameters);

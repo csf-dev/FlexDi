@@ -31,30 +31,33 @@ namespace BoDi
 
     void RegisterTypeAs(Type implementationType, Type interfaceType, string name)
     {
-      container.AddRegistrations(x => {
-        x.RegisterType(implementationType)
-        .As(interfaceType)
-        .WithName(name);
+      TransformExceptions(() => {
+        container.AddRegistrations(x => {
+          x.RegisterType(implementationType)
+           .As(interfaceType)
+           .WithName(name);
+        });
       });
     }
 
     public void RegisterInstanceAs(object instance, Type interfaceType, string name = null, bool dispose = false)
     {
-      container.AddRegistrations(x => {
-        x.RegisterInstance(instance)
-         .As(interfaceType)
-         .WithName(name);
+      TransformExceptions(() => {
+        container.AddRegistrations(x => {
+          x.RegisterInstance(instance)
+           .As(interfaceType)
+           .WithName(name);
+        });
+
+        //if (instance == null)
+        //  throw new ArgumentNullException("instance");
+        //var registrationKey = new RegistrationKey(interfaceType, name);
+        //AssertNotResolved(registrationKey);
+
+        //ClearRegistrations(registrationKey);
+        //AddRegistration(registrationKey, new InstanceRegistration(instance));
+        //objectPool[new RegistrationKey(instance.GetType(), name)] = GetPoolableInstance(instance, dispose);
       });
-
-
-      //if (instance == null)
-      //  throw new ArgumentNullException("instance");
-      //var registrationKey = new RegistrationKey(interfaceType, name);
-      //AssertNotResolved(registrationKey);
-
-      //ClearRegistrations(registrationKey);
-      //AddRegistration(registrationKey, new InstanceRegistration(instance));
-      //objectPool[new RegistrationKey(instance.GetType(), name)] = GetPoolableInstance(instance, dispose);
     }
 
     public void RegisterInstanceAs<TInterface>(TInterface instance, string name = null, bool dispose = false) where TInterface : class
@@ -79,21 +82,23 @@ namespace BoDi
 
     public void RegisterFactoryAs(Delegate factoryDelegate, Type interfaceType, string name = null)
     {
-      container.AddRegistrations(x => {
-        x.RegisterFactory(factoryDelegate, interfaceType)
-         .WithName(name);
+      TransformExceptions(() => {
+        container.AddRegistrations(x => {
+          x.RegisterFactory(factoryDelegate, interfaceType)
+           .WithName(name);
+        });
+
+
+        //if (factoryDelegate == null) throw new ArgumentNullException("factoryDelegate");
+        //if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+
+        //var registrationKey = new RegistrationKey(interfaceType, name);
+        //AssertNotResolved(registrationKey);
+
+        //ClearRegistrations(registrationKey);
+
+        //AddRegistration(registrationKey, new FactoryRegistration(factoryDelegate));
       });
-
-
-      //if (factoryDelegate == null) throw new ArgumentNullException("factoryDelegate");
-      //if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-
-      //var registrationKey = new RegistrationKey(interfaceType, name);
-      //AssertNotResolved(registrationKey);
-
-      //ClearRegistrations(registrationKey);
-
-      //AddRegistration(registrationKey, new FactoryRegistration(factoryDelegate));
     }
 
     public bool IsRegistered<T>()
@@ -103,7 +108,9 @@ namespace BoDi
 
     public bool IsRegistered<T>(string name)
     {
-      return container.HasRegistration<T>(name);
+      return TransformExceptions(() => {
+        return container.HasRegistration<T>(name);
+      });
     }
 
     #if !BODI_LIMITEDRUNTIME && !BODI_DISABLECONFIGFILESUPPORT
@@ -146,24 +153,83 @@ namespace BoDi
 
     public T Resolve<T>(string name)
     {
-      return container.Resolve<T>(name);
+      return TransformExceptions(() => {
+        return container.Resolve<T>(name);
+      });
     }
 
     public object Resolve(Type typeToResolve, string name = null)
     {
-      return container.Resolve(typeToResolve, name);
+      return TransformExceptions(() => {
+        return container.Resolve(typeToResolve, name);
+      });
     }
 
     public IEnumerable<T> ResolveAll<T>() where T : class
     {
-      return container.ResolveAll<T>();
+      return TransformExceptions(() => {
+        return container.ResolveAll<T>();
+      });
     }
 
     IEnumerable<T> IObjectContainer.ResolveAll<T>()
     {
-      return ResolveAll<T>();
+      return TransformExceptions(() => {
+        return ResolveAll<T>();
+      });
     }
 
+    void OnServiceResolved(object sender, ServiceResolutionEventArgs args)
+    {
+      if(!(args.Registration is TypeRegistration))
+        return;
+      
+      OnObjectCreated(args.Instance);
+    }
+
+    void TransformExceptions(Action action)
+    {
+      if(action == null)
+        throw new ArgumentNullException(nameof(action));
+
+      try
+      {
+        action();
+      }
+      catch(ContainerException ex)
+      {
+        Type[] resolutionPath = null;
+
+        if(ex.ResolutionPath != null)
+        {
+          resolutionPath = ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
+        }
+
+        throw new ObjectContainerException(ex.Message, resolutionPath);
+      }
+    }
+
+    T TransformExceptions<T>(Func<T> action)
+    {
+      if(action == null)
+        throw new ArgumentNullException(nameof(action));
+
+      try
+      {
+        return action();
+      }
+      catch(ContainerException ex)
+      {
+        Type[] resolutionPath = null;
+
+        if(ex.ResolutionPath != null)
+        {
+          resolutionPath = ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
+        }
+
+        throw new ObjectContainerException(ex.Message, resolutionPath);
+      }
+    }
 
     protected virtual void OnObjectCreated(object obj)
     {
@@ -202,18 +268,23 @@ namespace BoDi
       }
     }
 
-    Container CreateBoDiContainer(ObjectContainer parent)
+    Container CreateMicroDiContainer(ObjectContainer parent)
     {
-      if(parent == null)
-        return new Container();
-
+      if(parent == null) return new Container();
       return new Container(parent.container);
+    }
+
+    Container GetMicroDiContainer(ObjectContainer parent)
+    {
+      var output = CreateMicroDiContainer(parent);
+      output.ServiceResolved += OnServiceResolved;
+      return output;
     }
 
     public ObjectContainer(IObjectContainer baseContainer = null) 
     {
       var parent = GetParentObjectContainer(baseContainer);
-      container = CreateBoDiContainer(parent);
+      container = GetMicroDiContainer(parent);
       RegisterInstanceAs<IObjectContainer>(this);
     }
   }

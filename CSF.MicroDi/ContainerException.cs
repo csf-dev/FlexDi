@@ -3,12 +3,14 @@ namespace CSF.MicroDi
 {
   
   [System.Serializable]
-  public class ContainerDisposedException : ContainerException
+  public class ContainerException : Exception
   {
+    public Resolution.ResolutionPath ResolutionPath { get; set; }
+
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:ContainerDisposedException"/> class
+    /// Initializes a new instance of the <see cref="T:ContainerException"/> class
     /// </summary>
-    public ContainerDisposedException()
+    public ContainerException()
     {
     }
 
@@ -16,7 +18,7 @@ namespace CSF.MicroDi
     /// Initializes a new instance of the <see cref="T:MyException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
-    public ContainerDisposedException(string message) : base(message)
+    public ContainerException(string message) : base(message)
     {
     }
 
@@ -25,7 +27,7 @@ namespace CSF.MicroDi
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
-    public ContainerDisposedException(string message, Exception inner) : base(message, inner)
+    public ContainerException(string message, Exception inner) : base(message, inner)
     {
     }
 
@@ -34,7 +36,7 @@ namespace CSF.MicroDi
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>
-    protected ContainerDisposedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+    protected ContainerException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
   }

@@ -10,7 +10,11 @@ namespace BoDi
   {
     #region constructors
 
-    public ObjectContainerException(string message, Type[] resolutionPath) : base(GetMessage(message, resolutionPath)) {}
+    public ObjectContainerException(string message, Type[] resolutionPath)
+      : base(GetMessage(message, resolutionPath)) {}
+
+    public ObjectContainerException(string message, Type[] resolutionPath, Exception inner)
+      : base(GetMessage(message, resolutionPath), inner) {}
 
 #if !BODI_LIMITEDRUNTIME
     protected ObjectContainerException(System.Runtime.Serialization.SerializationInfo info,

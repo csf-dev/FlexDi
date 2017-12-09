@@ -122,6 +122,13 @@ namespace CSF.MicroDi
       return registry.GetAll(serviceType);
     }
 
+    public event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
+
+    void InvokeServiceResolved(object sender, ServiceResolutionEventArgs args)
+    {
+      ServiceResolved?.Invoke(this, args);
+    }
+
     #endregion
 
     #region IReceivesRegistrations implementation
@@ -199,6 +206,8 @@ namespace CSF.MicroDi
 
       this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
       this.disposer = disposer ?? new ServiceInstanceDisposer();
+
+      this.resolver.ServiceResolved += InvokeServiceResolved;
     }
 
     public Container(Container container,
@@ -222,6 +231,8 @@ namespace CSF.MicroDi
 
       this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
       this.disposer = disposer ?? new ServiceInstanceDisposer();
+
+      this.resolver.ServiceResolved += InvokeServiceResolved;
     }
 
     #endregion

@@ -11,5 +11,7 @@ namespace CSF.MicroDi
 
     IReadOnlyCollection<IServiceRegistration> GetRegistrations();
     IReadOnlyCollection<IServiceRegistration> GetRegistrations(Type serviceType);
+
+    event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
   }
 }

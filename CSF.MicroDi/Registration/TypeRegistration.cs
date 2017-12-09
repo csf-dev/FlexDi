@@ -11,16 +11,7 @@ namespace CSF.MicroDi.Registration
 
     public override Type ImplementationType => implementationType;
 
-    public override object CreateInstance(IResolutionContext context)
-    {
-      if(context == null)
-        throw new ArgumentNullException(nameof(context));
-      
-      var adapter = GetFactoryAdapter();
-      return context.Resolve(adapter);
-    }
-
-    IFactoryAdapter GetFactoryAdapter()
+    public override IFactoryAdapter GetFactoryAdapter()
       => new ConstructorFactory(constructorSelector.SelectConstructor(implementationType));
 
     public override string ToString()

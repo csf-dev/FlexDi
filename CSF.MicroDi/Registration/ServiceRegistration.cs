@@ -24,7 +24,7 @@ namespace CSF.MicroDi.Registration
       set { disposeWithContainer = value; }
     }
 
-    public abstract object CreateInstance(IResolutionContext context);
+    public abstract  IFactoryAdapter GetFactoryAdapter();
 
     protected void SetMultiplicity(Multiplicity multiplicity) => this.multiplicity = multiplicity;
 

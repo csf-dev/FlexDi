@@ -10,6 +10,8 @@ namespace CSF.MicroDi.Resolution
 
     public Delegate Delegate => factory;
 
+    public bool RequiresParameterResolution => true;
+
     public object Execute(object[] parameters)
     {
       return factory.DynamicInvoke(parameters);

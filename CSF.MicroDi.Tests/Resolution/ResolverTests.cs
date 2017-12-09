@@ -23,8 +23,8 @@ namespace CSF.MicroDi.Tests.Resolution
       Mock.Get(provider).Setup(x => x.CanFulfilRequest(request)).Returns(true);
       Mock.Get(provider).Setup(x => x.Get(request)).Returns(registration);
       Mock.Get(registration)
-        .Setup(x => x.CreateInstance(sut))
-        .Returns(instance);
+        .Setup(x => x.GetFactoryAdapter())
+        .Returns(new InstanceFactory(instance));
 
       // Act
       object result;
@@ -55,8 +55,8 @@ namespace CSF.MicroDi.Tests.Resolution
           .Setup(x => x.Get(It.Is<ResolutionRequest>(r => r.ServiceType == request.ServiceType && r.Name == null)))
           .Returns(registration);
       Mock.Get(registration)
-          .Setup(x => x.CreateInstance(sut))
-          .Returns(instance);
+          .Setup(x => x.GetFactoryAdapter())
+          .Returns(new InstanceFactory(instance));
 
       // Act
       object result;
@@ -88,8 +88,8 @@ namespace CSF.MicroDi.Tests.Resolution
           .Setup(x => x.Get(request))
           .Returns(registration);
       Mock.Get(registration)
-          .Setup(x => x.CreateInstance(sut))
-          .Returns(instance);
+          .Setup(x => x.GetFactoryAdapter())
+          .Returns(new InstanceFactory(instance));
 
       // Act
       object result;

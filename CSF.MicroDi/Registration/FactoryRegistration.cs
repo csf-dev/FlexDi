@@ -7,17 +7,7 @@ namespace CSF.MicroDi.Registration
   {
     readonly Delegate factory;
 
-    public override object CreateInstance(IResolutionContext context)
-    {
-      if(context == null)
-        throw new ArgumentNullException(nameof(context));
-
-      var adapter = GetFactoryAdapter();
-      return context.Resolve(adapter);
-    }
-
-    IFactoryAdapter GetFactoryAdapter()
-      => new DelegateFactory(factory);
+    public override IFactoryAdapter GetFactoryAdapter() => new DelegateFactory(factory);
 
     public override string ToString()
     {

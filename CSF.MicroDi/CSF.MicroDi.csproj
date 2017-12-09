@@ -53,7 +53,6 @@
     <Compile Include="Registration\InstanceRegistration.cs" />
     <Compile Include="Registration\FactoryRegistration.cs" />
     <Compile Include="Builders\IBulkRegistrationProvider.cs" />
-    <Compile Include="Resolution\IResolutionContext.cs" />
     <Compile Include="Resolution\ResolutionRequest.cs" />
     <Compile Include="Resolution\ConstructorFactory.cs" />
     <Compile Include="Resolution\DelegateFactory.cs" />
@@ -78,6 +77,12 @@
     <Compile Include="IReceivesRegistrations.cs" />
     <Compile Include="Resolution\IResolver.cs" />
     <Compile Include="ContainerDisposedException.cs" />
+    <Compile Include="ServiceResolutionEventArgs.cs" />
+    <Compile Include="Resolution\ResolutionPath.cs" />
+    <Compile Include="Resolution\InstanceFactory.cs" />
+    <Compile Include="ContainerException.cs" />
+    <Compile Include="CircularDependencyException.cs" />
+    <Compile Include="Resolution\CircularDependencyDetector.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
