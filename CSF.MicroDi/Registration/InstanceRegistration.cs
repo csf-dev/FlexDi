@@ -26,6 +26,11 @@ namespace CSF.MicroDi.Registration
 
     public override object CreateInstance(IResolutionContext context) => Implementation;
 
+    public override string ToString()
+    {
+      return $"[Instance registration for `{ServiceType.FullName}', using an instance of `{ImplementationType.FullName}']";
+    }
+
     public InstanceRegistration(object implementation)
     {
       if(implementation == null)

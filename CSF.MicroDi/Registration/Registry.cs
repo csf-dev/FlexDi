@@ -8,6 +8,7 @@ namespace CSF.MicroDi.Registration
 {
   public class Registry : IRegistersServices
   {
+    readonly object syncRoot;
     readonly ConcurrentDictionary<ServiceRegistrationKey,IServiceRegistration> registrations;
 
     public bool Contains(ServiceRegistrationKey key)
@@ -24,9 +25,12 @@ namespace CSF.MicroDi.Registration
         throw new ArgumentNullException(nameof(registration));
 
       var key = ServiceRegistrationKey.ForRegistration(registration);
-      var result = registrations.TryAdd(key, registration);
-      if(!result)
-        throw new DuplicateRegistrationException($"The registry must not already contain a duplicate registration: {registration.ToString()}");
+      lock(syncRoot)
+      {
+        IServiceRegistration removed;
+        registrations.TryRemove(key, out removed);
+        registrations.TryAdd(key, registration);
+      }
     }
 
     public IServiceRegistration Get(ServiceRegistrationKey key)
@@ -77,6 +81,7 @@ namespace CSF.MicroDi.Registration
 
     public Registry()
     {
+      syncRoot = new object();
       registrations = new ConcurrentDictionary<ServiceRegistrationKey, IServiceRegistration>();
     }
   }

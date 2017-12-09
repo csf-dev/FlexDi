@@ -26,6 +26,8 @@ namespace CSF.MicroDi
 
     public T Resolve<T>(string name)
     {
+      AssertNotDisposed();
+
       object output;
       if(!TryResolve(typeof(T), name, out output))
         throw new ResolutionException($"The service type `{typeof(T).FullName}' could be resolved");
@@ -36,6 +38,8 @@ namespace CSF.MicroDi
 
     public bool TryResolve<T>(string name, out T output)
     {
+      AssertNotDisposed();
+
       object resolved;
       var result = TryResolve(typeof(T), name, out resolved);
       if(!result)
@@ -52,6 +56,8 @@ namespace CSF.MicroDi
 
     public object Resolve(Type serviceType, string name)
     {
+      AssertNotDisposed();
+
       object output;
       if(!TryResolve(serviceType, name, out output))
         throw new ResolutionException($"The service type `{serviceType.FullName}' could be resolved");
@@ -62,17 +68,23 @@ namespace CSF.MicroDi
 
     public bool TryResolve(Type serviceType, string name, out object output)
     {
+      AssertNotDisposed();
+
       var request = new ResolutionRequest(serviceType, name);
       return resolver.Resolve(request, out output);
     }
 
     public IReadOnlyCollection<T> ResolveAll<T>()
     {
+      AssertNotDisposed();
+
       return ResolveAll(typeof(T)).Cast<T>().ToArray();
     }
 
     public IReadOnlyCollection<object> ResolveAll(Type serviceType)
     {
+      AssertNotDisposed();
+
       return registry
         .GetAll(serviceType)
         .Select(x => Resolve(x.ServiceType, x.Name))
@@ -90,17 +102,23 @@ namespace CSF.MicroDi
 
     public bool HasRegistration(Type serviceType, string name = null)
     {
+      AssertNotDisposed();
+
       var request = new ResolutionRequest(serviceType, name);
       return registry.CanFulfilRequest(request);
     }
 
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations()
     {
+      AssertNotDisposed();
+
       return registry.GetAll();
     }
 
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations(Type serviceType)
     {
+      AssertNotDisposed();
+
       return registry.GetAll(serviceType);
     }
 
@@ -113,6 +131,8 @@ namespace CSF.MicroDi
       if(registrationActions == null)
         throw new ArgumentNullException(nameof(registrationActions));
 
+      AssertNotDisposed();
+
       var helper = new RegistrationHelper();
       registrationActions(helper);
 
@@ -124,6 +144,8 @@ namespace CSF.MicroDi
       if(registrations == null)
         throw new ArgumentNullException(nameof(registrations));
       
+      AssertNotDisposed();
+
       foreach(var registration in registrations)
         currentRegistry.Add(registration);
     }
@@ -148,6 +170,12 @@ namespace CSF.MicroDi
     public void Dispose()
     {
       Dispose(true);
+    }
+
+    void AssertNotDisposed()
+    {
+      if(disposedValue)
+        throw new ContainerDisposedException("The requested action is not valid for a container which has been disposed.");
     }
 
     #endregion

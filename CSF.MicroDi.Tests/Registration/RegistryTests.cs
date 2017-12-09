@@ -32,14 +32,14 @@ namespace CSF.MicroDi.Tests.Registration
 
 
     [Test,AutoMoqData]
-    public void Add_raises_an_exception_when_adding_the_same_registration_twice(Registry sut,
-                                                                                [SampleService] IServiceRegistration registration)
+    public void Add_does_not_raise_an_exception_when_adding_the_same_registration_twice(Registry sut,
+                                                                                        [SampleService] IServiceRegistration registration)
     {
       // Act
       sut.Add(registration);
 
       // Assert
-      Assert.Throws<DuplicateRegistrationException>(() => sut.Add(registration));
+      Assert.DoesNotThrow(() => sut.Add(registration));
     }
 
     [Test,AutoMoqData]

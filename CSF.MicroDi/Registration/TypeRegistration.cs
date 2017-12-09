@@ -23,6 +23,11 @@ namespace CSF.MicroDi.Registration
     IFactoryAdapter GetFactoryAdapter()
       => new ConstructorFactory(constructorSelector.SelectConstructor(implementationType));
 
+    public override string ToString()
+    {
+      return $"[Type registration for `{ServiceType.FullName}', using type `{ImplementationType.FullName}']";
+    }
+
     public TypeRegistration(Type implementationType) : this(implementationType, null) {}
 
     public TypeRegistration(Type implementationType, ISelectsConstructor constructorSelector)

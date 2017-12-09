@@ -19,6 +19,11 @@ namespace CSF.MicroDi.Registration
     IFactoryAdapter GetFactoryAdapter()
       => new DelegateFactory(factory);
 
+    public override string ToString()
+    {
+      return $"[Factory registration for `{ServiceType.FullName}']";
+    }
+
     public FactoryRegistration(Delegate factory)
     {
       if(factory == null)

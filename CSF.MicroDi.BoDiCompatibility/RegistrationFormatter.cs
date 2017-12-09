@@ -69,7 +69,7 @@ namespace BoDi
     string FormatRegistration(InstanceRegistration registration)
     {
       // Special case for the container itself
-      if(registration.ImplementationType == typeof(IObjectContainer) && registration.Name == null)
+      if(registration.ServiceType == typeof(IObjectContainer) && registration.Name == null)
         return "<self>";
 
       string implementationString;

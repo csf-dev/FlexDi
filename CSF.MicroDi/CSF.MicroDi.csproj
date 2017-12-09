@@ -77,6 +77,7 @@
     <Compile Include="Resolution\ResolutionException.cs" />
     <Compile Include="IReceivesRegistrations.cs" />
     <Compile Include="Resolution\IResolver.cs" />
+    <Compile Include="ContainerDisposedException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

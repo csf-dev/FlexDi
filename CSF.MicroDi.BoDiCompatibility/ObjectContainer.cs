@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CSF.MicroDi;
+using CSF.MicroDi.Registration;
 
 namespace BoDi
 {
@@ -31,8 +33,8 @@ namespace BoDi
     {
       container.AddRegistrations(x => {
         x.RegisterType(implementationType)
-         .As(interfaceType)
-         .WithName(name);
+        .As(interfaceType)
+        .WithName(name);
       });
     }
 

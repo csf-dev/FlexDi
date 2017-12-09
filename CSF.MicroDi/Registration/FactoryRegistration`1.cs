@@ -14,6 +14,11 @@ namespace CSF.MicroDi.Registration
       return factory();
     }
 
+    public override string ToString()
+    {
+      return $"[Factory registration for `{ServiceType.FullName}', creating an instance of `{ImplementationType.FullName}']";
+    }
+
     public FactoryRegistration(Func<T> factory)
     {
       if(factory == null)
