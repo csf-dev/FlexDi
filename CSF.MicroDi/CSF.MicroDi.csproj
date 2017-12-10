@@ -83,6 +83,9 @@
     <Compile Include="ContainerException.cs" />
     <Compile Include="CircularDependencyException.cs" />
     <Compile Include="Resolution\CircularDependencyDetector.cs" />
+    <Compile Include="InvalidRegistrationException.cs" />
+    <Compile Include="ServiceReRegisteredAfterResolutionException.cs" />
+    <Compile Include="Registration\InvalidTypeRegistrationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

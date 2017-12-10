@@ -14,5 +14,7 @@ namespace CSF.MicroDi.Registration
     bool DisposeWithContainer { get; }
 
     IFactoryAdapter GetFactoryAdapter();
+
+    void AssertIsValid();
   }
 }

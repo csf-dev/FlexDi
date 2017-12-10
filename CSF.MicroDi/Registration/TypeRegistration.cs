@@ -19,6 +19,14 @@ namespace CSF.MicroDi.Registration
       return $"[Type registration for `{ServiceType.FullName}', using type `{ImplementationType.FullName}']";
     }
 
+    public override void AssertIsValid()
+    {
+      if(!ServiceType.IsAssignableFrom(ImplementationType))
+        throw new InvalidTypeRegistrationException($"Invalid {nameof(TypeRegistration)}; the implementation type: `{ImplementationType.FullName}' must derive from the service type: `{ServiceType.FullName}'.");
+
+      base.AssertIsValid();
+    }
+
     public TypeRegistration(Type implementationType) : this(implementationType, null) {}
 
     public TypeRegistration(Type implementationType, ISelectsConstructor constructorSelector)

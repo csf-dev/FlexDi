@@ -154,7 +154,17 @@ namespace CSF.MicroDi
       AssertNotDisposed();
 
       foreach(var registration in registrations)
+      {
+        DoNotPermitReRegisteringAServiceWhichIsAlreadyCached(registration);
         currentRegistry.Add(registration);
+      }
+    }
+
+    void DoNotPermitReRegisteringAServiceWhichIsAlreadyCached(IServiceRegistration registration)
+    {
+      var cacheKey = ServiceRegistrationKey.ForRegistration(registration);
+      if(cache.Has(cacheKey))
+        throw new ServiceReRegisteredAfterResolutionException($"Cannot re-register a service after it has already been resolved from the container and cached.{Environment.NewLine}Invalid registration: {registration.ToString()}");
     }
 
     #endregion

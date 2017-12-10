@@ -48,6 +48,18 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
+    public IRegistrationOptionsBuilder DoNotDisposeWithContainer()
+    {
+      registration.DisposeWithContainer = false;
+      return this;
+    }
+
+    public IRegistrationOptionsBuilder DisposeWithContainer(bool disposeWithContainer = true)
+    {
+      registration.DisposeWithContainer = disposeWithContainer;
+      return this;
+    }
+
     IRegistrationOptionsBuilderWithMultiplicity IAsBuilderWithMultiplicity.As(Type serviceType)
     {
       if(serviceType == null)

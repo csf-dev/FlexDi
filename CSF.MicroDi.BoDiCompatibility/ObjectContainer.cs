@@ -46,7 +46,8 @@ namespace BoDi
         container.AddRegistrations(x => {
           x.RegisterInstance(instance)
            .As(interfaceType)
-           .WithName(name);
+           .WithName(name)
+           .DisposeWithContainer(dispose);
         });
 
         //if (instance == null)

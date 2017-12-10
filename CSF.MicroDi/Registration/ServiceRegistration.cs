@@ -26,6 +26,9 @@ namespace CSF.MicroDi.Registration
 
     public abstract  IFactoryAdapter GetFactoryAdapter();
 
+    public virtual void AssertIsValid()
+    { /* Intentional no-op, derived types may override to perform validation logic */ }
+
     protected void SetMultiplicity(Multiplicity multiplicity) => this.multiplicity = multiplicity;
 
     public ServiceRegistration()
