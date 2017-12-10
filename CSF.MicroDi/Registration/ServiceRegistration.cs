@@ -24,10 +24,18 @@ namespace CSF.MicroDi.Registration
       set { disposeWithContainer = value; }
     }
 
-    public abstract  IFactoryAdapter GetFactoryAdapter();
+    public abstract  IFactoryAdapter GetFactoryAdapter(ResolutionRequest request);
 
     public virtual void AssertIsValid()
     { /* Intentional no-op, derived types may override to perform validation logic */ }
+
+    public virtual bool MatchesKey(ServiceRegistrationKey key)
+    {
+      if(key == null)
+        return false;
+
+      return ServiceType == key.ServiceType && Name == key.Name;
+    }
 
     protected void SetMultiplicity(Multiplicity multiplicity) => this.multiplicity = multiplicity;
 

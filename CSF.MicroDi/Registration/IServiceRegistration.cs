@@ -13,8 +13,10 @@ namespace CSF.MicroDi.Registration
 
     bool DisposeWithContainer { get; }
 
-    IFactoryAdapter GetFactoryAdapter();
+    IFactoryAdapter GetFactoryAdapter(ResolutionRequest request);
 
     void AssertIsValid();
+
+    bool MatchesKey(ServiceRegistrationKey key);
   }
 }

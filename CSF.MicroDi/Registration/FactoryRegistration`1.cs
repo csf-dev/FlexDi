@@ -9,7 +9,7 @@ namespace CSF.MicroDi.Registration
 
     public override Type ImplementationType => typeof(T);
 
-    public override IFactoryAdapter GetFactoryAdapter() => new DelegateFactory(factory);
+    public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request) => new DelegateFactory(factory);
 
     public override string ToString()
     {

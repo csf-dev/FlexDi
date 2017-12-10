@@ -15,8 +15,12 @@ namespace CSF.MicroDi.Registration
     {
       if(key == null)
         throw new ArgumentNullException(nameof(key));
-      
-      return registrations.ContainsKey(key);
+
+      lock(syncRoot)
+      {
+        return (registrations.ContainsKey(key)
+                || registrations.Any(x => x.Value.MatchesKey(key)));
+      }
     }
 
     public void Add(IServiceRegistration registration)
@@ -43,6 +47,13 @@ namespace CSF.MicroDi.Registration
       IServiceRegistration output;
       if(registrations.TryGetValue(key, out output))
         return output;
+
+      lock(syncRoot)
+      {
+        var candidates = registrations.Where(x => x.Value.MatchesKey(key));
+        if(candidates.Any())
+          return candidates.First().Value;
+      }
 
       return null;
     }

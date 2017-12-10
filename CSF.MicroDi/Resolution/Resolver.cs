@@ -32,7 +32,7 @@ namespace CSF.MicroDi.Resolution
 
       circularDependencyDetector.ThrowOnCircularDependency(registration, outermostResolver.ResolutionPath);
 
-      output = Resolve(registration, outermostResolver);
+      output = Resolve(request, registration, outermostResolver);
       return true;
     }
 
@@ -104,7 +104,7 @@ namespace CSF.MicroDi.Resolution
       return output;
     }
 
-    protected virtual object Resolve(IServiceRegistration registration, IResolver outermostResolver)
+    protected virtual object Resolve(ResolutionRequest request, IServiceRegistration registration, IResolver outermostResolver)
     {
       if(registration == null)
         throw new ArgumentNullException(nameof(registration));
@@ -112,7 +112,7 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(outermostResolver));
 
       var resolver = outermostResolver.CreateChild(registration);
-      var factoryAdapter = registration.GetFactoryAdapter();
+      var factoryAdapter = registration.GetFactoryAdapter(request);
       var instance = Resolve(factoryAdapter, resolver);
       InvokeServiceResolved(registration, instance);
       return instance;

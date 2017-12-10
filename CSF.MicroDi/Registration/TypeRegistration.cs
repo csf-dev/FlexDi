@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using CSF.MicroDi.Resolution;
 
 namespace CSF.MicroDi.Registration
@@ -11,8 +10,11 @@ namespace CSF.MicroDi.Registration
 
     public override Type ImplementationType => implementationType;
 
-    public override IFactoryAdapter GetFactoryAdapter()
-      => new ConstructorFactory(constructorSelector.SelectConstructor(implementationType));
+    public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request)
+      => GetFactoryAdapter(implementationType);
+
+    protected virtual IFactoryAdapter GetFactoryAdapter(Type type)
+      => new ConstructorFactory(constructorSelector.SelectConstructor(type));
 
     public override string ToString()
     {

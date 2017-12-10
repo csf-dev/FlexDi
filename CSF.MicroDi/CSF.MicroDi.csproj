@@ -89,6 +89,7 @@
     <Compile Include="Resolution\CannotInstantiateTypeWithoutAnyConstructorsException.cs" />
     <Compile Include="Resolution\AmbiguousConstructorException.cs" />
     <Compile Include="Resolution\InvalidResolutionRequestException.cs" />
+    <Compile Include="Registration\OpenGenericTypeRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

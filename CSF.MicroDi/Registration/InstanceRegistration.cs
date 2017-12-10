@@ -24,7 +24,7 @@ namespace CSF.MicroDi.Registration
       }
     }
 
-    public override IFactoryAdapter GetFactoryAdapter() => new InstanceFactory(implementation);
+    public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request) => new InstanceFactory(implementation);
 
     public override string ToString()
     {

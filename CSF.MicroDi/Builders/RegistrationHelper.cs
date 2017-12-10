@@ -50,7 +50,17 @@ namespace CSF.MicroDi.Builders
       if(concreteType == null)
         throw new ArgumentNullException(nameof(concreteType));
 
-      var registration = new TypeRegistration(concreteType) { ServiceType = concreteType };
+      ServiceRegistration registration;
+
+      if(concreteType.IsGenericTypeDefinition)
+      {
+        registration = new OpenGenericTypeRegistration(concreteType) { ServiceType = concreteType };
+      }
+      else
+      {
+        registration = new TypeRegistration(concreteType) { ServiceType = concreteType };
+      }
+
       registrations.Add(registration);
       return new RegistrationBuilder(registration);
     }

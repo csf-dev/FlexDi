@@ -7,7 +7,7 @@ namespace CSF.MicroDi.Registration
   {
     readonly Delegate factory;
 
-    public override IFactoryAdapter GetFactoryAdapter() => new DelegateFactory(factory);
+    public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request) => new DelegateFactory(factory);
 
     public override string ToString()
     {

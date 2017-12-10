@@ -12,7 +12,8 @@ namespace CSF.MicroDi.Tests.Registration
   public class TypeRegistrationTests
   {
     [Test,AutoMoqData]
-    public void GetFactoryAdapter_uses_constructor_selector(ISelectsConstructor ctorSelector)
+    public void GetFactoryAdapter_uses_constructor_selector(ISelectsConstructor ctorSelector,
+                                                            ResolutionRequest request)
     {
       // Arrange
       var type = typeof(SampleServiceWithConstructorParameters);
@@ -23,7 +24,7 @@ namespace CSF.MicroDi.Tests.Registration
           .Returns(ctor);
 
       // Act
-      var result = sut.GetFactoryAdapter();
+      var result = sut.GetFactoryAdapter(request);
 
       // Assert
       Assert.That(result, Is.Not.Null);
