@@ -90,6 +90,9 @@
     <Compile Include="Resolution\AmbiguousConstructorException.cs" />
     <Compile Include="Resolution\InvalidResolutionRequestException.cs" />
     <Compile Include="Registration\OpenGenericTypeRegistration.cs" />
+    <Compile Include="Builders\ContainerBuilder.cs" />
+    <Compile Include="Builders\IContainerBuilder.cs" />
+    <Compile Include="ContainerOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

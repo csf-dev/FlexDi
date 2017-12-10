@@ -364,7 +364,7 @@ namespace BoDi.Tests
             result.ShouldBeType<ClassWithCircularDependencyThroughInterfaces1>();
         }
 
-        [Test, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Multiple public constructors", MatchType = MessageMatch.Contains)]
+        [Test, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "multiple constructors", MatchType = MessageMatch.Contains)]
         public void ShouldThrowExceptionForMultipleConstructorsWithSameNumberOfMaximumParameters()
         {
             // given

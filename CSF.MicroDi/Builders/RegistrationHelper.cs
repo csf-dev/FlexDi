@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using CSF.MicroDi.Registration;
+using CSF.MicroDi.Resolution;
 
 namespace CSF.MicroDi.Builders
 {
   public class RegistrationHelper : IRegistrationHelper, IBulkRegistrationProvider
   {
     readonly ICollection<IServiceRegistration> registrations;
+    readonly bool useNonPublicConstructors;
 
     public IRegistrationOptionsBuilderWithMultiplicity RegisterFactory(Delegate factory, Type serviceType)
     {
@@ -51,14 +53,17 @@ namespace CSF.MicroDi.Builders
         throw new ArgumentNullException(nameof(concreteType));
 
       ServiceRegistration registration;
+      var ctorSelector = GetConstructorSelector();
 
       if(concreteType.IsGenericTypeDefinition)
       {
-        registration = new OpenGenericTypeRegistration(concreteType) { ServiceType = concreteType };
+        registration = new OpenGenericTypeRegistration(concreteType, ctorSelector)
+        { ServiceType = concreteType };
       }
       else
       {
-        registration = new TypeRegistration(concreteType) { ServiceType = concreteType };
+        registration = new TypeRegistration(concreteType, ctorSelector)
+        { ServiceType = concreteType };
       }
 
       registrations.Add(registration);
@@ -71,9 +76,14 @@ namespace CSF.MicroDi.Builders
 
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations() => registrations.ToArray();
 
-    public RegistrationHelper()
+    ISelectsConstructor GetConstructorSelector()
+      => new ConstructorWithMostParametersSelector(useNonPublicConstructors);
+
+    public RegistrationHelper(bool useNonPublicConstructors = false)
     {
-      this.registrations = new List<IServiceRegistration>();
+      registrations = new List<IServiceRegistration>();
+
+      this.useNonPublicConstructors = useNonPublicConstructors;
     }
   }
 }

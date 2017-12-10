@@ -3,7 +3,7 @@ namespace CSF.MicroDi.Resolution
 {
   
   [System.Serializable]
-  public class AmbiguousConstructorException : Exception
+  public class AmbiguousConstructorException : ResolutionException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="T:AmbiguousConstructorException"/> class

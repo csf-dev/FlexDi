@@ -16,11 +16,8 @@ namespace CSF.MicroDi.Registration
       if(key == null)
         throw new ArgumentNullException(nameof(key));
 
-      lock(syncRoot)
-      {
-        return (registrations.ContainsKey(key)
-                || registrations.Any(x => x.Value.MatchesKey(key)));
-      }
+      var candidates = GetCandidateRegistrations(key);
+      return candidates.Any();
     }
 
     public void Add(IServiceRegistration registration)
@@ -44,18 +41,26 @@ namespace CSF.MicroDi.Registration
       if(key == null)
         throw new ArgumentNullException(nameof(key));
 
-      IServiceRegistration output;
-      if(registrations.TryGetValue(key, out output))
-        return output;
+      return GetCandidateRegistrations(key).OrderByDescending(x => x.Priority).FirstOrDefault();
+    }
+
+    IReadOnlyList<IServiceRegistration> GetCandidateRegistrations(ServiceRegistrationKey key)
+    {
+      var output = new List<IServiceRegistration>();
 
       lock(syncRoot)
       {
-        var candidates = registrations.Where(x => x.Value.MatchesKey(key));
-        if(candidates.Any())
-          return candidates.First().Value;
+        IServiceRegistration reg;
+        if(registrations.TryGetValue(key, out reg))
+          output.Add(reg);
+
+        var otherMatches = registrations
+          .Where(x => x.Value.MatchesKey(key) && !ReferenceEquals(x, reg))
+          .Select(x => x.Value);
+        output.AddRange(otherMatches);
       }
 
-      return null;
+      return output.ToArray();
     }
 
     public IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType)

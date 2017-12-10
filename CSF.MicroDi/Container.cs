@@ -17,6 +17,7 @@ namespace CSF.MicroDi
     readonly ICachesResolvedServiceInstancesWithScope cache;
     readonly IFulfilsResolutionRequests resolver;
     readonly IDisposesOfResolvedInstances disposer;
+    readonly ContainerOptions options;
 
     #endregion
 
@@ -140,7 +141,7 @@ namespace CSF.MicroDi
 
       AssertNotDisposed();
 
-      var helper = new RegistrationHelper();
+      var helper = new RegistrationHelper(options.UseNonPublicConstructors);
       registrationActions(helper);
 
       AddRegistrations(helper.GetRegistrations());
@@ -204,9 +205,12 @@ namespace CSF.MicroDi
                      IRegistersServicesWithScope scopedRegistry = null,
                      ICachesResolvedServiceInstancesWithScope scopedCache = null,
                      IFulfilsResolutionRequests resolver = null,
-                     IDisposesOfResolvedInstances disposer = null)
+                     IDisposesOfResolvedInstances disposer = null,
+                     ContainerOptions options = null)
     {
       disposedValue = false;
+
+      this.options = options ?? ContainerOptions.Default;
 
       currentRegistry = initialRegistry ?? new Registry();
       currentCache = initialCache ?? new ResolvedServiceCache();
@@ -231,6 +235,8 @@ namespace CSF.MicroDi
 
       disposedValue = false;
 
+      options = container.options;
+
       currentRegistry = nextRegistry ?? new Registry();
       currentCache = nextCache ?? new ResolvedServiceCache();
 
@@ -242,6 +248,12 @@ namespace CSF.MicroDi
 
       this.resolver.ServiceResolved += InvokeServiceResolved;
     }
+
+    #endregion
+
+    #region static methods
+
+    public static IContainerBuilder CreateBuilder() => new ContainerBuilder();
 
     #endregion
   }

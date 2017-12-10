@@ -18,5 +18,7 @@ namespace CSF.MicroDi.Registration
     void AssertIsValid();
 
     bool MatchesKey(ServiceRegistrationKey key);
+
+    int Priority { get; }
   }
 }

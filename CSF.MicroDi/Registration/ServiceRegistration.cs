@@ -24,6 +24,8 @@ namespace CSF.MicroDi.Registration
       set { disposeWithContainer = value; }
     }
 
+    public virtual int Priority => 1;
+
     public abstract  IFactoryAdapter GetFactoryAdapter(ResolutionRequest request);
 
     public virtual void AssertIsValid()

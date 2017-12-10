@@ -36,10 +36,13 @@ namespace CSF.MicroDi.Resolution
       return true;
     }
 
-    public virtual object Resolve(IFactoryAdapter factory, IResolver outermostResolver)
+    protected virtual object Resolve(IFactoryAdapter factory, IResolver outermostResolver)
     {
       if(factory == null)
         throw new ArgumentNullException(nameof(factory));
+      if(outermostResolver == null)
+        throw new ArgumentNullException(nameof(outermostResolver));
+      
 
       if(!factory.RequiresParameterResolution)
         return factory.Execute(Enumerable.Empty<object>().ToArray());
@@ -100,7 +103,7 @@ namespace CSF.MicroDi.Resolution
     protected virtual object Resolve(ResolutionRequest request, IResolver outermostResolver)
     {
       object output;
-      Resolve(request, out output, outermostResolver);
+      outermostResolver.Resolve(request, out output);
       return output;
     }
 

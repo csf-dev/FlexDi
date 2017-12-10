@@ -228,7 +228,8 @@ namespace BoDi
 
     Container CreateMicroDiContainer(ObjectContainer parent)
     {
-      if(parent == null) return new Container();
+      if(parent == null)
+        return Container.CreateBuilder().UseNonPublicConstructors().Build();
       return new Container(parent.container);
     }
 
