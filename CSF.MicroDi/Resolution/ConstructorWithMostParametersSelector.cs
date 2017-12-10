@@ -41,7 +41,7 @@ namespace CSF.MicroDi.Resolution
     void AssertAConstructorIsFound(Type type, ConstructorInfo ctor)
     {
       if(ctor == null)
-        throw new ArgumentException($"The type {type.FullName} must have at least one constructor. Interfaces must be registered with a concrete implementation.", nameof(type));
+        throw new CannotInstantiateTypeWithoutAnyConstructorsException($"The type {type.FullName} must have at least one constructor.{Environment.NewLine}Interfaces must be registered with a concrete implementation.");
     }
 
     void AssertConstructorIsNotAmbiguous(Type type,
@@ -51,8 +51,9 @@ namespace CSF.MicroDi.Resolution
       var paramCount = constructorWithMostParameters.GetParameters().Count();
       if(allConstructors.Count(x => x.GetParameters().Count() == paramCount) > 1)
       {
-        throw new ArgumentException($"The type {type.FullName} has multiple constructors with {paramCount} parameter(s).{Environment.NewLine}" +
-                                    "The type must have only a single constructor which has the greatest number of parameters.", nameof(type));
+        var parametersText = (paramCount == 1)? "1 parameter" : $"{paramCount} parameters";
+        throw new AmbiguousConstructorException($"The type {type.FullName} has multiple constructors with {parametersText}.{Environment.NewLine}" +
+                                                "If you wish to register this type, you must use a factory registration and manually choose the appropriate constructor.");
       }
     }
 

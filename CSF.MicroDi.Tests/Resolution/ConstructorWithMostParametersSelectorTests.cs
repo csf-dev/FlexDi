@@ -35,7 +35,7 @@ namespace CSF.MicroDi.Tests.Resolution
 
       // Act & assert
       Assert.That(() => sut.SelectConstructor(typeof(SampleServiceWithAmbiguousCtors)),
-                  Throws.TypeOf<ArgumentException>());
+                  Throws.TypeOf<AmbiguousConstructorException>());
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace CSF.MicroDi.Tests.Resolution
 
       // Act & assert
       Assert.That(() => sut.SelectConstructor(typeof(SampleServiceWithOnlyPrivateConstructors)),
-                  Throws.TypeOf<ArgumentException>());
+                  Throws.TypeOf<CannotInstantiateTypeWithoutAnyConstructorsException>());
     }
 
     [Test]

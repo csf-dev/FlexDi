@@ -24,6 +24,8 @@ namespace CSF.MicroDi.Registration
       if(registration == null)
         throw new ArgumentNullException(nameof(registration));
 
+      registration.AssertIsValid();
+
       var key = ServiceRegistrationKey.ForRegistration(registration);
       lock(syncRoot)
       {

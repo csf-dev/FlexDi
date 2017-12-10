@@ -23,6 +23,8 @@ namespace CSF.MicroDi.Resolution
       if(outermostResolver == null)
         throw new ArgumentNullException(nameof(outermostResolver));
 
+      AssertIsValidRequest(request);
+
       output = null;
       var registration = GetRegistration(request);
       if(registration == null)
@@ -122,6 +124,15 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(parameter));
       
       return new ResolutionRequest(parameter.ParameterType, parameter.Name);
+    }
+
+    protected virtual void AssertIsValidRequest(ResolutionRequest request)
+    {
+      var serviceType = request.ServiceType;
+      if(serviceType.IsPrimitive || serviceType.IsValueType || serviceType == typeof(string))
+      {
+        throw new InvalidResolutionRequestException($"Primitive types or structs cannot be resolved.{Environment.NewLine}{request.ToString()}");
+      }
     }
 
     public Resolver(IServiceRegistrationProvider registrationProvider) : this(registrationProvider, null) {}

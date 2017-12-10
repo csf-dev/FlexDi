@@ -39,12 +39,16 @@
     <Compile Include="BoDiConfigurationSection.cs" />
     <Compile Include="ContainerRegistrationCollection.cs" />
     <Compile Include="ContainerRegistrationConfigElement.cs" />
+    <Compile Include="Internal\ExceptionTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
       <Project>{F7CE689A-C595-4EE0-A6BD-AF46D2D9F99C}</Project>
       <Name>CSF.MicroDi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Internal\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using BoDi.Internal;
 using CSF.MicroDi;
 using CSF.MicroDi.Registration;
 
@@ -10,6 +10,7 @@ namespace BoDi
   {
     const string REGISTERED_NAME_PARAMETER_NAME = "registeredName";
     readonly Container container;
+    static readonly ExceptionTransformer exceptionTransformer;
     bool isDisposed;
 
     public event Action<object> ObjectCreated;
@@ -31,7 +32,7 @@ namespace BoDi
 
     void RegisterTypeAs(Type implementationType, Type interfaceType, string name)
     {
-      TransformExceptions(() => {
+      exceptionTransformer.TransformExceptions(() => {
         container.AddRegistrations(x => {
           x.RegisterType(implementationType)
            .As(interfaceType)
@@ -42,7 +43,7 @@ namespace BoDi
 
     public void RegisterInstanceAs(object instance, Type interfaceType, string name = null, bool dispose = false)
     {
-      TransformExceptions(() => {
+      exceptionTransformer.TransformExceptions(() => {
         container.AddRegistrations(x => {
           x.RegisterInstance(instance)
            .As(interfaceType)
@@ -83,7 +84,7 @@ namespace BoDi
 
     public void RegisterFactoryAs(Delegate factoryDelegate, Type interfaceType, string name = null)
     {
-      TransformExceptions(() => {
+      exceptionTransformer.TransformExceptions(() => {
         container.AddRegistrations(x => {
           x.RegisterFactory(factoryDelegate, interfaceType)
            .WithName(name);
@@ -109,7 +110,7 @@ namespace BoDi
 
     public bool IsRegistered<T>(string name)
     {
-      return TransformExceptions(() => {
+      return exceptionTransformer.TransformExceptions(() => {
         return container.HasRegistration<T>(name);
       });
     }
@@ -154,28 +155,28 @@ namespace BoDi
 
     public T Resolve<T>(string name)
     {
-      return TransformExceptions(() => {
+      return exceptionTransformer.TransformExceptions(() => {
         return container.Resolve<T>(name);
       });
     }
 
     public object Resolve(Type typeToResolve, string name = null)
     {
-      return TransformExceptions(() => {
+      return exceptionTransformer.TransformExceptions(() => {
         return container.Resolve(typeToResolve, name);
       });
     }
 
     public IEnumerable<T> ResolveAll<T>() where T : class
     {
-      return TransformExceptions(() => {
+      return exceptionTransformer.TransformExceptions(() => {
         return container.ResolveAll<T>();
       });
     }
 
     IEnumerable<T> IObjectContainer.ResolveAll<T>()
     {
-      return TransformExceptions(() => {
+      return exceptionTransformer.TransformExceptions(() => {
         return ResolveAll<T>();
       });
     }
@@ -186,50 +187,6 @@ namespace BoDi
         return;
       
       OnObjectCreated(args.Instance);
-    }
-
-    void TransformExceptions(Action action)
-    {
-      if(action == null)
-        throw new ArgumentNullException(nameof(action));
-
-      try
-      {
-        action();
-      }
-      catch(ContainerException ex)
-      {
-        Type[] resolutionPath = null;
-
-        if(ex.ResolutionPath != null)
-        {
-          resolutionPath = ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
-        }
-
-        throw new ObjectContainerException(ex.Message, resolutionPath);
-      }
-    }
-
-    T TransformExceptions<T>(Func<T> action)
-    {
-      if(action == null)
-        throw new ArgumentNullException(nameof(action));
-
-      try
-      {
-        return action();
-      }
-      catch(ContainerException ex)
-      {
-        Type[] resolutionPath = null;
-
-        if(ex.ResolutionPath != null)
-        {
-          resolutionPath = ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
-        }
-
-        throw new ObjectContainerException(ex.Message, resolutionPath);
-      }
     }
 
     protected virtual void OnObjectCreated(object obj)
@@ -287,6 +244,11 @@ namespace BoDi
       var parent = GetParentObjectContainer(baseContainer);
       container = GetMicroDiContainer(parent);
       RegisterInstanceAs<IObjectContainer>(this);
+    }
+
+    static ObjectContainer()
+    {
+      exceptionTransformer = new ExceptionTransformer();
     }
   }
 }

@@ -12,6 +12,12 @@ namespace CSF.MicroDi.Resolution
       return new ResolutionRequest(ServiceType, null);
     }
 
+    public override string ToString()
+    {
+      var namePart = (Name != null)? $"('{Name}')" : string.Empty;
+      return $"[ResolutionRequest: {ServiceType.FullName}{namePart}]";
+    }
+
     public ResolutionRequest(Type serviceType) : this(serviceType, null) {}
 
     public ResolutionRequest(Type serviceType, string name)

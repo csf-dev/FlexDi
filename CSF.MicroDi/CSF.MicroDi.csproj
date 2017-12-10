@@ -86,6 +86,9 @@
     <Compile Include="InvalidRegistrationException.cs" />
     <Compile Include="ServiceReRegisteredAfterResolutionException.cs" />
     <Compile Include="Registration\InvalidTypeRegistrationException.cs" />
+    <Compile Include="Resolution\CannotInstantiateTypeWithoutAnyConstructorsException.cs" />
+    <Compile Include="Resolution\AmbiguousConstructorException.cs" />
+    <Compile Include="Resolution\InvalidResolutionRequestException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

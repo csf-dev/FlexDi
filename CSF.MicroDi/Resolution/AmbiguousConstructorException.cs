@@ -3,12 +3,12 @@ namespace CSF.MicroDi.Resolution
 {
   
   [System.Serializable]
-  public class ResolutionException : ContainerException
+  public class AmbiguousConstructorException : Exception
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:ResolutionException"/> class
+    /// Initializes a new instance of the <see cref="T:AmbiguousConstructorException"/> class
     /// </summary>
-    public ResolutionException()
+    public AmbiguousConstructorException()
     {
     }
 
@@ -16,7 +16,7 @@ namespace CSF.MicroDi.Resolution
     /// Initializes a new instance of the <see cref="T:MyException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
-    public ResolutionException(string message) : base(message)
+    public AmbiguousConstructorException(string message) : base(message)
     {
     }
 
@@ -25,7 +25,7 @@ namespace CSF.MicroDi.Resolution
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
-    public ResolutionException(string message, Exception inner) : base(message, inner)
+    public AmbiguousConstructorException(string message, Exception inner) : base(message, inner)
     {
     }
 
@@ -34,7 +34,7 @@ namespace CSF.MicroDi.Resolution
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>
-    protected ResolutionException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+    protected AmbiguousConstructorException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
   }
