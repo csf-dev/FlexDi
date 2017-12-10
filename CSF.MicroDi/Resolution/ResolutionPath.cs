@@ -18,10 +18,23 @@ namespace CSF.MicroDi.Resolution
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
 
-      var candidates = path.Where(x => x.ServiceType == serviceType);
+      var candidates = path.Where(x => RegistrationMatches(x, serviceType));
 
       if(name != null)
         candidates = candidates.Where(x => x.Name == name);
+
+      return candidates.Any();
+    }
+
+    public bool Contains(IServiceRegistration registration)
+    {
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+
+      var candidates = path.Where(x => RegistrationMatches(x, registration));
+
+      if(registration.Name != null)
+        candidates = candidates.Where(x => x.Name == registration.Name);
 
       return candidates.Any();
     }
@@ -34,6 +47,22 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(registration));
 
       return new ResolutionPath(path, registration);
+    }
+
+    bool RegistrationMatches(IServiceRegistration candidate, Type serviceType)
+    {
+      return candidate.ServiceType == serviceType;
+    }
+
+    bool RegistrationMatches(IServiceRegistration candidate, IServiceRegistration actual)
+    {
+      var typedCandidate = candidate as TypedRegistration;
+      var typedActual = actual as TypedRegistration;
+      if(typedCandidate == null || typedActual == null)
+        return RegistrationMatches(candidate, actual.ServiceType);
+
+      return (typedCandidate.ServiceType == typedActual.ServiceType
+              && typedCandidate.ImplementationType == typedActual.ImplementationType);
     }
 
     ResolutionPath(IEnumerable<IServiceRegistration> previousPath, IServiceRegistration nextRegistration)

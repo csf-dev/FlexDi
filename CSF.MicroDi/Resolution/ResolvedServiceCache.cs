@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution
 {
   public class ResolvedServiceCache : ICachesResolvedServiceInstances
   {
-    readonly ConcurrentDictionary<ServiceRegistrationKey,object> instances;
+    readonly ConcurrentDictionary<ServiceCacheKey,object> instances;
+    readonly object syncRoot;
+    static readonly CacheKeySpecificityComparer specificityComparer;
 
     public void Add(ServiceRegistrationKey key, object instance)
     {
       if(key == null)
         throw new ArgumentNullException(nameof(key));
 
-      instances.TryAdd(key, instance);
+      var cacheKey = ServiceCacheKey.FromRegistrationKeyAndInstance(key, instance);
+      instances.TryAdd(cacheKey, instance);
     }
 
     public bool Has(ServiceRegistrationKey key)
@@ -21,7 +26,7 @@ namespace CSF.MicroDi.Resolution
       if(key == null)
         throw new ArgumentNullException(nameof(key));
       
-      return instances.ContainsKey(key);
+      return GetCandidateCacheKeys(key).Any();
     }
 
     public bool TryGet(ServiceRegistrationKey key, out object instance)
@@ -29,12 +34,43 @@ namespace CSF.MicroDi.Resolution
       if(key == null)
         throw new ArgumentNullException(nameof(key));
 
-      return instances.TryGetValue(key, out instance);
+      var cacheKey = GetCandidateCacheKeys(key).FirstOrDefault();
+      if(cacheKey == null)
+      {
+        instance = null;
+        return false;
+      }
+
+      return instances.TryGetValue(cacheKey, out instance);
+    }
+
+    IReadOnlyList<ServiceCacheKey> GetCandidateCacheKeys(ServiceRegistrationKey registrationKey)
+    {
+      var cacheKey = ServiceCacheKey.FromRegistrationKey(registrationKey);
+      var output = new List<ServiceCacheKey>();
+
+      lock(syncRoot)
+      {
+        if(instances.ContainsKey(cacheKey))
+          output.Add(cacheKey);
+
+        var otherMatchingKeys = instances.Keys
+          .Where(x => cacheKey.ImplementationType.IsAssignableFrom(x.ImplementationType));
+        output.AddRange(otherMatchingKeys);
+
+        return output.OrderByDescending(x => x, specificityComparer).ToArray();
+      }
     }
 
     public ResolvedServiceCache()
     {
-      instances = new ConcurrentDictionary<ServiceRegistrationKey, object>();
+      instances = new ConcurrentDictionary<ServiceCacheKey, object>();
+      syncRoot = new object();
+    }
+
+    static ResolvedServiceCache()
+    {
+      specificityComparer = new CacheKeySpecificityComparer();
     }
   }
 }

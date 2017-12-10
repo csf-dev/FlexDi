@@ -93,6 +93,8 @@
     <Compile Include="Builders\ContainerBuilder.cs" />
     <Compile Include="Builders\IContainerBuilder.cs" />
     <Compile Include="ContainerOptions.cs" />
+    <Compile Include="Resolution\ServiceCacheKey.cs" />
+    <Compile Include="Resolution\CacheKeySpecificityComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

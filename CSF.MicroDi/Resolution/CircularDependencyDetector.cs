@@ -12,7 +12,7 @@ namespace CSF.MicroDi.Resolution
       if(registration == null)
         throw new ArgumentNullException(nameof(registration));
 
-      return resolutionPath.Contains(registration.ServiceType, registration.Name);
+      return resolutionPath.Contains(registration);
     }
 
     public void ThrowOnCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath)
