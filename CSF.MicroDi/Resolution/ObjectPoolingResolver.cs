@@ -3,12 +3,13 @@ using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution
 {
-  public class ObjectPoolingResolver : IResolver
+  public class ObjectPoolingResolver : IResolverWithScope
   {
-    readonly ICachesResolvedServiceInstancesWithScope cache;
+    readonly ICachesResolvedServiceInstances cache;
     readonly IResolver resolver;
     readonly ResolutionPath resolutionPath;
     readonly CircularDependencyDetector circularDependencyDetector;
+    readonly IResolverWithScope parentScope;
 
     public ResolutionPath ResolutionPath => resolutionPath;
 
@@ -57,16 +58,27 @@ namespace CSF.MicroDi.Resolution
       ServiceResolved?.Invoke(sender, args);
     }
 
-    public IResolver CreateChild(IServiceRegistration registration)
+    public IResolverWithScope CreateChild(IServiceRegistration registration)
     {
       if(registration == null)
         throw new ArgumentNullException(nameof(registration));
 
       var path = resolutionPath.CreateChild(registration);
-      var child = new ObjectPoolingResolver(resolver, cache, path);
+      var child = new ObjectPoolingResolver(resolver, cache, path, parentScope);
       child.ServiceResolved += OnServiceResolved;
       return child;
     }
+
+    public virtual IResolverWithScope CreateChildScope(ICachesResolvedServiceInstances cache)
+    {
+      if(cache == null)
+        throw new ArgumentNullException(nameof(cache));
+      
+      return new ObjectPoolingResolver(resolver, cache, resolutionPath, this);
+    }
+
+    IResolver IResolver.CreateChild(IServiceRegistration registration) => CreateChild(registration);
+
 
     protected virtual bool TryGetFromCache(IServiceRegistration registration, out object cachedInstance)
     {
@@ -97,13 +109,13 @@ namespace CSF.MicroDi.Resolution
     }
 
     public ObjectPoolingResolver(IResolver resolver,
-                                 ICachesResolvedServiceInstancesWithScope cache = null)
+                                 ICachesResolvedServiceInstances cache = null)
     {
       if(resolver == null)
         throw new ArgumentNullException(nameof(resolver));
 
       this.resolver = resolver;
-      this.cache = cache ?? new ResolvedServiceCacheStack(new ResolvedServiceCache());
+      this.cache = cache ?? new ResolvedServiceCache();
       resolver.ServiceResolved += InvokeServiceResolved;
 
       resolutionPath = new ResolutionPath();
@@ -111,13 +123,15 @@ namespace CSF.MicroDi.Resolution
     }
 
     ObjectPoolingResolver(IResolver resolver,
-                          ICachesResolvedServiceInstancesWithScope cache,
-                          ResolutionPath resolutionPath) : this(resolver, cache)
+                          ICachesResolvedServiceInstances cache,
+                          ResolutionPath resolutionPath,
+                          IResolverWithScope parentScope) : this(resolver, cache)
     {
       if(resolutionPath == null)
         throw new ArgumentNullException(nameof(resolutionPath));
       
       this.resolutionPath = resolutionPath;
+      this.parentScope = parentScope;
     }
   }
 }

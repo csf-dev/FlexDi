@@ -95,6 +95,7 @@
     <Compile Include="ContainerOptions.cs" />
     <Compile Include="Resolution\ServiceCacheKey.cs" />
     <Compile Include="Resolution\CacheKeySpecificityComparer.cs" />
+    <Compile Include="Resolution\IResolverWithScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
