@@ -97,6 +97,13 @@ namespace CSF.MicroDi.Registration
       return Contains(key);
     }
 
+    bool IServiceRegistrationProvider.HasRegistration(ServiceRegistrationKey key)
+    {
+      if(key == null)
+        throw new ArgumentNullException(nameof(key));
+      return Contains(key);
+    }
+
     public Registry()
     {
       syncRoot = new object();

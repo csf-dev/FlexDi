@@ -38,5 +38,13 @@ namespace CSF.MicroDi.Registration
     {
       throw new NotSupportedException($"This type does not support use of {nameof(GetAll)} with no parameters.");
     }
+
+    bool IServiceRegistrationProvider.HasRegistration(ServiceRegistrationKey key)
+    {
+      if(key == null)
+        throw new ArgumentNullException(nameof(key));
+      
+      return true;
+    }
   }
 }
