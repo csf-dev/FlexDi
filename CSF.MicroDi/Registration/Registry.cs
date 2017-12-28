@@ -41,7 +41,8 @@ namespace CSF.MicroDi.Registration
       if(key == null)
         throw new ArgumentNullException(nameof(key));
 
-      return GetCandidateRegistrations(key).OrderByDescending(x => x.Priority).FirstOrDefault();
+      var candidates = GetCandidateRegistrations(key).OrderByDescending(x => x.Priority);
+      return candidates.FirstOrDefault();
     }
 
     IReadOnlyList<IServiceRegistration> GetCandidateRegistrations(ServiceRegistrationKey key)
