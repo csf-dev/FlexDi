@@ -163,8 +163,8 @@ namespace CSF.MicroDi
 
     void DoNotPermitReRegisteringAServiceWhichIsAlreadyCached(IServiceRegistration registration)
     {
-      var cacheKey = ServiceRegistrationKey.ForRegistration(registration);
-      if(cache.Has(cacheKey))
+      var key = ServiceRegistrationKey.ForRegistration(registration);
+      if(currentCache.Has(key))
         throw new ServiceReRegisteredAfterResolutionException($"Cannot re-register a service after it has already been resolved from the container and cached.{Environment.NewLine}Invalid registration: {registration.ToString()}");
     }
 
@@ -216,7 +216,7 @@ namespace CSF.MicroDi
       currentCache = initialCache ?? new ResolvedServiceCache();
 
       registry = scopedRegistry ?? new RegistryStack(currentRegistry);
-      cache = scopedCache ?? new ResolvedServiceCacheStack(currentCache, registry);
+      cache = scopedCache ?? new ResolvedServiceCacheStack(currentCache, currentRegistry);
 
       this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
       this.disposer = disposer ?? new ServiceInstanceDisposer();
@@ -241,7 +241,7 @@ namespace CSF.MicroDi
       currentCache = nextCache ?? new ResolvedServiceCache();
 
       registry = container.registry.CreateChildScope(currentRegistry);
-      cache = container.cache.CreateChildScope(container.cache, registry);
+      cache = container.cache.CreateChildScope(currentCache, currentRegistry);
 
       this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
       this.disposer = disposer ?? new ServiceInstanceDisposer();

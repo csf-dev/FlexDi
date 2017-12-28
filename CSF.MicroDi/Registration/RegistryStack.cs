@@ -78,6 +78,13 @@ namespace CSF.MicroDi.Registration
       return providers.Any(x => x.HasRegistration(key));
     }
 
+    public bool HasRegistration(IServiceRegistration registration)
+    {
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+      return providers.Any(x => x.HasRegistration(registration));
+    }
+
     public RegistryStack(IRegistersServices firstProvider)
       : this(Enumerable.Empty<IRegistersServices>(), firstProvider) {}
 

@@ -80,6 +80,14 @@ namespace CSF.MicroDi.Registration
       return registrations.Values.ToArray();
     }
 
+    public bool HasRegistration(IServiceRegistration registration)
+    {
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+
+      return registrations.Values.Any(x => ReferenceEquals(x, registration));
+    }
+
     IServiceRegistration IServiceRegistrationProvider.Get(ResolutionRequest request)
     {
       if(request == null)

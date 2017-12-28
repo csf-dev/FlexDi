@@ -46,5 +46,13 @@ namespace CSF.MicroDi.Registration
       
       return true;
     }
+
+    bool IServiceRegistrationProvider.HasRegistration(IServiceRegistration registration)
+    {
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+
+      return true;
+    }
   }
 }

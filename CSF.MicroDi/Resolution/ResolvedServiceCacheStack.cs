@@ -7,58 +7,76 @@ namespace CSF.MicroDi.Resolution
 {
   public class ResolvedServiceCacheStack : ICachesResolvedServiceInstancesWithScope
   {
-    readonly Stack<ICachesResolvedServiceInstances> providers;
-    readonly IDictionary<IServiceRegistrationProvider,ICachesResolvedServiceInstances> providerPerRegistry;
+    readonly Stack<CacheAndRegistrationProviderPair> providers;
 
-    protected ICachesResolvedServiceInstances GetProvider(ServiceRegistrationKey key)
+    protected ICachesResolvedServiceInstances GetProviderForNewItem(IServiceRegistration registration)
     {
-      var providerMatchingRegistrationKey = providerPerRegistry.FirstOrDefault(x => x.Key.HasRegistration(key)).Value;
+      var providerMatchingRegistrationKey = providers
+        .FirstOrDefault(x => IsForMatchingRegistrationProvider(x, registration));
 
       if(providerMatchingRegistrationKey != null)
-        return providerMatchingRegistrationKey;
+        return providerMatchingRegistrationKey.Cache;
 
-      return providers.First();
+      return providers.Peek().Cache;
     }
 
-    public void Add(ServiceRegistrationKey key, object instance)
-      => GetProvider(key).Add(key, instance);
+    protected bool IsForMatchingRegistrationProvider(CacheAndRegistrationProviderPair registrationAndCache,
+                                                     IServiceRegistration regProviderToMatch)
+    {
+      if(regProviderToMatch == null)
+        throw new ArgumentNullException(nameof(regProviderToMatch));
+      if(registrationAndCache == null) return false;
+
+      var regProvider = registrationAndCache.RegistrationProvider;
+      return regProvider.HasRegistration(regProviderToMatch);
+    }
+
+    public void Add(IServiceRegistration registration, object instance)
+      => GetProviderForNewItem(registration).Add(registration, instance);
+
+    public bool Has(IServiceRegistration registration)
+    {
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+
+      return providers.Any(x => IsForMatchingRegistrationProvider(x, registration));
+    }
 
     public bool Has(ServiceRegistrationKey key)
     {
       if(key == null)
         throw new ArgumentNullException(nameof(key));
-
-      return providers.Any(x => x.Has(key));
+      return providers.Any(x => x.Cache.Has(key));
     }
 
-    public bool TryGet(ServiceRegistrationKey key, out object instance)
+    public bool TryGet(IServiceRegistration registration, out object instance)
     {
-      if(key == null)
-        throw new ArgumentNullException(nameof(key));
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
 
-      var matchingProvider = providers.FirstOrDefault(x => x.Has(key));
+      var matchingProvider = providers
+        .FirstOrDefault(x => IsForMatchingRegistrationProvider(x, registration));
       if(matchingProvider == null)
       {
         instance = null;
         return false;
       }
 
-      return matchingProvider.TryGet(key, out instance);
+      return matchingProvider.Cache.TryGet(registration, out instance);
     }
 
     public ICachesResolvedServiceInstancesWithScope CreateChildScope(ICachesResolvedServiceInstances provider,
                                                                      IServiceRegistrationProvider registry)
     {
-      return new ResolvedServiceCacheStack(provider, registry, providers, providerPerRegistry);
+      return new ResolvedServiceCacheStack(provider, registry, providers.ToArray());
     }
 
     public ResolvedServiceCacheStack(ICachesResolvedServiceInstances firstProvider, IServiceRegistrationProvider registry)
-      : this(firstProvider, registry, Enumerable.Empty<ICachesResolvedServiceInstances>(), new Dictionary<IServiceRegistrationProvider,ICachesResolvedServiceInstances>()) {}
+      : this(firstProvider, registry, Enumerable.Empty<CacheAndRegistrationProviderPair>().ToArray()) {}
 
     public ResolvedServiceCacheStack(ICachesResolvedServiceInstances provider,
                                      IServiceRegistrationProvider registry,
-                                     IEnumerable<ICachesResolvedServiceInstances> otherProviders,
-                                     IDictionary<IServiceRegistrationProvider,ICachesResolvedServiceInstances> providersByRegistration)
+                                     IReadOnlyList<CacheAndRegistrationProviderPair> otherProviders)
     {
       if(provider == null)
         throw new ArgumentNullException(nameof(provider));
@@ -66,15 +84,9 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(registry));
       if(otherProviders == null)
         throw new ArgumentNullException(nameof(otherProviders));
-      if(providersByRegistration == null)
-        throw new ArgumentNullException(nameof(providersByRegistration));
-      
 
-      providers = new Stack<ICachesResolvedServiceInstances>(otherProviders);
-      providers.Push(provider);
-
-      providerPerRegistry = new Dictionary<IServiceRegistrationProvider,ICachesResolvedServiceInstances>(providersByRegistration);
-      providerPerRegistry.Add(registry, provider);
+      providers = new Stack<CacheAndRegistrationProviderPair>(otherProviders);
+      providers.Push(new CacheAndRegistrationProviderPair(registry, provider));
     }
   }
 }

@@ -12,27 +12,36 @@ namespace CSF.MicroDi.Resolution
     readonly object syncRoot;
     static readonly CacheKeySpecificityComparer specificityComparer;
 
-    public void Add(ServiceRegistrationKey key, object instance)
+    public void Add(IServiceRegistration registration, object instance)
     {
-      if(key == null)
-        throw new ArgumentNullException(nameof(key));
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+      var key = ServiceRegistrationKey.ForRegistration(registration);
 
       var cacheKey = ServiceCacheKey.FromRegistrationKeyAndInstance(key, instance);
       instances.TryAdd(cacheKey, instance);
+    }
+
+    public bool Has(IServiceRegistration registration)
+    {
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+      var key = ServiceRegistrationKey.ForRegistration(registration);
+      return Has(key);
     }
 
     public bool Has(ServiceRegistrationKey key)
     {
       if(key == null)
         throw new ArgumentNullException(nameof(key));
-      
       return GetCandidateCacheKeys(key).Any();
     }
 
-    public bool TryGet(ServiceRegistrationKey key, out object instance)
+    public bool TryGet(IServiceRegistration registration, out object instance)
     {
-      if(key == null)
-        throw new ArgumentNullException(nameof(key));
+      if(registration == null)
+        throw new ArgumentNullException(nameof(registration));
+      var key = ServiceRegistrationKey.ForRegistration(registration);
 
       var cacheKey = GetCandidateCacheKeys(key).FirstOrDefault();
       if(cacheKey == null)

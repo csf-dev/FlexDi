@@ -5,8 +5,9 @@ namespace CSF.MicroDi.Resolution
 {
   public interface ICachesResolvedServiceInstances
   {
-    void Add(ServiceRegistrationKey key, object instance);
+    void Add(IServiceRegistration registration, object instance);
+    bool Has(IServiceRegistration registration);
     bool Has(ServiceRegistrationKey key);
-    bool TryGet(ServiceRegistrationKey key, out object instance);
+    bool TryGet(IServiceRegistration registration, out object instance);
   }
 }

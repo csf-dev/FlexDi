@@ -10,6 +10,8 @@ namespace CSF.MicroDi.Registration
 
     bool HasRegistration(ServiceRegistrationKey key);
 
+    bool HasRegistration(IServiceRegistration registration);
+
     IServiceRegistration Get(ResolutionRequest request);
 
     IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType);

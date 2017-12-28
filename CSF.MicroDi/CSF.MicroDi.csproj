@@ -96,6 +96,7 @@
     <Compile Include="Resolution\ServiceCacheKey.cs" />
     <Compile Include="Resolution\CacheKeySpecificityComparer.cs" />
     <Compile Include="Resolution\IResolverWithScope.cs" />
+    <Compile Include="Resolution\CacheAndRegistrationProviderPair.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

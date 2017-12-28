@@ -92,8 +92,7 @@ namespace CSF.MicroDi.Resolution
         return false;
       }
 
-      var key = ServiceRegistrationKey.ForRegistration(registration);
-      return cache.TryGet(key, out cachedInstance);
+      return cache.TryGet(registration, out cachedInstance);
     }
 
     protected virtual void AddToCacheIfApplicable(IServiceRegistration registration, object instance)
@@ -104,8 +103,7 @@ namespace CSF.MicroDi.Resolution
       if(registration.Multiplicity != Multiplicity.Shared)
         return;
 
-      var key = ServiceRegistrationKey.ForRegistration(registration);
-      cache.Add(key, instance);
+      cache.Add(registration, instance);
     }
 
     public ObjectPoolingResolver(IResolver resolver,

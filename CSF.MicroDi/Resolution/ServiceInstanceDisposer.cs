@@ -49,10 +49,9 @@ namespace CSF.MicroDi.Resolution
       if(instanceCache == null)
         throw new ArgumentNullException(nameof(instanceCache));
 
-      var key = ServiceRegistrationKey.ForRegistration(registration);
       object instance;
 
-      if(!instanceCache.TryGet(key, out instance))
+      if(!instanceCache.TryGet(registration, out instance))
         return;
 
       if(!(instance is IDisposable))
