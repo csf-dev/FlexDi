@@ -7,17 +7,28 @@ using CSF.MicroDi.Resolution;
 
 namespace CSF.MicroDi
 {
-  public class Container : IContainer
+  public class Container : IContainer, IProvidesResolutionInfo
   {
     #region fields
 
-    readonly IRegistersServices currentRegistry;
-    readonly ICachesResolvedServiceInstances currentCache;
-    readonly IRegistersServicesWithScope registry;
-    readonly ICachesResolvedServiceInstancesWithScope cache;
     readonly IFulfilsResolutionRequests resolver;
+    readonly ICachesResolvedServiceInstances cache;
+    readonly IRegistersServices registry;
     readonly IDisposesOfResolvedInstances disposer;
     readonly ContainerOptions options;
+    readonly IContainer parentContainer;
+
+    #endregion
+
+    #region IProvidesResolutionInfo implementation
+
+    public ICachesResolvedServiceInstances Cache => cache;
+
+    public IRegistersServices Registry => registry;
+
+    public ContainerOptions Options => options;
+
+    public IProvidesResolutionInfo Parent => parentContainer as IProvidesResolutionInfo;
 
     #endregion
 
@@ -72,7 +83,16 @@ namespace CSF.MicroDi
       AssertNotDisposed();
 
       var request = new ResolutionRequest(serviceType, name);
-      return resolver.Resolve(request, out output);
+      var result = resolver.Resolve(request);
+
+      if(!result.IsSuccess)
+      {
+        output = null;
+        return false;
+      }
+
+      output = result.ResolvedObject;
+      return true;
     }
 
     public IReadOnlyCollection<T> ResolveAll<T>()
@@ -157,14 +177,14 @@ namespace CSF.MicroDi
       foreach(var registration in registrations)
       {
         DoNotPermitReRegisteringAServiceWhichIsAlreadyCached(registration);
-        currentRegistry.Add(registration);
+        registry.Add(registration);
       }
     }
 
     void DoNotPermitReRegisteringAServiceWhichIsAlreadyCached(IServiceRegistration registration)
     {
       var key = ServiceRegistrationKey.ForRegistration(registration);
-      if(currentCache.Has(key))
+      if(cache.Has(key))
         throw new ServiceReRegisteredAfterResolutionException($"Cannot re-register a service after it has already been resolved from the container and cached.{Environment.NewLine}Invalid registration: {registration.ToString()}");
     }
 
@@ -179,7 +199,7 @@ namespace CSF.MicroDi
       if(!disposedValue)
       {
         if(disposing)
-          disposer.DisposeInstances(currentRegistry, currentCache);
+          disposer.DisposeInstances(registry, cache);
 
         disposedValue = true;
       }
@@ -200,51 +220,22 @@ namespace CSF.MicroDi
 
     #region constructors
 
-    public Container(IRegistersServices initialRegistry = null,
-                     ICachesResolvedServiceInstances initialCache = null,
-                     IRegistersServicesWithScope scopedRegistry = null,
-                     ICachesResolvedServiceInstancesWithScope scopedCache = null,
+    public Container(IRegistersServices registry = null,
+                     ICachesResolvedServiceInstances cache = null,
                      IFulfilsResolutionRequests resolver = null,
                      IDisposesOfResolvedInstances disposer = null,
-                     ContainerOptions options = null)
+                     ContainerOptions options = null,
+                     IContainer parentContainer = null)
     {
       disposedValue = false;
 
       this.options = options ?? ContainerOptions.Default;
+      this.parentContainer = parentContainer;
 
-      currentRegistry = initialRegistry ?? new Registry();
-      currentCache = initialCache ?? new ResolvedServiceCache();
-
-      registry = scopedRegistry ?? new RegistryStack(currentRegistry);
-      cache = scopedCache ?? new ResolvedServiceCacheStack(currentCache, currentRegistry);
-
-      this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
+      this.registry = registry ?? new Registry();
+      this.cache = cache ?? new ResolvedServiceCache();
       this.disposer = disposer ?? new ServiceInstanceDisposer();
-
-      this.resolver.ServiceResolved += InvokeServiceResolved;
-    }
-
-    public Container(Container container,
-                     IRegistersServices nextRegistry = null,
-                     ICachesResolvedServiceInstances nextCache = null,
-                     IFulfilsResolutionRequests resolver = null,
-                     IDisposesOfResolvedInstances disposer = null)
-    {
-      if(container == null)
-        throw new ArgumentNullException(nameof(container));
-
-      disposedValue = false;
-
-      options = container.options;
-
-      currentRegistry = nextRegistry ?? new Registry();
-      currentCache = nextCache ?? new ResolvedServiceCache();
-
-      registry = container.registry.CreateChildScope(currentRegistry);
-      cache = container.cache.CreateChildScope(currentCache, currentRegistry);
-
-      this.resolver = resolver ?? new ObjectPoolingResolver(new Resolver(registry), cache: cache);
-      this.disposer = disposer ?? new ServiceInstanceDisposer();
+      this.resolver = resolver ?? new ResolverFactory().CreateResolver(this);
 
       this.resolver.ServiceResolved += InvokeServiceResolved;
     }

@@ -65,7 +65,7 @@
     <Compile Include="Resolution\ICachesResolvedServiceInstances.cs" />
     <Compile Include="Resolution\IFulfilsResolutionRequests.cs" />
     <Compile Include="Resolution\ResolvedServiceCache.cs" />
-    <Compile Include="Resolution\ObjectPoolingResolver.cs" />
+    <Compile Include="Resolution\CachingResolverProxy.cs" />
     <Compile Include="Resolution\ICachesResolvedServiceInstancesWithScope.cs" />
     <Compile Include="Resolution\ResolvedServiceCacheStack.cs" />
     <Compile Include="Resolution\IDisposesOfResolvedInstances.cs" />
@@ -95,8 +95,22 @@
     <Compile Include="ContainerOptions.cs" />
     <Compile Include="Resolution\ServiceCacheKey.cs" />
     <Compile Include="Resolution\CacheKeySpecificityComparer.cs" />
-    <Compile Include="Resolution\IResolverWithScope.cs" />
     <Compile Include="Resolution\CacheAndRegistrationProviderPair.cs" />
+    <Compile Include="IProvidesResolver.cs" />
+    <Compile Include="Resolution\ResolutionResult.cs" />
+    <Compile Include="Resolution\IDetectsCircularDependencies.cs" />
+    <Compile Include="Resolution\ProxyingResolver.cs" />
+    <Compile Include="Resolution\ICreatesObjectInstances.cs" />
+    <Compile Include="Resolution\InstanceCreator.cs" />
+    <Compile Include="Resolution\CannotResolveParameterException.cs" />
+    <Compile Include="Resolution\ResolverBase.cs" />
+    <Compile Include="Resolution\CircularDependencyPreventingResolverProxy.cs" />
+    <Compile Include="Resolution\UnregisteredServiceResolverProxy.cs" />
+    <Compile Include="IProvidesResolutionInfo.cs" />
+    <Compile Include="Resolution\ResolverFactory.cs" />
+    <Compile Include="Resolution\LateBoundResolverProxy.cs" />
+    <Compile Include="Resolution\FallbackResolverProxy.cs" />
+    <Compile Include="Resolution\IResolvesRegistrations.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

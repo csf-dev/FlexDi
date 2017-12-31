@@ -3,9 +3,7 @@ namespace CSF.MicroDi.Resolution
 {
   public interface IFulfilsResolutionRequests
   {
-    bool Resolve(ResolutionRequest request, out object output);
-
-    bool Resolve(ResolutionRequest request, out object output, IResolver outermostResolver);
+    ResolutionResult Resolve(ResolutionRequest request);
 
     event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
   }

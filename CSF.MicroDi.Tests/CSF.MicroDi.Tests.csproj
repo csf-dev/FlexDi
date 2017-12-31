@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resolution\ResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Registration\" />
@@ -63,7 +64,6 @@
     <Compile Include="Registration\RegistryStackTests.cs" />
     <Compile Include="Registration\TypeRegistrationTests.cs" />
     <Compile Include="Resolution\ConstructorWithMostParametersSelectorTests.cs" />
-    <Compile Include="Resolution\ResolverTests.cs" />
     <Compile Include="Stubs\InterdependentServices.cs" />
     <Compile Include="Autofixture\ParentServiceAttribute.cs" />
   </ItemGroup>

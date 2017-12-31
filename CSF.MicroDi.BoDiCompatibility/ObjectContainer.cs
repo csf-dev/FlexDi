@@ -9,7 +9,7 @@ namespace BoDi
   public class ObjectContainer : IObjectContainer
   {
     const string REGISTERED_NAME_PARAMETER_NAME = "registeredName";
-    readonly Container container;
+    readonly IContainer container;
     static readonly ExceptionTransformer exceptionTransformer;
     bool isDisposed;
 
@@ -230,7 +230,7 @@ namespace BoDi
     {
       if(parent == null)
         return Container.CreateBuilder().UseNonPublicConstructors().Build();
-      return new Container(parent.container);
+      return new Container(parentContainer: parent.container);
     }
 
     Container GetMicroDiContainer(ObjectContainer parent)

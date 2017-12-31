@@ -7,6 +7,8 @@ namespace CSF.MicroDi.Resolution
 
     public string Name { get; private set; }
 
+    public ResolutionPath ResolutionPath { get; private set; }
+
     public ResolutionRequest GetCopyWithoutName()
     {
       return new ResolutionRequest(ServiceType, null);
@@ -18,15 +20,17 @@ namespace CSF.MicroDi.Resolution
       return $"[ResolutionRequest: {ServiceType.FullName}{namePart}]";
     }
 
-    public ResolutionRequest(Type serviceType) : this(serviceType, null) {}
+    public ResolutionRequest(Type serviceType, ResolutionPath resolutionPath = null)
+      : this(serviceType, null, resolutionPath) {}
 
-    public ResolutionRequest(Type serviceType, string name)
+    public ResolutionRequest(Type serviceType, string name, ResolutionPath resolutionPath = null)
     {
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
 
       ServiceType = serviceType;
       Name = name;
+      ResolutionPath = resolutionPath ?? new ResolutionPath();
     }
   }
 }

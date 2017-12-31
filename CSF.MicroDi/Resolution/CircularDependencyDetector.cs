@@ -3,7 +3,7 @@ using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution
 {
-  public class CircularDependencyDetector
+  public class CircularDependencyDetector : IDetectsCircularDependencies
   {
     public bool HasCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath)
     {
