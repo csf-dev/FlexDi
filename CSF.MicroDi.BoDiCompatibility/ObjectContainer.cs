@@ -8,9 +8,8 @@ namespace BoDi
 {
   public class ObjectContainer : IObjectContainer
   {
-    const string REGISTERED_NAME_PARAMETER_NAME = "registeredName";
-    readonly IContainer container;
     static readonly ExceptionTransformer exceptionTransformer;
+    readonly IContainer container;
     bool isDisposed;
 
     public event Action<object> ObjectCreated;
@@ -50,15 +49,6 @@ namespace BoDi
            .WithName(name)
            .DisposeWithContainer(dispose);
         });
-
-        //if (instance == null)
-        //  throw new ArgumentNullException("instance");
-        //var registrationKey = new RegistrationKey(interfaceType, name);
-        //AssertNotResolved(registrationKey);
-
-        //ClearRegistrations(registrationKey);
-        //AddRegistration(registrationKey, new InstanceRegistration(instance));
-        //objectPool[new RegistrationKey(instance.GetType(), name)] = GetPoolableInstance(instance, dispose);
       });
     }
 
@@ -89,17 +79,6 @@ namespace BoDi
           x.RegisterFactory(factoryDelegate, interfaceType)
            .WithName(name);
         });
-
-
-        //if (factoryDelegate == null) throw new ArgumentNullException("factoryDelegate");
-        //if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-
-        //var registrationKey = new RegistrationKey(interfaceType, name);
-        //AssertNotResolved(registrationKey);
-
-        //ClearRegistrations(registrationKey);
-
-        //AddRegistration(registrationKey, new FactoryRegistration(factoryDelegate));
       });
     }
 
