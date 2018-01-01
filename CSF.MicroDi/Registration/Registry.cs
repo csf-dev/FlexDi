@@ -51,13 +51,16 @@ namespace CSF.MicroDi.Registration
 
       lock(syncRoot)
       {
-        IServiceRegistration reg;
-        if(registrations.TryGetValue(key, out reg))
-          output.Add(reg);
+        IServiceRegistration exactMatch;
+        if(registrations.TryGetValue(key, out exactMatch))
+          output.Add(exactMatch);
 
-        var otherMatches = registrations
-          .Where(x => x.Value.MatchesKey(key) && !ReferenceEquals(x, reg))
-          .Select(x => x.Value);
+        var otherMatches = (from registration in registrations.Values
+                            where
+                              registration.MatchesKey(key)
+                              && (exactMatch == null || !ReferenceEquals(registration, exactMatch))
+                            select registration)
+          .ToArray();
         output.AddRange(otherMatches);
       }
 

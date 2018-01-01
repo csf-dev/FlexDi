@@ -18,8 +18,9 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(registration));
       var key = ServiceRegistrationKey.ForRegistration(registration);
 
-      var cacheKey = ServiceCacheKey.FromRegistrationKeyAndInstance(key, instance);
-      instances.TryAdd(cacheKey, instance);
+      var cacheKeys = ServiceCacheKey.CreateFromRegistrationKeyAndInstance(key, instance);
+      foreach(var cacheKey in cacheKeys)
+        instances.TryAdd(cacheKey, instance);
     }
 
     public bool Has(IServiceRegistration registration)
@@ -55,17 +56,23 @@ namespace CSF.MicroDi.Resolution
 
     IReadOnlyList<ServiceCacheKey> GetCandidateCacheKeys(ServiceRegistrationKey registrationKey)
     {
-      var cacheKey = ServiceCacheKey.FromRegistrationKey(registrationKey);
+      var cacheKeys = ServiceCacheKey.CreateFromRegistrationKey(registrationKey);
       var output = new List<ServiceCacheKey>();
 
       lock(syncRoot)
       {
-        if(instances.ContainsKey(cacheKey))
-          output.Add(cacheKey);
+        foreach(var cacheKey in cacheKeys)
+        {
+          if(instances.ContainsKey(cacheKey))
+            output.Add(cacheKey);
 
-        var otherMatchingKeys = instances.Keys
-          .Where(x => cacheKey.ImplementationType.IsAssignableFrom(x.ImplementationType));
-        output.AddRange(otherMatchingKeys);
+          if(registrationKey.Name == null)
+          {
+            var otherMatchingKeys = instances.Keys
+              .Where(x => cacheKey.ImplementationType.IsAssignableFrom(x.ImplementationType));
+            output.AddRange(otherMatchingKeys);
+          }
+        }
 
         return output.OrderByDescending(x => x, specificityComparer).ToArray();
       }

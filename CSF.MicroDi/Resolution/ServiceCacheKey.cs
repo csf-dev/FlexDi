@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution
@@ -42,23 +44,26 @@ namespace CSF.MicroDi.Resolution
       Name = name;
     }
 
-    public static ServiceCacheKey FromRegistrationKeyAndInstance(ServiceRegistrationKey key, object instance)
+    public static IReadOnlyCollection<ServiceCacheKey> CreateFromRegistrationKeyAndInstance(ServiceRegistrationKey key, object instance)
     {
       if(key == null)
         throw new ArgumentNullException(nameof(key));
 
+      var fromRegistrationOnly = CreateFromRegistrationKey(key);
       if(ReferenceEquals(instance, null))
-        return FromRegistrationKey(key);
+        return fromRegistrationOnly;
 
-      return new ServiceCacheKey(instance.GetType(), key.Name);
+      return fromRegistrationOnly
+        .Union(new [] { new ServiceCacheKey(instance.GetType(), key.Name) })
+        .ToArray();
     }
 
-    public static ServiceCacheKey FromRegistrationKey(ServiceRegistrationKey key)
+    public static IReadOnlyCollection<ServiceCacheKey> CreateFromRegistrationKey(ServiceRegistrationKey key)
     {
       if(key == null)
         throw new ArgumentNullException(nameof(key));
 
-      return new ServiceCacheKey(key.ServiceType, key.Name);
+      return new[] { new ServiceCacheKey(key.ServiceType, key.Name) };
     }
   }
 }
