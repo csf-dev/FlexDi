@@ -9,6 +9,8 @@ namespace CSF.MicroDi.Resolution
   {
     readonly Stack<IServiceRegistration> path;
 
+    public IServiceRegistration CurrentRegistration => path.Peek();
+
     public bool Contains(Type serviceType) => Contains(serviceType, null);
 
     public bool Contains(ResolutionRequest request) => Contains(request.ServiceType, request.Name);

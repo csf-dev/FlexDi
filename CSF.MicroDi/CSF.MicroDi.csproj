@@ -106,6 +106,7 @@
     <Compile Include="Resolution\FallbackResolverProxy.cs" />
     <Compile Include="Resolution\IResolvesRegistrations.cs" />
     <Compile Include="Registration\RegistryStackFactory.cs" />
+    <Compile Include="Resolution\RegisteredNameInjectingResolverProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

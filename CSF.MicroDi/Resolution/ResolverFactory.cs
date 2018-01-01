@@ -24,8 +24,9 @@ namespace CSF.MicroDi.Resolution
 
       if(isPrimary)
         currentResolver = GetUnregisteredServiceResolver(resolutionInfo, currentResolver, coreResolver);
-      
+
       currentResolver = GetCircularDependencyProtectingResolver(resolutionInfo, currentResolver) ?? currentResolver;
+      currentResolver = GetRegisteredNameInjectingResolver(currentResolver) ?? currentResolver;
 
       output.ProvideProxiedResolver(currentResolver);
 
@@ -86,6 +87,11 @@ namespace CSF.MicroDi.Resolution
       return new UnregisteredServiceResolverProxy(resolverToProxy,
                                                   registrationResolver,
                                                   unregisteredServiceRegistry);
+    }
+
+    IResolver GetRegisteredNameInjectingResolver(IResolver resolverToProxy)
+    {
+      return new RegisteredNameInjectingResolverProxy(resolverToProxy);
     }
 
     void AssertResolutionInfoIsValid(IProvidesResolutionInfo resolutionInfo)
