@@ -42,8 +42,7 @@
     <Compile Include="Registration\Registry.cs" />
     <Compile Include="Registration\ServiceRegistrationKey.cs" />
     <Compile Include="Registration\IRegistersServices.cs" />
-    <Compile Include="Registration\RegistryStack.cs" />
-    <Compile Include="Registration\IRegistersServicesWithScope.cs" />
+    <Compile Include="Registration\StackOfRegistriesRegistrationProvider.cs" />
     <Compile Include="Builders\RegistrationHelper.cs" />
     <Compile Include="Builders\RegistrationBuilder.cs" />
     <Compile Include="Registration\ServiceRegistration.cs" />
@@ -59,15 +58,12 @@
     <Compile Include="Resolution\IFactoryAdapter.cs" />
     <Compile Include="Resolution\ConstructorWithMostParametersSelector.cs" />
     <Compile Include="Resolution\ISelectsConstructor.cs" />
-    <Compile Include="Registration\DuplicateRegistrationException.cs" />
     <Compile Include="Resolution\Resolver.cs" />
     <Compile Include="Registration\ServiceWithoutRegistrationProvider.cs" />
     <Compile Include="Resolution\ICachesResolvedServiceInstances.cs" />
     <Compile Include="Resolution\IFulfilsResolutionRequests.cs" />
     <Compile Include="Resolution\ResolvedServiceCache.cs" />
     <Compile Include="Resolution\CachingResolverProxy.cs" />
-    <Compile Include="Resolution\ICachesResolvedServiceInstancesWithScope.cs" />
-    <Compile Include="Resolution\ResolvedServiceCacheStack.cs" />
     <Compile Include="Resolution\IDisposesOfResolvedInstances.cs" />
     <Compile Include="Resolution\ServiceInstanceDisposer.cs" />
     <Compile Include="IContainer.cs" />
@@ -95,8 +91,6 @@
     <Compile Include="ContainerOptions.cs" />
     <Compile Include="Resolution\ServiceCacheKey.cs" />
     <Compile Include="Resolution\CacheKeySpecificityComparer.cs" />
-    <Compile Include="Resolution\CacheAndRegistrationProviderPair.cs" />
-    <Compile Include="IProvidesResolver.cs" />
     <Compile Include="Resolution\ResolutionResult.cs" />
     <Compile Include="Resolution\IDetectsCircularDependencies.cs" />
     <Compile Include="Resolution\ProxyingResolver.cs" />

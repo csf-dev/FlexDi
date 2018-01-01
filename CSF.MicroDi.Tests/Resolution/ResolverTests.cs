@@ -27,11 +27,10 @@ namespace CSF.MicroDi.Tests.Resolution
         .Returns(new InstanceFactory(instance));
 
       // Act
-      object result;
-      sut.Resolve(request, out result);
+      var result = sut.Resolve(request);
 
       // Assert
-      Assert.That(result, Is.SameAs(instance));
+      Assert.That(result.ResolvedObject, Is.SameAs(instance));
     }
 
     [Test,AutoMoqData]
@@ -59,70 +58,25 @@ namespace CSF.MicroDi.Tests.Resolution
           .Returns(new InstanceFactory(instance));
 
       // Act
-      object result;
-      sut.Resolve(request, out result);
+      var result = sut.Resolve(request);
 
       // Assert
-      Assert.That(result, Is.SameAs(instance));
-    }
-
-    [Test,AutoMoqData]
-    public void Resolve_using_request_can_get_registered_service_without_name(IServiceRegistrationProvider provider,
-                                                                              IServiceRegistrationProvider unregisteredProvider,
-                                                                              [SampleService] IServiceRegistration registration,
-                                                                              ResolutionRequest request)
-    {
-      // Arrange
-      var sut = GetSut(provider, unregisteredProvider);
-      var instance = new SampleServiceImplementationOne();
-      Mock.Get(provider)
-          .Setup(x => x.CanFulfilRequest(request))
-          .Returns(false);
-      Mock.Get(provider)
-          .Setup(x => x.Get(It.IsAny<ResolutionRequest>()))
-          .Returns((IServiceRegistration) null);
-      Mock.Get(unregisteredProvider)
-          .Setup(x => x.CanFulfilRequest(request))
-          .Returns(true);
-      Mock.Get(unregisteredProvider)
-          .Setup(x => x.Get(request))
-          .Returns(registration);
-      Mock.Get(registration)
-          .Setup(x => x.GetFactoryAdapter(request))
-          .Returns(new InstanceFactory(instance));
-
-      // Act
-      object result;
-      sut.Resolve(request, out result);
-
-      // Assert
-      Assert.That(result, Is.SameAs(instance));
-    }
-
-    [Test,AutoMoqData,Category("Integration")]
-    public void Resolve_using_factory_adapter_and_unregistered_resolver_can_resolve_services_integration_test(IServiceRegistrationProvider provider)
-    {
-      // Arrange
-      var sut = GetSut(provider);
-      Mock.Get(provider)
-          .Setup(x => x.CanFulfilRequest(It.IsAny<ResolutionRequest>()))
-          .Returns(false);
-
-      // Act
-      object result;
-      sut.Resolve(new ResolutionRequest(typeof(ParentService)), out result);
-
-      // Assert
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result, Is.InstanceOf<ParentService>());
-      var parentResult = (ParentService) result;
-      Assert.That(parentResult.ChildOne, Is.Not.Null);
-      Assert.That(parentResult.ChildTwo, Is.Not.Null);
+      Assert.That(result.ResolvedObject, Is.SameAs(instance));
     }
 
     Resolver GetSut(IServiceRegistrationProvider provider, IServiceRegistrationProvider unregisteredProvider = null)
     {
-      return new Resolver(provider, unregisteredProvider);
+      var instanceCreator = new Mock<ICreatesObjectInstances>();
+      instanceCreator
+        .Setup(x => x.CreateFromFactory(It.IsAny<IFactoryAdapter>(),
+                                        It.IsAny<ResolutionPath>(),
+                                        It.IsAny<IServiceRegistration>()))
+        .Returns((IFactoryAdapter a, ResolutionPath p, IServiceRegistration r) => CreateInstance(a, p, r));
+      
+      return new Resolver(provider, instanceCreator.Object);
     }
+
+    object CreateInstance(IFactoryAdapter adapter, ResolutionPath path, IServiceRegistration registration)
+      => adapter.Execute(new object[0]);
   }
 }

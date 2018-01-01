@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resolution\ResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Registration\" />
@@ -61,11 +60,11 @@
     <Compile Include="Stubs\SampleService.cs" />
     <Compile Include="Autofixture\AutoMoqDataAttribute.cs" />
     <Compile Include="Autofixture\SampleServiceAttribute.cs" />
-    <Compile Include="Registration\RegistryStackTests.cs" />
     <Compile Include="Registration\TypeRegistrationTests.cs" />
     <Compile Include="Resolution\ConstructorWithMostParametersSelectorTests.cs" />
     <Compile Include="Stubs\InterdependentServices.cs" />
     <Compile Include="Autofixture\ParentServiceAttribute.cs" />
+    <Compile Include="Resolution\ResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
