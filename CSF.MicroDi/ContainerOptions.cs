@@ -12,10 +12,10 @@ namespace CSF.MicroDi
     public bool SupportResolvingNamedInstanceDictionaries { get; private set; }
 
     public ContainerOptions(bool useNonPublicConstructors = false,
-                            bool resolveUnregisteredTypes = true,
+                            bool resolveUnregisteredTypes = false,
                             bool useInstanceCache = true,
                             bool throwOnCircularDependencies = true,
-                            bool supportResolvingNamedInstanceDictionaries = true)
+                            bool supportResolvingNamedInstanceDictionaries = false)
     {
       UseNonPublicConstructors = useNonPublicConstructors;
       ResolveUnregisteredTypes = resolveUnregisteredTypes;

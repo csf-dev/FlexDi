@@ -24,7 +24,7 @@ namespace CSF.MicroDi.Resolution
 
       // Only the innermost resolver (the most deeply nested) can resolve unregistered services
       if(isInnermostResolver)
-        currentResolver = GetUnregisteredServiceResolver(resolutionInfo, currentResolver, coreResolver);
+        currentResolver = GetUnregisteredServiceResolver(resolutionInfo, currentResolver, coreResolver) ?? currentResolver;
 
       currentResolver = GetCircularDependencyProtectingResolver(resolutionInfo, currentResolver) ?? currentResolver;
       currentResolver = GetRegisteredNameInjectingResolver(currentResolver) ?? currentResolver;
