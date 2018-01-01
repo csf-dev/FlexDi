@@ -14,6 +14,7 @@ namespace CSF.MicroDi
     readonly IFulfilsResolutionRequests resolver;
     readonly ICachesResolvedServiceInstances cache;
     readonly IRegistersServices registry;
+    readonly IServiceRegistrationProvider registryStack;
     readonly IDisposesOfResolvedInstances disposer;
     readonly ContainerOptions options;
     readonly IContainer parentContainer;
@@ -106,8 +107,7 @@ namespace CSF.MicroDi
     {
       AssertNotDisposed();
 
-      return registry
-        .GetAll(serviceType)
+      return GetRegistrations(serviceType)
         .Select(x => Resolve(x.ServiceType, x.Name))
         .ToArray();
     }
@@ -126,21 +126,21 @@ namespace CSF.MicroDi
       AssertNotDisposed();
 
       var request = new ResolutionRequest(serviceType, name);
-      return registry.CanFulfilRequest(request);
+      return registryStack.CanFulfilRequest(request);
     }
 
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations()
     {
       AssertNotDisposed();
 
-      return registry.GetAll();
+      return registryStack.GetAll();
     }
 
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations(Type serviceType)
     {
       AssertNotDisposed();
 
-      return registry.GetAll(serviceType);
+      return registryStack.GetAll(serviceType);
     }
 
     public event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
@@ -235,6 +235,7 @@ namespace CSF.MicroDi
       this.registry = registry ?? new Registry();
       this.cache = cache ?? new ResolvedServiceCache();
       this.disposer = disposer ?? new ServiceInstanceDisposer();
+      this.registryStack = new RegistryStackFactory().CreateRegistryStack(this);
       this.resolver = resolver ?? new ResolverFactory().CreateResolver(this);
 
       this.resolver.ServiceResolved += InvokeServiceResolved;

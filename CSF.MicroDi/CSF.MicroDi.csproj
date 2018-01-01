@@ -105,6 +105,7 @@
     <Compile Include="Resolution\LateBoundResolverProxy.cs" />
     <Compile Include="Resolution\FallbackResolverProxy.cs" />
     <Compile Include="Resolution\IResolvesRegistrations.cs" />
+    <Compile Include="Registration\RegistryStackFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
