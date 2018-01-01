@@ -9,16 +9,19 @@ namespace CSF.MicroDi
     public bool ResolveUnregisteredTypes { get; private set; }
     public bool UseInstanceCache { get; private set; }
     public bool ThrowOnCircularDependencies { get; private set; }
+    public bool SupportResolvingNamedInstanceDictionaries { get; private set; }
 
     public ContainerOptions(bool useNonPublicConstructors = false,
                             bool resolveUnregisteredTypes = true,
                             bool useInstanceCache = true,
-                            bool throwOnCircularDependencies = true)
+                            bool throwOnCircularDependencies = true,
+                            bool supportResolvingNamedInstanceDictionaries = true)
     {
       UseNonPublicConstructors = useNonPublicConstructors;
       ResolveUnregisteredTypes = resolveUnregisteredTypes;
       UseInstanceCache = useInstanceCache;
       ThrowOnCircularDependencies = throwOnCircularDependencies;
+      SupportResolvingNamedInstanceDictionaries = supportResolvingNamedInstanceDictionaries;
     }
 
     static ContainerOptions()

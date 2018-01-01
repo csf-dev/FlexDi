@@ -7,10 +7,10 @@ namespace CSF.MicroDi.Resolution
   {
     public IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo)
     {
-      return CreateResolver(resolutionInfo, isPrimary: true);
+      return CreateResolver(resolutionInfo, isInnermostResolver: true);
     }
 
-    IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo, bool isPrimary)
+    IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo, bool isInnermostResolver)
     {
       AssertResolutionInfoIsValid(resolutionInfo);
 
@@ -22,11 +22,13 @@ namespace CSF.MicroDi.Resolution
       currentResolver = GetCachingResolver(resolutionInfo, currentResolver) ?? currentResolver;
       currentResolver = GetParentResolver(resolutionInfo, currentResolver) ?? currentResolver;
 
-      if(isPrimary)
+      // Only the innermost resolver (the most deeply nested) can resolve unregistered services
+      if(isInnermostResolver)
         currentResolver = GetUnregisteredServiceResolver(resolutionInfo, currentResolver, coreResolver);
 
       currentResolver = GetCircularDependencyProtectingResolver(resolutionInfo, currentResolver) ?? currentResolver;
       currentResolver = GetRegisteredNameInjectingResolver(currentResolver) ?? currentResolver;
+      currentResolver = GetNamedInstanceDictionaryResolver(resolutionInfo, currentResolver) ?? currentResolver;
 
       output.ProvideProxiedResolver(currentResolver);
 
@@ -69,7 +71,7 @@ namespace CSF.MicroDi.Resolution
       if(parentInfo == null)
         return null;
 
-      var parentResolver = CreateResolver(parentInfo, isPrimary: false);
+      var parentResolver = CreateResolver(parentInfo, isInnermostResolver: false);
       return new FallbackResolverProxy(resolverToProxy, parentResolver);
     }
 
@@ -92,6 +94,15 @@ namespace CSF.MicroDi.Resolution
     IResolver GetRegisteredNameInjectingResolver(IResolver resolverToProxy)
     {
       return new RegisteredNameInjectingResolverProxy(resolverToProxy);
+    }
+
+    IResolver GetNamedInstanceDictionaryResolver(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
+    {
+      if(!resolutionInfo.Options.SupportResolvingNamedInstanceDictionaries)
+        return null;
+
+      var registryStack = new RegistryStackFactory().CreateRegistryStack(resolutionInfo);
+      return new NamedInstanceDictionaryResolverProxy(resolverToProxy, registryStack);
     }
 
     void AssertResolutionInfoIsValid(IProvidesResolutionInfo resolutionInfo)
