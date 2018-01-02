@@ -1,0 +1,20 @@
+This software is licensed under the Apache License v2.0.  Please refer to
+LICENSE.txt for the full license text.
+
+MicroDi is the copyright of various authors and contributors,
+particularly as it is based upon BoDi:
+
+  https://github.com/gasparnagy/BoDi
+
+BoDi Authors/Contributors
+-------------------------
+* Gáspár Nagy - https://github.com/gasparnagy
+* Ibrahim ben Salah - https://github.com/ibrahimbensalah
+* "rdvanbuuren" - https://github.com/rdvanbuuren
+* "Rami" - https://github.com/icnocop
+* "slawomir-brzezinski-at-interxion" - https://github.com/slawomir-brzezinski-at-interxion
+* Darren Cauthon - https://github.com/darrencauthon
+
+MicroDi Authors/Contributors
+----------------------------
+* Craig Fowler - https://github.com/craigfowler
