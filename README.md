@@ -48,3 +48,12 @@ MicroDi is the copyright of [various authors]. It is released under the terms of
 
 [various authors]: NOTICE.txt
 [the Apache License v2]: LICENSE.txt
+
+### Continuous integration status
+CI builds are configured via both Travis (for build & test on Linux/Mono) and AppVeyor (Windows/.NET).
+Below are links to the most recent build statuses for these two CI platforms.
+
+Platform | Status
+-------- | ------
+Linux/Mono (Travis) | [![Travis Status](https://travis-ci.org/csf-dev/MicroDi.svg?branch=feature%2F10-continuous-integration)](https://travis-ci.org/csf-dev/MicroDi)
+Windows/.NET (AppVeyor) | [![AppVeyor status](https://ci.appveyor.com/api/projects/status/nahafeweohn4sy1n?svg=true)](https://ci.appveyor.com/project/craigfowler/microdi)
