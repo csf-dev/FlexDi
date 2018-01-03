@@ -17,19 +17,18 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("CSF.MicroDi")]
+[assembly: AssemblyTitle("CSF.MicroDi.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CSF Software Limited")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Craig Fowler")]
+[assembly: AssemblyCopyright("Craig Fowler et al")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
