@@ -66,7 +66,7 @@ namespace CSF.MicroDi.Resolution
         throw new ArgumentNullException(nameof(registration));
 
 
-      if(registration.Multiplicity != Multiplicity.Shared)
+      if(!registration.Cacheable)
       {
         cachedInstance = null;
         return false;
@@ -80,7 +80,7 @@ namespace CSF.MicroDi.Resolution
       if(registration == null)
         throw new ArgumentNullException(nameof(registration));
       
-      if(registration.Multiplicity != Multiplicity.Shared)
+      if(!registration.Cacheable)
         return;
 
       cache.Add(registration, instance);

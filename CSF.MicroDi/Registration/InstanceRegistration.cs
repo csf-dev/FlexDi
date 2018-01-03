@@ -31,16 +31,16 @@ namespace CSF.MicroDi.Registration
 
     public override Type ImplementationType => Implementation.GetType();
 
-    public override Multiplicity Multiplicity
+    public override bool Cacheable
     {
       get {
-        return base.Multiplicity;
+        return base.Cacheable;
       }
       set {
-        if(value != Multiplicity.Shared)
-          throw new ArgumentException($"The only multiplicity supported by {nameof(InstanceRegistration)} is {Multiplicity.Shared.ToString()}.");
+        if(!value)
+          throw new ArgumentException($"{nameof(InstanceRegistration)} must always be cacheable.");
         
-        base.Multiplicity = value;
+        base.Cacheable = value;
       }
     }
 
@@ -59,7 +59,7 @@ namespace CSF.MicroDi.Registration
         throw new ArgumentNullException(nameof(implementation));
 
       this.implementation = implementation;
-      SetMultiplicity(Multiplicity.Shared);
+      SetCacheable(true);
     }
   }
 }

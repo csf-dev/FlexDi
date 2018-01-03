@@ -31,7 +31,7 @@ namespace CSF.MicroDi.Builders
     readonly ICollection<IServiceRegistration> registrations;
     readonly bool useNonPublicConstructors;
 
-    public IRegistrationOptionsBuilderWithMultiplicity RegisterFactory(Delegate factory, Type serviceType)
+    public IRegistrationOptionsBuilderWithCacheability RegisterFactory(Delegate factory, Type serviceType)
     {
       if(factory == null)
         throw new ArgumentNullException(nameof(factory));
@@ -43,11 +43,11 @@ namespace CSF.MicroDi.Builders
       return new RegistrationBuilder(registration);
     }
 
-    public IRegistrationOptionsBuilderWithMultiplicity RegisterFactory<TService>(Delegate factory)
+    public IRegistrationOptionsBuilderWithCacheability RegisterFactory<TService>(Delegate factory)
       where TService : class
       => RegisterFactory(factory, typeof(TService));
 
-    public IAsBuilderWithMultiplicity RegisterFactory<T>(Func<T> factory) where T : class
+    public IAsBuilderWithCacheability RegisterFactory<T>(Func<T> factory) where T : class
     {
       if(factory == null)
         throw new ArgumentNullException(nameof(factory));
@@ -67,7 +67,7 @@ namespace CSF.MicroDi.Builders
       return new RegistrationBuilder(registration);
     }
 
-    public IAsBuilderWithMultiplicity RegisterType(Type concreteType)
+    public IAsBuilderWithCacheability RegisterType(Type concreteType)
     {
       if(concreteType == null)
         throw new ArgumentNullException(nameof(concreteType));
@@ -90,7 +90,7 @@ namespace CSF.MicroDi.Builders
       return new RegistrationBuilder(registration);
     }
 
-    public IAsBuilderWithMultiplicity RegisterType<T>()
+    public IAsBuilderWithCacheability RegisterType<T>()
       where T : class
       => RegisterType(typeof(T));
 

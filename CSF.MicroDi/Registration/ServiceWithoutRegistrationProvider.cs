@@ -42,7 +42,7 @@ namespace CSF.MicroDi.Registration
       return new TypeRegistration(request.ServiceType) {
         Name = request.Name,
         ServiceType = request.ServiceType,
-        Multiplicity = Multiplicity.Shared
+        Cacheable = true
       };
     }
 

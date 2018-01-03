@@ -1,5 +1,5 @@
 ﻿//
-//    IAsBuilderWithMultiplicity.cs
+//    IRegistrationOptionsBuilderWithMultiplicity.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -21,10 +21,12 @@
 using System;
 namespace CSF.MicroDi.Builders
 {
-  public interface IAsBuilderWithMultiplicity
+  public interface IRegistrationOptionsBuilderWithCacheability
   {
-    IRegistrationOptionsBuilderWithMultiplicity As<T>() where T : class;
-    IRegistrationOptionsBuilderWithMultiplicity As(Type serviceType);
-    IRegistrationOptionsBuilderWithMultiplicity AsOwnType();
+    IRegistrationOptionsBuilderWithCacheability WithName(string name);
+
+    IRegistrationOptionsBuilderWithCacheability NotCacheable();
+
+    IRegistrationOptionsBuilderWithCacheability Cacheable(bool cacheable = true);
   }
 }

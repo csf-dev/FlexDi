@@ -25,13 +25,12 @@ namespace CSF.MicroDi.Registration
 {
   public abstract class ServiceRegistration : IServiceRegistration
   {
-    Multiplicity multiplicity;
-    bool disposeWithContainer;
+    bool disposeWithContainer, cacheable;
 
-    public virtual Multiplicity Multiplicity
+    public virtual bool Cacheable
     {
-      get { return multiplicity; }
-      set { multiplicity = value; }
+      get { return cacheable; }
+      set { cacheable = value; }
     }
 
     public virtual string Name { get; set; }
@@ -49,7 +48,10 @@ namespace CSF.MicroDi.Registration
     public abstract  IFactoryAdapter GetFactoryAdapter(ResolutionRequest request);
 
     public virtual void AssertIsValid()
-    { /* Intentional no-op, derived types may override to perform validation logic */ }
+    {
+      if(!Cacheable && DisposeWithContainer)
+        throw new InvalidRegistrationException($"A registration may not have {nameof(DisposeWithContainer)} set to {Boolean.TrueString} if {nameof(Cacheable)} is {Boolean.FalseString}.");
+    }
 
     public virtual bool MatchesKey(ServiceRegistrationKey key)
     {
@@ -59,11 +61,11 @@ namespace CSF.MicroDi.Registration
       return ServiceType == key.ServiceType && Name == key.Name;
     }
 
-    protected void SetMultiplicity(Multiplicity multiplicity) => this.multiplicity = multiplicity;
+    protected void SetCacheable(bool cacheable) => this.cacheable = cacheable;
 
     public ServiceRegistration()
     {
-      multiplicity = Multiplicity.Shared;
+      cacheable = true;
       disposeWithContainer = true;
     }
   }

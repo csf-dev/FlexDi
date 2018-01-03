@@ -35,10 +35,9 @@
     <Compile Include="Builders\IRegistrationHelper.cs" />
     <Compile Include="Builders\IAsBuilder.cs" />
     <Compile Include="Builders\IRegistrationOptionsBuilder.cs" />
-    <Compile Include="Builders\IAsBuilderWithMultiplicity.cs" />
-    <Compile Include="Builders\IRegistrationOptionsBuilderWithMultiplicity.cs" />
+    <Compile Include="Builders\IAsBuilderWithCacheability.cs" />
+    <Compile Include="Builders\IRegistrationOptionsBuilderWithCacheability.cs" />
     <Compile Include="Registration\IServiceRegistration.cs" />
-    <Compile Include="Registration\Multiplicity.cs" />
     <Compile Include="Registration\IServiceRegistrationProvider.cs" />
     <Compile Include="Registration\Registry.cs" />
     <Compile Include="Registration\ServiceRegistrationKey.cs" />
