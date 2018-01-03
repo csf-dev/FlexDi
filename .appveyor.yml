@@ -1,0 +1,9 @@
+﻿version: '{branch}-{build}'
+before_build:
+- cmd: >-
+    nuget restore CSF.MicroDi.sln
+
+build:
+  verbosity: minimal
+test_script:
+- cmd: nunit3-console CSF.MicroDi.Tests\\bin\\Debug\\CSF.MicroDi.Tests.dll CSF.MicroDi.BoDiCompatibility.Tests\\bin\\Debug\\BoDi.Tests.dll --result=myresults.xml;format=AppVeyor
