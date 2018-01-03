@@ -23,7 +23,7 @@ using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution
 {
-  public class ResolverFactory
+  public class ResolverFactory : ICreatesResolvers
   {
     public IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo)
     {

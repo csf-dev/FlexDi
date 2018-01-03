@@ -109,6 +109,7 @@
     <Compile Include="Resolution\RegisteredNameInjectingResolverProxy.cs" />
     <Compile Include="Resolution\NamedInstanceDictionaryResolverProxy.cs" />
     <Compile Include="Resolution\NoMatchingEnumerationConstantException.cs" />
+    <Compile Include="Resolution\ICreatesResolvers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

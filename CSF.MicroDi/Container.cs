@@ -245,7 +245,8 @@ namespace CSF.MicroDi
                      IFulfilsResolutionRequests resolver = null,
                      IDisposesOfResolvedInstances disposer = null,
                      ContainerOptions options = null,
-                     IContainer parentContainer = null)
+                     IContainer parentContainer = null,
+                     ICreatesResolvers resolverFactory = null)
     {
       disposedValue = false;
 
@@ -256,9 +257,20 @@ namespace CSF.MicroDi
       this.cache = cache ?? new ResolvedServiceCache();
       this.disposer = disposer ?? new ServiceInstanceDisposer();
       this.registryStack = new RegistryStackFactory().CreateRegistryStack(this);
-      this.resolver = resolver ?? new ResolverFactory().CreateResolver(this);
+      this.resolver = resolver ?? GetResolver(resolverFactory);
 
       this.resolver.ServiceResolved += InvokeServiceResolved;
+    }
+
+    IResolver GetResolver(ICreatesResolvers resolverFactory)
+    {
+      var factory = resolverFactory ?? new ResolverFactory();
+      var output = factory.CreateResolver(this);
+
+      if(output == null)
+        throw new ArgumentException($"The implementation of {nameof(ICreatesResolvers)} must not return a null instance of {nameof(IResolver)}.", nameof(resolverFactory));
+      
+      return output;
     }
 
     #endregion
