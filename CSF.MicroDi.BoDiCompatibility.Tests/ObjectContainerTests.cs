@@ -31,9 +31,9 @@ namespace CSF.MicroDi.BoDiCompatibility.Tests
   public class ObjectContainerTests
   {
     [Test,AutoMoqData]
-    [Description("BoDi (NuGet v1.3.0) does not cache objects resolved from factory registrations. To provide compatibility we must mimic that behaviour. See https://github.com/csf-dev/MicroDi/issues/18")]
-    public void RegisterFactoryAs_marks_the_registration_as_non_cacheable(IContainer innerContainer,
-                                                                          RegistrationHelper registrationHelper)
+    [Description("BoDi (NuGet v1.3.0) caches objects resolved from factory registrations. To provide compatibility we must mimic that behaviour. See https://github.com/csf-dev/MicroDi/issues/18")]
+    public void RegisterFactoryAs_marks_the_registration_as_cacheable(IContainer innerContainer,
+                                                                      RegistrationHelper registrationHelper)
     {
       // Arrange
       var sut = new ObjectContainerWithInnerContainerReplacementSupport();
@@ -48,7 +48,7 @@ namespace CSF.MicroDi.BoDiCompatibility.Tests
 
       // Assert
       var registration = registrationHelper.GetRegistrations().Single();
-      Assert.That(registration.Cacheable, Is.False);
+      Assert.That(registration.Cacheable, Is.True);
     }
   }
 }
