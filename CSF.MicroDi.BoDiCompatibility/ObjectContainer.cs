@@ -34,6 +34,8 @@ namespace BoDi
 
     public event Action<object> ObjectCreated;
 
+    internal IContainer GetMicroDiContainer() => container;
+
     public void RegisterTypeAs<TInterface>(Type implementationType, string name = null) where TInterface : class
     {
       RegisterTypeAs(implementationType, typeof(TInterface), name);
