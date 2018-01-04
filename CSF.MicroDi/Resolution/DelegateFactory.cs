@@ -34,7 +34,25 @@ namespace CSF.MicroDi.Resolution
 
     public object Execute(object[] parameters)
     {
-      return factory.DynamicInvoke(parameters);
+      try
+      {
+        return factory.DynamicInvoke(parameters);
+      }
+      catch(TargetInvocationException ex)
+      {
+        var resolutionException = ex.GetBaseException();
+        if(resolutionException == null)
+          throw;
+
+        if(resolutionException is CircularDependencyException)
+          throw new CircularDependencyException(resolutionException.Message, ex);
+
+        throw new ResolutionException(resolutionException.Message, ex);
+      }
+    }
+
+    void RethrowCorrectException(ResolutionException ex)
+    {
     }
 
     public IReadOnlyList<ParameterInfo> GetParameters()
