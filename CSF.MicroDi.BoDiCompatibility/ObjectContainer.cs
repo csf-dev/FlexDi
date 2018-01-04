@@ -239,6 +239,7 @@ namespace BoDi
         .ThrowOnCircularDependencies()
         .UseInstanceCache()
         .SupportResolvingNamedInstanceDictionaries()
+        .UseCustomResolverFactory(new BoDiResolverFactory())
         .Build();
     }
 
