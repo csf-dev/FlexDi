@@ -19,6 +19,8 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using CSF.MicroDi.Resolution;
+
 namespace CSF.MicroDi.Builders
 {
   public class ContainerBuilder : IContainerBuilder
@@ -28,6 +30,7 @@ namespace CSF.MicroDi.Builders
     bool useInstanceCache;
     bool throwOnCircularDependencies;
     bool supportResolvingNamedInstanceDictionaries;
+    ICreatesResolvers resolverFactory;
 
     public IContainerBuilder DoNotUseNonPublicConstructors()
     {
@@ -89,9 +92,19 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
+    public IContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory)
+    {
+      if(resolverFactory == null)
+        throw new ArgumentNullException(nameof(resolverFactory));
+      
+      this.resolverFactory = resolverFactory;
+      return this;
+    }
+
     public Container Build()
     {
-      return new Container(options: GetContainerOptions());
+      return new Container(options: GetContainerOptions(),
+                           resolverFactory: resolverFactory);
     }
 
     ContainerOptions GetContainerOptions()

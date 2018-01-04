@@ -105,7 +105,6 @@ namespace BoDi.Tests
         }
 
         [Test, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)]
-        [Ignore("dynamic circles not detected yet, this leads to stack overflow")]
         public void ShouldThrowExceptionForDynamicCircuarDepenencies()
         {
             // given

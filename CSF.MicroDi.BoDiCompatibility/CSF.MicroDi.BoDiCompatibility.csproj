@@ -41,6 +41,9 @@
     <Compile Include="ContainerRegistrationCollection.cs" />
     <Compile Include="ContainerRegistrationConfigElement.cs" />
     <Compile Include="Internal\ExceptionTransformer.cs" />
+    <Compile Include="Internal\BoDiResolverFactory.cs" />
+    <Compile Include="Internal\DynamicResolutionObjectContainerProxy.cs" />
+    <Compile Include="Internal\DynamicRecursionResolverProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">

@@ -104,7 +104,7 @@ namespace CSF.MicroDi
       AssertNotDisposed();
 
       var request = new ResolutionRequest(serviceType, name);
-      var result = resolver.Resolve(request);
+      var result = TryResolve(request);
 
       if(!result.IsSuccess)
       {
@@ -114,6 +114,23 @@ namespace CSF.MicroDi
 
       output = result.ResolvedObject;
       return true;
+    }
+
+    public ResolutionResult TryResolve(ResolutionRequest request)
+    {
+      if(request == null)
+        throw new ArgumentNullException(nameof(request));
+
+      return resolver.Resolve(request);
+    }
+
+    public object Resolve(ResolutionRequest request)
+    {
+      var result = TryResolve(request);
+      if(!result.IsSuccess)
+        throw new ResolutionException($"The service type `{request.ServiceType.FullName}' could be resolved");
+
+      return result.ResolvedObject;
     }
 
     public IReadOnlyCollection<T> ResolveAll<T>()

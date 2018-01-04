@@ -19,6 +19,8 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using CSF.MicroDi.Resolution;
+
 namespace CSF.MicroDi.Builders
 {
   public interface IContainerBuilder
@@ -42,6 +44,8 @@ namespace CSF.MicroDi.Builders
     IContainerBuilder DoNotSupportResolvingNamedInstanceDictionaries();
 
     IContainerBuilder SupportResolvingNamedInstanceDictionaries(bool supportResolvingNamedInstanceDictionaries = true);
+
+    IContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory);
 
     Container Build();
   }

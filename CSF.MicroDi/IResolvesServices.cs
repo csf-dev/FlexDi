@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using CSF.MicroDi.Resolution;
 
 namespace CSF.MicroDi
 {
@@ -34,6 +35,9 @@ namespace CSF.MicroDi
     bool TryResolve<T>(string name, out T output);
     bool TryResolve(Type serviceType, out object output);
     bool TryResolve(Type serviceType, string name, out object output);
+
+    ResolutionResult TryResolve(ResolutionRequest request);
+    object Resolve(ResolutionRequest request);
 
     IReadOnlyCollection<T> ResolveAll<T>();
     IReadOnlyCollection<object> ResolveAll(Type serviceType);
