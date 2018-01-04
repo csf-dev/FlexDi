@@ -23,8 +23,8 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("CSF.MicroDi.BoDiCompatibility.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("BoDi.Tests")]
+[assembly: AssemblyDescription("Integration tests for the MicroDi/BoDi compatibility layer (taken from BoDi's original test suite)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CSF Software Limited")]
 [assembly: AssemblyProduct("")]

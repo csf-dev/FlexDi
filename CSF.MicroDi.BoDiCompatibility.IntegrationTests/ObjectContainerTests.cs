@@ -1,5 +1,5 @@
 ﻿//
-//    IResolvesServices.cs
+//    ObjectContainerTests.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -17,29 +17,23 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using System.Collections.Generic;
-using CSF.MicroDi.Resolution;
+using NUnit.Framework;
 
-namespace CSF.MicroDi
+namespace BoDi.Tests
 {
-  public interface IResolvesServices
+  [TestFixture]
+  public class ObjectContainerTests
   {
-    T Resolve<T>();
-    T Resolve<T>(string name);
-    object Resolve(Type serviceType);
-    object Resolve(Type serviceType, string name);
+    [Test]
+    public void RegisterFactoryAs_adds_the_registration_which_will_not_be_cached()
+    {
+      // Arrange
 
-    bool TryResolve<T>(out T output);
-    bool TryResolve<T>(string name, out T output);
-    bool TryResolve(Type serviceType, out object output);
-    bool TryResolve(Type serviceType, string name, out object output);
 
-    ResolutionResult TryResolve(ResolutionRequest request);
-    object Resolve(ResolutionRequest request);
+      // Act
 
-    IReadOnlyCollection<T> ResolveAll<T>();
-    IReadOnlyCollection<object> ResolveAll(Type serviceType);
+      // Assert
+    }
   }
 }

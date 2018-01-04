@@ -1,5 +1,5 @@
 ﻿//
-//    IRegistrationOptionsBuilderWithMultiplicity.cs
+//    ICreatesResolvers.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -17,16 +17,11 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-namespace CSF.MicroDi.Builders
+namespace CSF.MicroDi.Resolution
 {
-  public interface IRegistrationOptionsBuilderWithMultiplicity
+  public interface ICreatesResolvers
   {
-    IRegistrationOptionsBuilderWithMultiplicity WithName(string name);
-
-    IRegistrationOptionsBuilderWithMultiplicity SeparateInstancePerResolution();
-
-    IRegistrationOptionsBuilderWithMultiplicity SingleSharedInstance();
+    IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo);
   }
 }

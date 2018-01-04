@@ -1,5 +1,5 @@
 ﻿//
-//    IResolvesServices.cs
+//    InterdependentServices.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -19,27 +19,21 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
-using System.Collections.Generic;
-using CSF.MicroDi.Resolution;
-
-namespace CSF.MicroDi
+namespace CSF.MicroDi.BoDiCompatibility.Tests
 {
-  public interface IResolvesServices
+  public class ParentService
   {
-    T Resolve<T>();
-    T Resolve<T>(string name);
-    object Resolve(Type serviceType);
-    object Resolve(Type serviceType, string name);
+    public ChildServiceOne ChildOne { get; set; }
+    public ChildServiceTwo ChildTwo { get; set; }
 
-    bool TryResolve<T>(out T output);
-    bool TryResolve<T>(string name, out T output);
-    bool TryResolve(Type serviceType, out object output);
-    bool TryResolve(Type serviceType, string name, out object output);
-
-    ResolutionResult TryResolve(ResolutionRequest request);
-    object Resolve(ResolutionRequest request);
-
-    IReadOnlyCollection<T> ResolveAll<T>();
-    IReadOnlyCollection<object> ResolveAll(Type serviceType);
+    public ParentService(ChildServiceOne one, ChildServiceTwo two)
+    {
+      ChildOne = one;
+      ChildTwo = two;
+    }
   }
+
+  public class ChildServiceOne {}
+
+  public class ChildServiceTwo {}
 }

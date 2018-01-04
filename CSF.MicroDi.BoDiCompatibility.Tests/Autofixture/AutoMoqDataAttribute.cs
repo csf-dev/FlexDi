@@ -1,5 +1,5 @@
 ﻿//
-//    Multiplicity.cs
+//    AutoMoqDataAttribute.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -19,12 +19,16 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
-namespace CSF.MicroDi.Registration
-{
-  public enum Multiplicity
-  {
-    InstancePerResolution,
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
+using Ploeh.AutoFixture.NUnit3;
 
-    Shared
+namespace CSF.MicroDi.BoDiCompatibility.Tests.Autofixture
+{
+  public class AutoMoqDataAttribute : AutoDataAttribute
+  {
+    public AutoMoqDataAttribute() : base(new Fixture().Customize(new AutoMoqCustomization()))
+    {
+    }
   }
 }

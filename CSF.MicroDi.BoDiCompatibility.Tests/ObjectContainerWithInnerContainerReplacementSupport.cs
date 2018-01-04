@@ -1,5 +1,5 @@
 ﻿//
-//    IAsBuilderWithMultiplicity.cs
+//    ObjectContainerWithInnerContainerReplacementSupport.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -17,14 +17,25 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-namespace CSF.MicroDi.Builders
+using BoDi;
+
+namespace CSF.MicroDi.BoDiCompatibility.Tests
 {
-  public interface IAsBuilderWithMultiplicity
+  /// <summary>
+  /// Identical to <see cref="ObjectContainer"/> except that it provides a mechanism to substitute out the inner
+  /// <see cref="IContainer"/> instance, for testing purposes.
+  /// </summary>
+  public class ObjectContainerWithInnerContainerReplacementSupport : ObjectContainer
   {
-    IRegistrationOptionsBuilderWithMultiplicity As<T>() where T : class;
-    IRegistrationOptionsBuilderWithMultiplicity As(Type serviceType);
-    IRegistrationOptionsBuilderWithMultiplicity AsOwnType();
+    public void ReplaceInnerContainer(IContainer replacement)
+    {
+      if(replacement == null)
+        throw new ArgumentNullException(nameof(replacement));
+
+      container = replacement;
+    }
+
+    public ObjectContainerWithInnerContainerReplacementSupport(IObjectContainer parent = null) : base(parent) {}
   }
 }

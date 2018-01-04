@@ -24,7 +24,7 @@ using CSF.MicroDi.Registration;
 namespace CSF.MicroDi.Builders
 {
   public class RegistrationBuilder
-    : IAsBuilder, IAsBuilderWithMultiplicity, IRegistrationOptionsBuilder, IRegistrationOptionsBuilderWithMultiplicity
+    : IAsBuilder, IAsBuilderWithCacheability, IRegistrationOptionsBuilder, IRegistrationOptionsBuilderWithCacheability
   {
     ServiceRegistration registration;
 
@@ -40,7 +40,7 @@ namespace CSF.MicroDi.Builders
       where T : class
       => As(typeof(T));
 
-    public IRegistrationOptionsBuilderWithMultiplicity AsOwnType()
+    public IRegistrationOptionsBuilderWithCacheability AsOwnType()
     {
       var typedRegistration = registration as TypedRegistration;
       if(typedRegistration == null)
@@ -50,15 +50,15 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
-    public IRegistrationOptionsBuilderWithMultiplicity SeparateInstancePerResolution()
+    public IRegistrationOptionsBuilderWithCacheability NotCacheable()
     {
-      registration.Multiplicity = Multiplicity.InstancePerResolution;
-      return this;
+      return Cacheable(false);
     }
 
-    public IRegistrationOptionsBuilderWithMultiplicity SingleSharedInstance()
+    public IRegistrationOptionsBuilderWithCacheability Cacheable(bool cacheable = true)
     {
-      registration.Multiplicity = Multiplicity.Shared;
+      registration.Cacheable = cacheable;
+      registration.DisposeWithContainer = cacheable;
       return this;
     }
 
@@ -80,7 +80,7 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
-    IRegistrationOptionsBuilderWithMultiplicity IAsBuilderWithMultiplicity.As(Type serviceType)
+    IRegistrationOptionsBuilderWithCacheability IAsBuilderWithCacheability.As(Type serviceType)
     {
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
@@ -88,13 +88,13 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
-    IRegistrationOptionsBuilderWithMultiplicity IAsBuilderWithMultiplicity.As<T>()
+    IRegistrationOptionsBuilderWithCacheability IAsBuilderWithCacheability.As<T>()
     {
       registration.ServiceType = typeof(T);
       return this;
     }
 
-    IRegistrationOptionsBuilderWithMultiplicity IRegistrationOptionsBuilderWithMultiplicity.WithName(string name)
+    IRegistrationOptionsBuilderWithCacheability IRegistrationOptionsBuilderWithCacheability.WithName(string name)
     {
       registration.Name = name;
       return this;

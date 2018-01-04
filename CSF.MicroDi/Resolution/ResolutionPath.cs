@@ -29,6 +29,8 @@ namespace CSF.MicroDi.Resolution
   {
     readonly Stack<IServiceRegistration> path;
 
+    public bool IsEmpty => !path.Any();
+
     public IServiceRegistration CurrentRegistration => path.Peek();
 
     public bool Contains(Type serviceType) => Contains(serviceType, null);

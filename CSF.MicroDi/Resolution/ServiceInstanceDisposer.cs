@@ -46,7 +46,7 @@ namespace CSF.MicroDi.Resolution
       
       return registrationProvider
         .GetAll()
-        .Where(x => x.Multiplicity == Multiplicity.Shared && x.DisposeWithContainer)
+        .Where(x => x.Cacheable && x.DisposeWithContainer)
         .ToArray();
     }
 

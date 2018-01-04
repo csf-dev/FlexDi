@@ -29,10 +29,12 @@ namespace BoDi
   public class ObjectContainer : IObjectContainer
   {
     static readonly ExceptionTransformer exceptionTransformer;
-    readonly IContainer container;
+    protected IContainer container;
     bool isDisposed;
 
     public event Action<object> ObjectCreated;
+
+    internal IContainer GetMicroDiContainer() => container;
 
     public void RegisterTypeAs<TInterface>(Type implementationType, string name = null) where TInterface : class
     {
@@ -237,6 +239,7 @@ namespace BoDi
         .ThrowOnCircularDependencies()
         .UseInstanceCache()
         .SupportResolvingNamedInstanceDictionaries()
+        .UseCustomResolverFactory(new BoDiResolverFactory())
         .Build();
     }
 

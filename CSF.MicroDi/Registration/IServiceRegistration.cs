@@ -25,7 +25,7 @@ namespace CSF.MicroDi.Registration
 {
   public interface IServiceRegistration
   {
-    Multiplicity Multiplicity { get; }
+    bool Cacheable { get; }
 
     Type ServiceType { get; }
 

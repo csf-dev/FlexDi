@@ -23,12 +23,12 @@ namespace CSF.MicroDi.Builders
 {
   public interface IRegistrationHelper
   {
-    IAsBuilderWithMultiplicity RegisterType<T>() where T : class;
-    IAsBuilderWithMultiplicity RegisterType(Type concreteType);
+    IAsBuilderWithCacheability RegisterType<T>() where T : class;
+    IAsBuilderWithCacheability RegisterType(Type concreteType);
 
-    IAsBuilderWithMultiplicity RegisterFactory<T>(Func<T> factory) where T : class;
-    IRegistrationOptionsBuilderWithMultiplicity RegisterFactory(Delegate factory, Type serviceType);
-    IRegistrationOptionsBuilderWithMultiplicity RegisterFactory<TService>(Delegate factory) where TService : class;
+    IAsBuilderWithCacheability RegisterFactory<T>(Func<T> factory) where T : class;
+    IRegistrationOptionsBuilderWithCacheability RegisterFactory(Delegate factory, Type serviceType);
+    IRegistrationOptionsBuilderWithCacheability RegisterFactory<TService>(Delegate factory) where TService : class;
 
     IAsBuilder RegisterInstance(object instance);
   }
