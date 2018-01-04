@@ -51,5 +51,16 @@
   <ItemGroup>
     <Folder Include="Internal\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="CSF.MicroDi.BoDiCompatibility.nuspec" />
+    <None Include="..\LICENSE.txt">
+      <Link>LICENSE.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NOTICE.txt">
+      <Link>NOTICE.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
