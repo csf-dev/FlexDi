@@ -28,7 +28,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CSF Software Limited")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Craig Fowler")]
+[assembly: AssemblyCopyright("Craig Fowler et al")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
