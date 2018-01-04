@@ -3,11 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B21583EE-68F7-4E43-AFF4-743201A9A3FF}</ProjectGuid>
+    <ProjectGuid>{97CAB1CC-30E5-4ABE-9B36-669E9F5EA381}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>CSF.MicroDi.BoDiCompatibility.Tests</RootNamespace>
-    <AssemblyName>CSF.MicroDi.BoDiCompatibility.Tests</AssemblyName>
+    <RootNamespace>BoDi.Tests</RootNamespace>
+    <AssemblyName>BoDi.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>0.1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,48 +28,42 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture">
-      <HintPath>..\packages\AutoFixture.3.51.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture.NUnit3">
-      <HintPath>..\packages\AutoFixture.NUnit3.3.51.0\lib\net40\Ploeh.AutoFixture.NUnit3.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Configuration" />
     <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.7.145\lib\net45\Moq.dll</HintPath>
+      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture.AutoMoq">
-      <HintPath>..\packages\AutoFixture.AutoMoq.3.51.0\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Should">
+      <HintPath>..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Autofixture\AutoMoqDataAttribute.cs" />
+    <Compile Include="ContainerTests.cs" />
+    <Compile Include="DisposeTests.cs" />
+    <Compile Include="IsRegisteredTests.cs" />
+    <Compile Include="NamedRegistrationTests.cs" />
+    <Compile Include="ObjectCreationTests.cs" />
+    <Compile Include="RegisterFactoryDelegateTests.cs" />
+    <Compile Include="RegisterFromConfigTests.cs" />
+    <Compile Include="RegisterInstanceTests.cs" />
+    <Compile Include="RegisterTypeTests.cs" />
+    <Compile Include="ResolveAllTests.cs" />
+    <Compile Include="ResolveTests.cs" />
+    <Compile Include="SubContainerTests.cs" />
+    <Compile Include="TestClasses.cs" />
+    <Compile Include="TestConfigSection.cs" />
     <Compile Include="ObjectContainerTests.cs" />
-    <Compile Include="ObjectContainerWithInnerContainerReplacementSupport.cs" />
-    <Compile Include="Stubs\InterdependentServices.cs" />
-    <Compile Include="Stubs\SampleService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Autofixture\" />
-    <Folder Include="Stubs\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
-      <Project>{F7CE689A-C595-4EE0-A6BD-AF46D2D9F99C}</Project>
-      <Name>CSF.MicroDi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CSF.MicroDi.BoDiCompatibility\CSF.MicroDi.BoDiCompatibility.csproj">
       <Project>{5E23B329-5C3A-41D2-8156-CC5F04986454}</Project>
       <Name>CSF.MicroDi.BoDiCompatibility</Name>
