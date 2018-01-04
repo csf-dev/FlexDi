@@ -19,11 +19,13 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using CSF.MicroDi.Resolution;
+
 namespace CSF.MicroDi
 {
   
   [System.Serializable]
-  public class CircularDependencyException : ContainerException
+  public class CircularDependencyException : ResolutionException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="T:CircularDependencyException"/> class
