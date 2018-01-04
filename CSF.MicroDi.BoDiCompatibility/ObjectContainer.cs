@@ -29,7 +29,7 @@ namespace BoDi
   public class ObjectContainer : IObjectContainer
   {
     static readonly ExceptionTransformer exceptionTransformer;
-    readonly IContainer container;
+    protected IContainer container;
     bool isDisposed;
 
     public event Action<object> ObjectCreated;
