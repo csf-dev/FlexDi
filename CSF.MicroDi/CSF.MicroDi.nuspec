@@ -6,7 +6,7 @@
     <title>MicroDi - lightweight &amp; extensible DI container</title>
     <authors>CSF Software Ltd</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
-    <projectUrl>https://github.com/csf-dev/CSF.MicroDi</projectUrl>
+    <projectUrl>https://github.com/csf-dev/MicroDi</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A small and extensible dependency injection/IoC container based on BoDi.</description>
     <copyright>Copyright 2018</copyright>

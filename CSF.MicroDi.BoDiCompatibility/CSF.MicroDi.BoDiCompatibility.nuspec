@@ -6,7 +6,7 @@
     <title>MicroDi BoDi compatibility</title>
     <authors>CSF Software Ltd</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
-    <projectUrl>https://github.com/csf-dev/CSF.MicroDi</projectUrl>
+    <projectUrl>https://github.com/csf-dev/MicroDi</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A compatible drop-in replacement for the BoDi dependency injection/IoC container (v1.3.0) using MicroDi.</description>
     <copyright>Copyright 2018</copyright>
