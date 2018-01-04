@@ -25,12 +25,12 @@ namespace CSF.MicroDi.Resolution
 {
   public class ResolverFactory : ICreatesResolvers
   {
-    public IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo)
+    public virtual IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo)
     {
       return CreateResolver(resolutionInfo, isInnermostResolver: true);
     }
 
-    IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo, bool isInnermostResolver)
+    protected virtual IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo, bool isInnermostResolver)
     {
       AssertResolutionInfoIsValid(resolutionInfo);
 
@@ -55,14 +55,14 @@ namespace CSF.MicroDi.Resolution
       return output;
     }
 
-    Resolver GetCoreResolver(IProvidesResolutionInfo resolutionInfo,
+    protected virtual Resolver GetCoreResolver(IProvidesResolutionInfo resolutionInfo,
                              IResolver outermostResolver)
     {
       var instanceCreator = new InstanceCreator(outermostResolver);
       return new Resolver(resolutionInfo.Registry, instanceCreator);
     }
 
-    IResolver GetCachingResolver(IProvidesResolutionInfo resolutionInfo,
+    protected virtual IResolver GetCachingResolver(IProvidesResolutionInfo resolutionInfo,
                                  IResolver resolverToProxy)
     {
       if(!resolutionInfo.Options.UseInstanceCache)
@@ -73,7 +73,7 @@ namespace CSF.MicroDi.Resolution
       return new CachingResolverProxy(resolverToProxy, resolutionInfo.Cache);
     }
 
-    IResolver GetCircularDependencyProtectingResolver(IProvidesResolutionInfo resolutionInfo,
+    protected virtual IResolver GetCircularDependencyProtectingResolver(IProvidesResolutionInfo resolutionInfo,
                                                       IResolver resolverToProxy)
     {
       if(!resolutionInfo.Options.ThrowOnCircularDependencies)
@@ -83,7 +83,7 @@ namespace CSF.MicroDi.Resolution
       return new CircularDependencyPreventingResolverProxy(resolverToProxy, detector);
     }
 
-    IResolver GetParentResolver(IProvidesResolutionInfo resolutionInfo,
+    protected virtual IResolver GetParentResolver(IProvidesResolutionInfo resolutionInfo,
                                 IResolver resolverToProxy)
     {
       var parentInfo = resolutionInfo.Parent;
@@ -95,7 +95,7 @@ namespace CSF.MicroDi.Resolution
       return new FallbackResolverProxy(resolverToProxy, parentResolver);
     }
 
-    IResolver GetUnregisteredServiceResolver(IProvidesResolutionInfo resolutionInfo,
+    protected virtual IResolver GetUnregisteredServiceResolver(IProvidesResolutionInfo resolutionInfo,
                                              IResolver resolverToProxy,
                                              IResolvesRegistrations registrationResolver)
     {
@@ -111,12 +111,12 @@ namespace CSF.MicroDi.Resolution
                                                   unregisteredServiceRegistry);
     }
 
-    IResolver GetRegisteredNameInjectingResolver(IResolver resolverToProxy)
+    protected virtual IResolver GetRegisteredNameInjectingResolver(IResolver resolverToProxy)
     {
       return new RegisteredNameInjectingResolverProxy(resolverToProxy);
     }
 
-    IResolver GetNamedInstanceDictionaryResolver(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
+    protected virtual IResolver GetNamedInstanceDictionaryResolver(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
       if(!resolutionInfo.Options.SupportResolvingNamedInstanceDictionaries)
         return null;
@@ -125,7 +125,7 @@ namespace CSF.MicroDi.Resolution
       return new NamedInstanceDictionaryResolverProxy(resolverToProxy, registryStack);
     }
 
-    void AssertResolutionInfoIsValid(IProvidesResolutionInfo resolutionInfo)
+    protected virtual void AssertResolutionInfoIsValid(IProvidesResolutionInfo resolutionInfo)
     {
       if(resolutionInfo == null)
         throw new ArgumentNullException(nameof(resolutionInfo));
