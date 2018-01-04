@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>CSF.MicroDi</id>
-    <version>0.2.0</version>
+    <version>0.2.0-alpha</version>
     <title>MicroDi - lightweight &amp; extensible DI container</title>
     <authors>CSF Software Ltd</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>

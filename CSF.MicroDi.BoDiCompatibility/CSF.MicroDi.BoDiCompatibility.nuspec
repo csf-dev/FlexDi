@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>CSF.MicroDi.BoDiCompatibility</id>
-    <version>0.2.0</version>
+    <version>0.2.0-alpha</version>
     <title>MicroDi BoDi compatibility</title>
     <authors>CSF Software Ltd</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
@@ -11,7 +11,7 @@
     <description>A compatible drop-in replacement for the BoDi dependency injection/IoC container (v1.3.0) using MicroDi.</description>
     <copyright>Copyright 2018</copyright>
     <dependencies>
-      <dependency id="CSF.MicroDi" version="0.2.0" />
+      <dependency id="CSF.MicroDi" version="0.2.0-alpha" />
     </dependencies>
   </metadata>
   <files>
