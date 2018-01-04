@@ -12,4 +12,5 @@ packages/*/*
 *.log
 *.orig
 testrunner/
+*.nupkg
 
