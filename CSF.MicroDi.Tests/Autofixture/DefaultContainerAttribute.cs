@@ -1,7 +1,7 @@
 ﻿//
-//    InterdependentServices.cs
+//    DefaultContainerAttribute.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,26 +17,21 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-namespace CSF.MicroDi.Tests.Stubs
-{
-  public class ParentService
-  {
-    public ChildServiceOne ChildOne { get; set; }
-    public ChildServiceTwo ChildTwo { get; set; }
+using System.Reflection;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.NUnit3;
 
-    public ParentService(ChildServiceOne one, ChildServiceTwo two)
+namespace CSF.MicroDi.Tests.Autofixture
+{
+  public class DefaultContainerAttribute : CustomizeAttribute
+  {
+    public override ICustomization GetCustomization(ParameterInfo parameter) => new DefaultContainerCustomization();
+
+    class DefaultContainerCustomization : ICustomization
     {
-      ChildOne = one;
-      ChildTwo = two;
+      public void Customize(IFixture fixture)
+        => fixture.Customize<IContainer>(c => c.FromFactory(() => new Container()));
     }
   }
-
-  public class ChildServiceOne
-  {
-    public string AProperty { get; set; }
-  }
-
-  public class ChildServiceTwo {}
 }
