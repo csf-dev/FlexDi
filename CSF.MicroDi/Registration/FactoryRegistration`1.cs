@@ -25,7 +25,7 @@ namespace CSF.MicroDi.Registration
 {
   public class FactoryRegistration<T> : TypedRegistration
   {
-    readonly Func<T> factory;
+    readonly Delegate factory;
 
     public override Type ImplementationType => typeof(T);
 
@@ -36,7 +36,7 @@ namespace CSF.MicroDi.Registration
       return $"[Factory registration for `{ServiceType.FullName}', creating an instance of `{ImplementationType.FullName}']";
     }
 
-    public FactoryRegistration(Func<T> factory)
+    public FactoryRegistration(Delegate factory)
     {
       if(factory == null)
         throw new ArgumentNullException(nameof(factory));
