@@ -29,6 +29,8 @@ namespace BoDi
   public class ObjectContainer : IObjectContainer
   {
     static readonly ExceptionTransformer exceptionTransformer;
+    static readonly BoDiMicroDiContainerFactory containerFactory;
+
     protected IContainer container;
     bool isDisposed;
 
@@ -227,24 +229,15 @@ namespace BoDi
       }
     }
 
-    Container CreateMicroDiContainer(ObjectContainer parent)
+    IContainer CreateMicroDiContainer(ObjectContainer parent)
     {
       if(parent != null)
         return new Container(parentContainer: parent.container);
-      
-      return Container
-        .CreateBuilder()
-        .UseNonPublicConstructors()
-        .ResolveUnregisteredTypes()
-        .ThrowOnCircularDependencies()
-        .UseInstanceCache()
-        .SupportResolvingNamedInstanceDictionaries()
-        .UseCustomResolverFactory(new BoDiResolverFactory())
-        .DoNotSelfRegisterAResolver()
-        .Build();
+
+      return containerFactory.GetContainer();
     }
 
-    Container GetMicroDiContainer(ObjectContainer parent)
+    IContainer GetMicroDiContainer(ObjectContainer parent)
     {
       var output = CreateMicroDiContainer(parent);
       output.ServiceResolved += OnServiceResolved;
@@ -261,6 +254,7 @@ namespace BoDi
     static ObjectContainer()
     {
       exceptionTransformer = new ExceptionTransformer();
+      containerFactory = new BoDiMicroDiContainerFactory();
     }
   }
 }
