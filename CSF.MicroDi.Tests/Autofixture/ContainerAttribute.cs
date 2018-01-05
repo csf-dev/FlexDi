@@ -24,14 +24,33 @@ using Ploeh.AutoFixture.NUnit3;
 
 namespace CSF.MicroDi.Tests.Autofixture
 {
-  public class DefaultContainerAttribute : CustomizeAttribute
+  public class ContainerAttribute : CustomizeAttribute
   {
-    public override ICustomization GetCustomization(ParameterInfo parameter) => new DefaultContainerCustomization();
+    public bool ResolveUnregisteredTypes { get; set; }
 
-    class DefaultContainerCustomization : ICustomization
+    public override ICustomization GetCustomization(ParameterInfo parameter) => new ContainerCustomization(GetOptions());
+
+    ContainerOptions GetOptions()
     {
+      return new ContainerOptions(resolveUnregisteredTypes: ResolveUnregisteredTypes);
+    }
+
+    public ContainerAttribute()
+    {
+      ResolveUnregisteredTypes = ContainerOptions.Default.ResolveUnregisteredTypes;
+    }
+
+    class ContainerCustomization : ICustomization
+    {
+      readonly ContainerOptions options;
+
       public void Customize(IFixture fixture)
-        => fixture.Customize<IContainer>(c => c.FromFactory(() => new Container()));
+        => fixture.Customize<IContainer>(c => c.FromFactory(() => new Container(options: options)));
+
+      public ContainerCustomization(ContainerOptions options = null)
+      {
+        this.options = options;
+      }
     }
   }
 }

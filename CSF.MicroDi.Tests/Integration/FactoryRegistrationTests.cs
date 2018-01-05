@@ -28,7 +28,7 @@ namespace CSF.MicroDi.Tests.Integration
   public class FactoryRegistrationTests
   {
     [Test,AutoMoqData]
-    public void Should_be_possible_to_resolve_objects_registered_using_dynamic_factory_registrations([DefaultContainer] IContainer container,
+    public void Should_be_possible_to_resolve_objects_registered_using_dynamic_factory_registrations([Container] IContainer container,
                                                                                                      string arbitraryString)
     {
       // Arrange
