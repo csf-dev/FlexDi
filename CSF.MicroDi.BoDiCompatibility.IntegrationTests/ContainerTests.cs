@@ -44,7 +44,7 @@ namespace BoDi.Tests
 
             // when
             var result = container.ToString();
-            Console.WriteLine(result);
+            // Console.WriteLine(result);
 
             // then 
             result.ShouldContain("BoDi.IObjectContainer -> <self>");
