@@ -1,7 +1,7 @@
 ﻿//
-//    FactoryRegistration`1.cs
+//    DynamicRecursionResolverProxyFactory.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,31 +17,17 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using CSF.MicroDi.Resolution;
-
-namespace CSF.MicroDi.Registration
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class FactoryRegistration<T> : TypedRegistration
+  public class DynamicRecursionResolverProxyFactory : ICreatesProxyingResolver
   {
-    readonly Delegate factory;
-
-    public override Type ImplementationType => typeof(T);
-
-    public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request) => new DelegateFactory(factory);
-
-    public override string ToString()
+    public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
-      return $"[Factory registration for `{ServiceType.FullName}', creating an instance of `{ImplementationType.FullName}']";
-    }
-
-    public FactoryRegistration(Delegate factory)
-    {
-      if(factory == null)
-        throw new ArgumentNullException(nameof(factory));
-
-      this.factory = factory;
+      if(!resolutionInfo.Options.SelfRegisterAResolver)
+        return null;
+      
+      return new DynamicRecursionResolverProxy(resolverToProxy);
     }
   }
 }

@@ -21,7 +21,7 @@
 using System;
 using CSF.MicroDi.Registration;
 
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
   public class CachingResolverProxy : ProxyingResolver
   {

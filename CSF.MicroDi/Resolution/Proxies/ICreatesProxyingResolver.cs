@@ -1,7 +1,7 @@
 ﻿//
-//    BoDiResolverFactory.cs
+//    ICreatesSingleResolver.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,22 +18,10 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
-using System.Collections.Generic;
-using CSF.MicroDi;
-using CSF.MicroDi.Resolution;
-using CSF.MicroDi.Resolution.Proxies;
-
-namespace BoDi.Internal
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class BoDiResolverFactory : ResolverFactory
+  public interface ICreatesProxyingResolver
   {
-    protected override void ConfigureResolverProxyFactories(IList<ICreatesProxyingResolver> factories,
-                                                            bool isInnermostResolver,
-                                                            IResolvesRegistrations coreResolver)
-    {
-      base.ConfigureResolverProxyFactories(factories, isInnermostResolver, coreResolver);
-
-      factories.Add(new DynamicRecursionResolverProxyFactory());
-    }
+    IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy);
   }
 }

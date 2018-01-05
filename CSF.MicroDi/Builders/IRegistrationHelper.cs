@@ -27,6 +27,7 @@ namespace CSF.MicroDi.Builders
     IAsBuilderWithCacheability RegisterType(Type concreteType);
 
     IAsBuilderWithCacheability RegisterFactory<T>(Func<T> factory) where T : class;
+    IAsBuilderWithCacheability RegisterFactory<T>(Func<IResolvesServices,T> factory) where T : class;
     IRegistrationOptionsBuilderWithCacheability RegisterFactory(Delegate factory, Type serviceType);
     IRegistrationOptionsBuilderWithCacheability RegisterFactory<TService>(Delegate factory) where TService : class;
 

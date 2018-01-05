@@ -63,7 +63,6 @@
     <Compile Include="Resolution\ICachesResolvedServiceInstances.cs" />
     <Compile Include="Resolution\IFulfilsResolutionRequests.cs" />
     <Compile Include="Resolution\ResolvedServiceCache.cs" />
-    <Compile Include="Resolution\CachingResolverProxy.cs" />
     <Compile Include="Resolution\IDisposesOfResolvedInstances.cs" />
     <Compile Include="Resolution\ServiceInstanceDisposer.cs" />
     <Compile Include="IContainer.cs" />
@@ -97,23 +96,35 @@
     <Compile Include="Resolution\InstanceCreator.cs" />
     <Compile Include="Resolution\CannotResolveParameterException.cs" />
     <Compile Include="Resolution\ResolverBase.cs" />
-    <Compile Include="Resolution\CircularDependencyPreventingResolverProxy.cs" />
-    <Compile Include="Resolution\UnregisteredServiceResolverProxy.cs" />
     <Compile Include="IProvidesResolutionInfo.cs" />
     <Compile Include="Resolution\ResolverFactory.cs" />
-    <Compile Include="Resolution\LateBoundResolverProxy.cs" />
-    <Compile Include="Resolution\FallbackResolverProxy.cs" />
     <Compile Include="Resolution\IResolvesRegistrations.cs" />
     <Compile Include="Registration\RegistryStackFactory.cs" />
-    <Compile Include="Resolution\RegisteredNameInjectingResolverProxy.cs" />
-    <Compile Include="Resolution\NamedInstanceDictionaryResolverProxy.cs" />
     <Compile Include="Resolution\NoMatchingEnumerationConstantException.cs" />
     <Compile Include="Resolution\ICreatesResolvers.cs" />
+    <Compile Include="Resolution\Proxies\CachingResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\CircularDependencyPreventingResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\FallbackResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\LateBoundResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\NamedInstanceDictionaryResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\ICreatesProxyingResolver.cs" />
+    <Compile Include="Resolution\Proxies\CachingResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\CircularDependencyPreventingResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\FallbackToParentResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\NamedInstanceDictionaryResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\ServiceResolvingContainerProxy.cs" />
+    <Compile Include="Resolution\Proxies\DynamicResolutionResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
     <Folder Include="Registration\" />
     <Folder Include="Resolution\" />
+    <Folder Include="Resolution\Proxies\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CSF.MicroDi.nuspec" />

@@ -1,7 +1,7 @@
 ﻿//
-//    FactoryRegistration`1.cs
+//    CircularDependencyPreventingResolverProxyFactory.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,31 +17,24 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using CSF.MicroDi.Resolution;
-
-namespace CSF.MicroDi.Registration
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class FactoryRegistration<T> : TypedRegistration
+  public class CircularDependencyPreventingResolverProxyFactory : ICreatesProxyingResolver
   {
-    readonly Delegate factory;
+    readonly IDetectsCircularDependencies detector;
 
-    public override Type ImplementationType => typeof(T);
-
-    public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request) => new DelegateFactory(factory);
-
-    public override string ToString()
+    public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
-      return $"[Factory registration for `{ServiceType.FullName}', creating an instance of `{ImplementationType.FullName}']";
+      if(!resolutionInfo.Options.ThrowOnCircularDependencies)
+        return null;
+
+      return new CircularDependencyPreventingResolverProxy(resolverToProxy, detector);
     }
 
-    public FactoryRegistration(Delegate factory)
+    public CircularDependencyPreventingResolverProxyFactory(IDetectsCircularDependencies detector = null)
     {
-      if(factory == null)
-        throw new ArgumentNullException(nameof(factory));
-
-      this.factory = factory;
+      this.detector = detector ?? new CircularDependencyDetector();
     }
   }
 }

@@ -17,6 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "License", "License", "{B9B2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSF.MicroDi.BoDiCompatibility.Tests", "CSF.MicroDi.BoDiCompatibility.Tests\CSF.MicroDi.BoDiCompatibility.Tests.csproj", "{B21583EE-68F7-4E43-AFF4-743201A9A3FF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{F6B9BC94-2827-452A-BB0B-C59E19256AF3}"
+	ProjectSection(SolutionItems) = preProject
+		tools\build.sh = tools\build.sh
+		tools\install.sh = tools\install.sh
+		tools\run-tests.sh = tools\run-tests.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

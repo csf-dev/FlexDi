@@ -57,6 +57,16 @@ namespace CSF.MicroDi.Builders
       return new RegistrationBuilder(registration);
     }
 
+    public IAsBuilderWithCacheability RegisterFactory<T>(Func<IResolvesServices,T> factory) where T : class
+    {
+      if(factory == null)
+        throw new ArgumentNullException(nameof(factory));
+
+      var registration = new FactoryRegistration<T>(factory) { ServiceType = typeof(T) };
+      registrations.Add(registration);
+      return new RegistrationBuilder(registration);
+    }
+
     public IAsBuilder RegisterInstance(object instance)
     {
       if(instance == null)

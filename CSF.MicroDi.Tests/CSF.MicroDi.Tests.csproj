@@ -70,6 +70,8 @@
     <Compile Include="Resolution\ResolverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />
+    <Compile Include="Integration\FactoryRegistrationTests.cs" />
+    <Compile Include="Autofixture\ContainerAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">

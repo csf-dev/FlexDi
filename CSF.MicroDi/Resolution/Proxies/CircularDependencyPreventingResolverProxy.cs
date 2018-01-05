@@ -19,7 +19,7 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
   public class CircularDependencyPreventingResolverProxy : ProxyingResolver
   {
