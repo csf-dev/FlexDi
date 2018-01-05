@@ -23,7 +23,7 @@ using CSF.MicroDi.Resolution;
 
 namespace CSF.MicroDi.Builders
 {
-  public class ContainerBuilder : IContainerBuilder
+  public class ContainerBuilder
   {
     bool
       useNonPublicConstructors,
@@ -34,78 +34,78 @@ namespace CSF.MicroDi.Builders
       selfRegisterAResolver;
     ICreatesResolvers resolverFactory;
 
-    public IContainerBuilder DoNotUseNonPublicConstructors()
+    public ContainerBuilder DoNotUseNonPublicConstructors()
     {
       useNonPublicConstructors = false;
       return this;
     }
 
-    public IContainerBuilder UseNonPublicConstructors(bool useNonPublicConstructors = true)
+    public ContainerBuilder UseNonPublicConstructors(bool useNonPublicConstructors = true)
     {
       this.useNonPublicConstructors = useNonPublicConstructors;
       return this;
     }
 
-    public IContainerBuilder DoNotResolveUnregisteredTypes()
+    public ContainerBuilder DoNotResolveUnregisteredTypes()
     {
       resolveUnregisteredTypes = false;
       return this;
     }
 
-    public IContainerBuilder ResolveUnregisteredTypes(bool resolveUnregisteredTypes = true)
+    public ContainerBuilder ResolveUnregisteredTypes(bool resolveUnregisteredTypes = true)
     {
       this.resolveUnregisteredTypes = resolveUnregisteredTypes;
       return this;
     }
 
-    public IContainerBuilder DoNotUseInstanceCache()
+    public ContainerBuilder DoNotUseInstanceCache()
     {
       useInstanceCache = false;
       return this;
     }
 
-    public IContainerBuilder UseInstanceCache(bool useInstanceCache = true)
+    public ContainerBuilder UseInstanceCache(bool useInstanceCache = true)
     {
       this.useInstanceCache = useInstanceCache;
       return this;
     }
 
-    public IContainerBuilder DoNotSelfRegisterAResolver()
+    public ContainerBuilder DoNotSelfRegisterAResolver()
     {
       return SelfRegisterAResolver(false);
     }
 
-    public IContainerBuilder SelfRegisterAResolver(bool selfRegisterAResolver = true)
+    public ContainerBuilder SelfRegisterAResolver(bool selfRegisterAResolver = true)
     {
       this.selfRegisterAResolver = selfRegisterAResolver;
       return this;
     }
 
-    public IContainerBuilder DoNotThrowOnCircularDependencies()
+    public ContainerBuilder DoNotThrowOnCircularDependencies()
     {
       throwOnCircularDependencies = false;
       return this;
     }
 
-    public IContainerBuilder ThrowOnCircularDependencies(bool throwOnCircularDependencies = true)
+    public ContainerBuilder ThrowOnCircularDependencies(bool throwOnCircularDependencies = true)
     {
       this.throwOnCircularDependencies = throwOnCircularDependencies;
       return this;
     }
 
-    public IContainerBuilder DoNotSupportResolvingNamedInstanceDictionaries()
+    public ContainerBuilder DoNotSupportResolvingNamedInstanceDictionaries()
     {
       supportResolvingNamedInstanceDictionaries = false;
       return this;
     }
 
-    public IContainerBuilder SupportResolvingNamedInstanceDictionaries(bool supportResolvingNamedInstanceDictionaries = true)
+    public ContainerBuilder SupportResolvingNamedInstanceDictionaries(bool supportResolvingNamedInstanceDictionaries = true)
     {
       this.supportResolvingNamedInstanceDictionaries = supportResolvingNamedInstanceDictionaries;
       return this;
     }
 
-    public IContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory)
+    public ContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory)
     {
       if(resolverFactory == null)
         throw new ArgumentNullException(nameof(resolverFactory));

@@ -87,7 +87,6 @@
     <Compile Include="Resolution\InvalidResolutionRequestException.cs" />
     <Compile Include="Registration\OpenGenericTypeRegistration.cs" />
     <Compile Include="Builders\ContainerBuilder.cs" />
-    <Compile Include="Builders\IContainerBuilder.cs" />
     <Compile Include="ContainerOptions.cs" />
     <Compile Include="Resolution\ServiceCacheKey.cs" />
     <Compile Include="Resolution\CacheKeySpecificityComparer.cs" />
