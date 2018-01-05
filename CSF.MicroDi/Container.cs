@@ -296,6 +296,9 @@ namespace CSF.MicroDi
     {
       if(Options.SelfRegisterAResolver)
         SelfRegisterAResolver();
+      
+      if(Options.SelfRegisterTheRegistry)
+        SelfRegisterTheRegistry();
     }
 
     void SelfRegisterAResolver()
@@ -303,6 +306,15 @@ namespace CSF.MicroDi
       var registration = new InstanceRegistration(this) {
         DisposeWithContainer = false,
         ServiceType = typeof(IResolvesServices),
+      };
+      Registry.Add(registration);
+    }
+
+    void SelfRegisterTheRegistry()
+    {
+      var registration = new InstanceRegistration(this) {
+        DisposeWithContainer = false,
+        ServiceType = typeof(IReceivesRegistrations),
       };
       Registry.Add(registration);
     }
