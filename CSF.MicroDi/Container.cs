@@ -267,9 +267,9 @@ namespace CSF.MicroDi
     {
       disposedValue = false;
 
-      this.options = options ?? ContainerOptions.Default;
       this.parentContainer = parentContainer;
 
+      this.options = GetContainerOptions(options, parentContainer);
       this.registry = registry ?? new Registry();
       this.cache = cache ?? new ResolvedServiceCache();
       this.disposer = disposer ?? new ServiceInstanceDisposer();
@@ -279,6 +279,19 @@ namespace CSF.MicroDi
       this.resolver.ServiceResolved += InvokeServiceResolved;
 
       PerformSelfRegistrations();
+    }
+
+    ContainerOptions GetContainerOptions(ContainerOptions explicitOptions,
+                                         IContainer parent)
+    {
+      if(explicitOptions != null)
+        return explicitOptions;
+
+      var providesInfo = parent as IProvidesResolutionInfo;
+      if(providesInfo != null)
+        return providesInfo.Options;
+
+      return ContainerOptions.Default;
     }
 
     IResolver GetResolver(ICreatesResolvers resolverFactory)
