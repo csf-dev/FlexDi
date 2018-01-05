@@ -25,7 +25,7 @@ using NUnit.Framework;
 
 namespace CSF.MicroDi.Tests
 {
-  [TestFixture]
+  [TestFixture,Parallelizable(ParallelScope.All)]
   public class ContainerTests
   {
     [Test,AutoMoqData]

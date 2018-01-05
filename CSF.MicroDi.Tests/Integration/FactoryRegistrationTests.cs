@@ -24,7 +24,7 @@ using NUnit.Framework;
 
 namespace CSF.MicroDi.Tests.Integration
 {
-  [TestFixture]
+  [TestFixture,Parallelizable(ParallelScope.All)]
   public class FactoryRegistrationTests
   {
     [Test,AutoMoqData]
