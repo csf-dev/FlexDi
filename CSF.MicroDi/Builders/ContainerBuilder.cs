@@ -25,11 +25,13 @@ namespace CSF.MicroDi.Builders
 {
   public class ContainerBuilder : IContainerBuilder
   {
-    bool useNonPublicConstructors;
-    bool resolveUnregisteredTypes;
-    bool useInstanceCache;
-    bool throwOnCircularDependencies;
-    bool supportResolvingNamedInstanceDictionaries;
+    bool
+      useNonPublicConstructors,
+      resolveUnregisteredTypes,
+      useInstanceCache,
+      throwOnCircularDependencies,
+      supportResolvingNamedInstanceDictionaries,
+      selfRegisterAResolver;
     ICreatesResolvers resolverFactory;
 
     public IContainerBuilder DoNotUseNonPublicConstructors()
@@ -65,6 +67,17 @@ namespace CSF.MicroDi.Builders
     public IContainerBuilder UseInstanceCache(bool useInstanceCache = true)
     {
       this.useInstanceCache = useInstanceCache;
+      return this;
+    }
+
+    public IContainerBuilder DoNotSelfRegisterAResolver()
+    {
+      return SelfRegisterAResolver(false);
+    }
+
+    public IContainerBuilder SelfRegisterAResolver(bool selfRegisterAResolver = true)
+    {
+      this.selfRegisterAResolver = selfRegisterAResolver;
       return this;
     }
 
@@ -109,11 +122,12 @@ namespace CSF.MicroDi.Builders
 
     ContainerOptions GetContainerOptions()
     {
-      return new ContainerOptions(useNonPublicConstructors: useNonPublicConstructors,
-                                  resolveUnregisteredTypes: resolveUnregisteredTypes,
-                                  useInstanceCache: useInstanceCache,
-                                  throwOnCircularDependencies: throwOnCircularDependencies,
-                                  supportResolvingNamedInstanceDictionaries: supportResolvingNamedInstanceDictionaries);
+      return new ContainerOptions(useNonPublicConstructors,
+                                  resolveUnregisteredTypes,
+                                  useInstanceCache,
+                                  throwOnCircularDependencies,
+                                  supportResolvingNamedInstanceDictionaries,
+                                  selfRegisterAResolver);
     }
 
     public ContainerBuilder()
@@ -123,6 +137,7 @@ namespace CSF.MicroDi.Builders
       useInstanceCache = ContainerOptions.Default.UseInstanceCache;
       throwOnCircularDependencies = ContainerOptions.Default.ThrowOnCircularDependencies;
       supportResolvingNamedInstanceDictionaries = ContainerOptions.Default.SupportResolvingNamedInstanceDictionaries;
+      selfRegisterAResolver = ContainerOptions.Default.SelfRegisterAResolver;
     }
   }
 }
