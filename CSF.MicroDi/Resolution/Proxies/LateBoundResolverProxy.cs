@@ -21,7 +21,7 @@
 using System;
 using CSF.MicroDi.Registration;
 
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
   public class LateBoundResolverProxy : ResolverBase
   {
@@ -35,7 +35,7 @@ namespace CSF.MicroDi.Resolution
     public override ResolutionResult Resolve(ResolutionRequest request)
       => ProxiedResolver.Resolve(request);
 
-    public void ProvideProxiedResolver(IResolver proxiedResolver)
+    public void SetProxiedResolver(IResolver proxiedResolver)
     {
       if(proxiedResolver == null)
         throw new ArgumentNullException(nameof(proxiedResolver));

@@ -1,7 +1,7 @@
 ﻿//
-//    UnregisteredServiceResolverProxy.cs
+//    UnregisteredServiceResolverProxyFactory.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,40 +17,28 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
 using CSF.MicroDi.Registration;
 
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class UnregisteredServiceResolverProxy : ProxyingResolver
+  public class UnregisteredServiceResolverProxyFactory : ICreatesProxyingResolver
   {
     readonly IServiceRegistrationProvider unregisteredRegistrationProvider;
     readonly IResolvesRegistrations registrationResolver;
 
-    public override ResolutionResult Resolve(ResolutionRequest request)
+    public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
-      var output = ProxiedResolver.Resolve(request);
-      if(output.IsSuccess)
-        return output;
+      if(!resolutionInfo.Options.ResolveUnregisteredTypes)
+        return null;
 
-      var registration = unregisteredRegistrationProvider.Get(request);
-      return registrationResolver.Resolve(request, registration);
+      return new UnregisteredServiceResolverProxy(resolverToProxy,
+                                                  registrationResolver,
+                                                  unregisteredRegistrationProvider);
     }
 
-    public override IServiceRegistration GetRegistration(ResolutionRequest request)
-    {
-      var registration = base.GetRegistration(request);
-      if(registration != null)
-        return registration;
-
-      return unregisteredRegistrationProvider.Get(request);
-    }
-
-    public UnregisteredServiceResolverProxy(IResolver proxiedResolver,
-                                            IResolvesRegistrations registrationResolver,
-                                            IServiceRegistrationProvider unregisteredRegistrationProvider = null)
-      : base(proxiedResolver)
+    public UnregisteredServiceResolverProxyFactory(IResolvesRegistrations registrationResolver,
+                                                   IServiceRegistrationProvider unregisteredRegistrationProvider = null)
     {
       if(registrationResolver == null)
         throw new ArgumentNullException(nameof(registrationResolver));

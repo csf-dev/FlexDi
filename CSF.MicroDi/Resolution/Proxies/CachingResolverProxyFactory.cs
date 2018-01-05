@@ -1,7 +1,7 @@
 ﻿//
-//    BoDiResolverFactory.cs
+//    CachingResolverProxyFactory.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,22 +18,18 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
-using System.Collections.Generic;
-using CSF.MicroDi;
-using CSF.MicroDi.Resolution;
-using CSF.MicroDi.Resolution.Proxies;
-
-namespace BoDi.Internal
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class BoDiResolverFactory : ResolverFactory
+  public class CachingResolverProxyFactory : ICreatesProxyingResolver
   {
-    protected override void ConfigureResolverProxyFactories(IList<ICreatesProxyingResolver> factories,
-                                                            bool isInnermostResolver,
-                                                            IResolvesRegistrations coreResolver)
+    public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
-      base.ConfigureResolverProxyFactories(factories, isInnermostResolver, coreResolver);
+      if(!resolutionInfo.Options.UseInstanceCache)
+        return null;
+      if(resolutionInfo.Cache == null)
+        throw new ArgumentException("The cache provided by the resolution info must not be null.", nameof(resolutionInfo));
 
-      factories.Add(new DynamicRecursionResolverProxyFactory());
+      return new CachingResolverProxy(resolverToProxy, resolutionInfo.Cache);
     }
   }
 }

@@ -45,6 +45,7 @@
     <Compile Include="Internal\DynamicResolutionObjectContainerProxy.cs" />
     <Compile Include="Internal\DynamicRecursionResolverProxy.cs" />
     <Compile Include="Internal\BoDiMicroDiContainerFactory.cs" />
+    <Compile Include="Internal\DynamicRecursionResolverProxyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
