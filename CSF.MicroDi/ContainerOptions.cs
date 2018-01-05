@@ -31,14 +31,17 @@ namespace CSF.MicroDi
     public bool ThrowOnCircularDependencies { get; private set; }
     public bool SupportResolvingNamedInstanceDictionaries { get; private set; }
     public bool SelfRegisterAResolver { get; private set; }
+    public bool SelfRegisterTheRegistry { get; private set; }
 
     public ContainerOptions(bool useNonPublicConstructors = false,
                             bool resolveUnregisteredTypes = false,
                             bool useInstanceCache = true,
                             bool throwOnCircularDependencies = true,
                             bool supportResolvingNamedInstanceDictionaries = false,
-                            bool selfRegisterAResolver = true)
+                            bool selfRegisterAResolver = true,
+                            bool selfRegisterTheRegistry = false)
     {
+      SelfRegisterTheRegistry = selfRegisterTheRegistry;
       SelfRegisterAResolver = selfRegisterAResolver;
       UseNonPublicConstructors = useNonPublicConstructors;
       ResolveUnregisteredTypes = resolveUnregisteredTypes;

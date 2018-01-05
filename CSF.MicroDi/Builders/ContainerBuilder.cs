@@ -31,7 +31,8 @@ namespace CSF.MicroDi.Builders
       useInstanceCache,
       throwOnCircularDependencies,
       supportResolvingNamedInstanceDictionaries,
-      selfRegisterAResolver;
+      selfRegisterAResolver,
+      selfRegisterTheRegistry;
     ICreatesResolvers resolverFactory;
 
     public ContainerBuilder DoNotUseNonPublicConstructors()
@@ -75,9 +76,20 @@ namespace CSF.MicroDi.Builders
       return SelfRegisterAResolver(false);
     }
 
-    public ContainerBuilder SelfRegisterAResolver(bool selfRegisterAResolver = true)
+    public ContainerBuilder SelfRegisterAResolver(bool selfRegisterTheRegistry = true)
     {
-      this.selfRegisterAResolver = selfRegisterAResolver;
+      this.selfRegisterTheRegistry = selfRegisterTheRegistry;
+      return this;
+    }
+
+    public ContainerBuilder DoNotSelfRegisterTheRegistry()
+    {
+      return SelfRegisterTheRegistry(false);
+    }
+
+    public ContainerBuilder SelfRegisterTheRegistry(bool selfRegisterTheRegistry = true)
+    {
+      this.selfRegisterTheRegistry = selfRegisterTheRegistry;
       return this;
     }
 
@@ -138,6 +150,7 @@ namespace CSF.MicroDi.Builders
       throwOnCircularDependencies = ContainerOptions.Default.ThrowOnCircularDependencies;
       supportResolvingNamedInstanceDictionaries = ContainerOptions.Default.SupportResolvingNamedInstanceDictionaries;
       selfRegisterAResolver = ContainerOptions.Default.SelfRegisterAResolver;
+      selfRegisterTheRegistry = ContainerOptions.Default.SelfRegisterTheRegistry;
     }
   }
 }
