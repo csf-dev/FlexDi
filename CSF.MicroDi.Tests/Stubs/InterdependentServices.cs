@@ -39,4 +39,16 @@ namespace CSF.MicroDi.Tests.Stubs
   }
 
   public class ChildServiceTwo {}
+
+  public class ChildServiceWithCircularDependency : ChildServiceTwo
+  {
+    public ParentService Parent { get; set; }
+
+    public ChildServiceWithCircularDependency(ParentService parent)
+    {
+      if(parent == null)
+        throw new ArgumentNullException(nameof(parent));
+      Parent = parent;
+    }
+  }
 }

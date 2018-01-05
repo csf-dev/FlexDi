@@ -43,5 +43,18 @@ namespace CSF.MicroDi.Tests.Integration
       // Assert
       Assert.That(result.ChildOne.AProperty, Is.EqualTo(arbitraryString));
     }
+
+    [Test,AutoMoqData]
+    public void Should_raise_exception_for_circular_dependencies_in_dynamic_factory_resolutions([Container(ResolveUnregisteredTypes = true)] IContainer container)
+    {
+      // Arrange
+      container.AddRegistrations(x => {
+        x.RegisterType<ChildServiceWithCircularDependency>().As<ChildServiceTwo>();
+        x.RegisterFactory(c => new ParentService(c.Resolve<ChildServiceOne>(), c.Resolve<ChildServiceTwo>()));
+      });
+
+      // Act & assert
+      Assert.That(() => container.Resolve<ParentService>(), Throws.InstanceOf<CircularDependencyException>());
+    }
   }
 }
