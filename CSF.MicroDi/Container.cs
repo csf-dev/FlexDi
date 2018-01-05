@@ -316,11 +316,17 @@ namespace CSF.MicroDi
 
     void SelfRegisterAResolver()
     {
-      var registration = new InstanceRegistration(this) {
+      var resolverRegistration = new InstanceRegistration(this) {
         DisposeWithContainer = false,
         ServiceType = typeof(IResolvesServices),
       };
-      Registry.Add(registration);
+      Registry.Add(resolverRegistration);
+
+      var containerRegistration = new InstanceRegistration(this) {
+        DisposeWithContainer = false,
+        ServiceType = typeof(IContainer),
+      };
+      Registry.Add(containerRegistration);
     }
 
     void SelfRegisterTheRegistry()

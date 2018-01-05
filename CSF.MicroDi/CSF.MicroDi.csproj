@@ -116,6 +116,9 @@
     <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxyFactory.cs" />
     <Compile Include="Resolution\Proxies\NamedInstanceDictionaryResolverProxyFactory.cs" />
     <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\ServiceResolvingContainerProxy.cs" />
+    <Compile Include="Resolution\Proxies\DynamicResolutionResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

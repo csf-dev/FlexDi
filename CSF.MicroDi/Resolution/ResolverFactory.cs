@@ -79,6 +79,7 @@ namespace CSF.MicroDi.Resolution
       factories.Add(new CircularDependencyPreventingResolverProxyFactory());
       factories.Add(new RegisteredNameInjectingResolverProxyFactory());
       factories.Add(new NamedInstanceDictionaryResolverProxyFactory());
+      factories.Add(new DynamicRecursionResolverProxyFactory());
     }
 
     protected virtual Resolver GetCoreResolver(IProvidesResolutionInfo resolutionInfo,
