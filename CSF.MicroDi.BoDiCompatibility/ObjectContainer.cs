@@ -240,6 +240,7 @@ namespace BoDi
         .UseInstanceCache()
         .SupportResolvingNamedInstanceDictionaries()
         .UseCustomResolverFactory(new BoDiResolverFactory())
+        .DoNotSelfRegisterAResolver()
         .Build();
     }
 
