@@ -277,6 +277,8 @@ namespace CSF.MicroDi
       this.resolver = resolver ?? GetResolver(resolverFactory);
 
       this.resolver.ServiceResolved += InvokeServiceResolved;
+
+      PerformSelfRegistrations();
     }
 
     IResolver GetResolver(ICreatesResolvers resolverFactory)
@@ -290,11 +292,26 @@ namespace CSF.MicroDi
       return output;
     }
 
+    void PerformSelfRegistrations()
+    {
+      if(Options.SelfRegisterAResolver)
+        SelfRegisterAResolver();
+    }
+
+    void SelfRegisterAResolver()
+    {
+      var registration = new InstanceRegistration(this) {
+        DisposeWithContainer = false,
+        ServiceType = typeof(IResolvesServices),
+      };
+      Registry.Add(registration);
+    }
+
     #endregion
 
     #region static methods
 
-    public static IContainerBuilder CreateBuilder() => new ContainerBuilder();
+    public static ContainerBuilder CreateBuilder() => new ContainerBuilder();
 
     #endregion
   }
