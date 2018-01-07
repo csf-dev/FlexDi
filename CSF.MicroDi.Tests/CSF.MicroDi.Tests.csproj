@@ -57,6 +57,7 @@
     <Folder Include="Autofixture\" />
     <Folder Include="Resolution\" />
     <Folder Include="Integration\" />
+    <Folder Include="Builders\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Registration\RegistryTests.cs" />
@@ -72,6 +73,9 @@
     <Compile Include="ContainerTests.cs" />
     <Compile Include="Integration\FactoryRegistrationTests.cs" />
     <Compile Include="Autofixture\ContainerAttribute.cs" />
+    <Compile Include="Builders\RegistrationHelperTests.cs" />
+    <Compile Include="Autofixture\DefaultRegHelperAttribute.cs" />
+    <Compile Include="Stubs\GenericService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
