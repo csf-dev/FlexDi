@@ -4,7 +4,7 @@ _A small dependency injection container for .NET, inspired by [BoDi]._
 [BoDi]: https://github.com/gasparnagy/BoDi
 
 ## Quick start
-Far from a comprehensive guide, here's a code snippet which creates a container, registers a component and resolves it right away. Firstly of course, you will want **[the MicroDi NuGet package]**.
+Comprehensive documentation is available in [the MicroDi wiki]. This is some minimal sample code to create a container, register a component and resolve it right away. Firstly though, you will want **[the MicroDi NuGet package]**.
 
 ```csharp
 using CSF.MicroDi;
@@ -22,8 +22,6 @@ container.AddRegistrations(x => {
 
 var myService = container.Resolve<IServiceInterface>();
 ```
-
-Detailed documentation is available in [the MicroDi wiki].
 
 [the MicroDi wiki]: https://github.com/csf-dev/MicroDi/wiki
 [the MicroDi NuGet package]: https://www.nuget.org/packages/CSF.MicroDi
