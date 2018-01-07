@@ -52,6 +52,8 @@ namespace CSF.MicroDi
 
     public IProvidesResolutionInfo Parent => parentContainer as IProvidesResolutionInfo;
 
+    public ISelectsConstructor ConstructorSelector => constructorSelector;
+
     #endregion
 
     #region IResolvesServices implementation
@@ -271,6 +273,8 @@ namespace CSF.MicroDi
       this.parentContainer = parentContainer;
 
       this.options = GetContainerOptions(options, parentContainer);
+      constructorSelector = new ConstructorWithMostParametersSelector(this.options.UseNonPublicConstructors);
+
       this.registry = registry ?? new Registry();
       this.cache = cache ?? new ResolvedServiceCache();
       this.disposer = disposer ?? new ServiceInstanceDisposer();
@@ -278,8 +282,6 @@ namespace CSF.MicroDi
       this.resolver = resolver ?? GetResolver(resolverFactory);
 
       this.resolver.ServiceResolved += InvokeServiceResolved;
-
-      constructorSelector = new ConstructorWithMostParametersSelector(this.options.UseNonPublicConstructors);
 
       PerformSelfRegistrations();
     }

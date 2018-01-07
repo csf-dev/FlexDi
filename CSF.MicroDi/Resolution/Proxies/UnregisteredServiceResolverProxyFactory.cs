@@ -32,9 +32,18 @@ namespace CSF.MicroDi.Resolution.Proxies
       if(!resolutionInfo.Options.ResolveUnregisteredTypes)
         return null;
 
+      var provider = GetUnregisteredServiceRegistrationProvider(resolutionInfo);
+
       return new UnregisteredServiceResolverProxy(resolverToProxy,
                                                   registrationResolver,
-                                                  unregisteredRegistrationProvider);
+                                                  provider);
+    }
+
+    IServiceRegistrationProvider GetUnregisteredServiceRegistrationProvider(IProvidesResolutionInfo resolutionInfo)
+    {
+      if(unregisteredRegistrationProvider != null) return unregisteredRegistrationProvider;
+
+      return new ServiceWithoutRegistrationProvider(resolutionInfo.ConstructorSelector);
     }
 
     public UnregisteredServiceResolverProxyFactory(IResolvesRegistrations registrationResolver,
@@ -44,7 +53,7 @@ namespace CSF.MicroDi.Resolution.Proxies
         throw new ArgumentNullException(nameof(registrationResolver));
 
       this.registrationResolver = registrationResolver;
-      this.unregisteredRegistrationProvider = unregisteredRegistrationProvider ?? new ServiceWithoutRegistrationProvider();
+      this.unregisteredRegistrationProvider = unregisteredRegistrationProvider;
     }
   }
 }

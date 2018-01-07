@@ -51,8 +51,6 @@ namespace CSF.MicroDi.Registration
       base.AssertIsValid();
     }
 
-    public TypeRegistration(Type implementationType) : this(implementationType, null) {}
-
     public TypeRegistration(Type implementationType, ISelectsConstructor constructorSelector)
     {
       if(constructorSelector == null)

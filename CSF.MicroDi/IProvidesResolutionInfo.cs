@@ -33,5 +33,7 @@ namespace CSF.MicroDi
     ContainerOptions Options { get; }
 
     IProvidesResolutionInfo Parent { get; }
+
+    ISelectsConstructor ConstructorSelector { get; }
   }
 }
