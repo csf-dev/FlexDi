@@ -107,8 +107,8 @@ namespace CSF.MicroDi.Tests.Builders
       sut.RegisterType(typeof(SampleServiceImplementationOne));
 
       // Assert
-      Mock.Get(ctorSelector)
-          .Verify(x => x.SelectConstructor(typeof(SampleServiceImplementationOne)), Times.Once);
+      var matchingReg = (TypeRegistration) sut.GetRegistrations().FirstOrDefault(x => x is TypeRegistration);
+      Assert.That(matchingReg.ConstructorSelector, Is.SameAs(ctorSelector));
     }
 
     [Test,AutoMoqData]
