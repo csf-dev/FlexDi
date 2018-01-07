@@ -60,6 +60,7 @@ namespace CSF.MicroDi.Registration
 
       this.implementation = implementation;
       SetCacheable(true);
+      SetDispose(false);
     }
   }
 }

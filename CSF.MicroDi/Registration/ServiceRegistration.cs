@@ -62,6 +62,7 @@ namespace CSF.MicroDi.Registration
     }
 
     protected void SetCacheable(bool cacheable) => this.cacheable = cacheable;
+    protected void SetDispose(bool dispose) => this.disposeWithContainer = dispose;
 
     public ServiceRegistration()
     {
