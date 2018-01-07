@@ -28,5 +28,9 @@ namespace CSF.MicroDi.Builders
     IRegistrationOptionsBuilderWithCacheability NotCacheable();
 
     IRegistrationOptionsBuilderWithCacheability Cacheable(bool cacheable = true);
+
+    IRegistrationOptionsBuilderWithCacheability DoNotDisposeWithContainer();
+
+    IRegistrationOptionsBuilderWithCacheability DisposeWithContainer(bool disposeWithContainer = true);
   }
 }

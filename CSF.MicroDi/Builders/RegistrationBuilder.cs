@@ -100,6 +100,18 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
+    IRegistrationOptionsBuilderWithCacheability IRegistrationOptionsBuilderWithCacheability.DoNotDisposeWithContainer()
+    {
+      registration.DisposeWithContainer = false;
+      return this;
+    }
+
+    IRegistrationOptionsBuilderWithCacheability IRegistrationOptionsBuilderWithCacheability.DisposeWithContainer(bool disposeWithContainer)
+    {
+      registration.DisposeWithContainer = disposeWithContainer;
+      return this;
+    }
+
     public RegistrationBuilder(ServiceRegistration registration)
     {
       if(registration == null)
