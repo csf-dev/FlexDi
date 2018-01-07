@@ -74,7 +74,6 @@
     <Compile Include="Integration\FactoryRegistrationTests.cs" />
     <Compile Include="Autofixture\ContainerAttribute.cs" />
     <Compile Include="Builders\RegistrationHelperTests.cs" />
-    <Compile Include="Autofixture\DefaultRegHelperAttribute.cs" />
     <Compile Include="Stubs\GenericService.cs" />
   </ItemGroup>
   <ItemGroup>

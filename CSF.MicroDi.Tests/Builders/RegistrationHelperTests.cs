@@ -34,7 +34,7 @@ namespace CSF.MicroDi.Tests.Builders
   public class RegistrationHelperTests
   {
     [Test,AutoMoqData]
-    public void RegisterFactory_can_create_a_generic_factory_registration([DefaultRegHelper] RegistrationHelper sut)
+    public void RegisterFactory_can_create_a_generic_factory_registration(RegistrationHelper sut)
     {
       // Act
       sut.RegisterFactory(() => new SampleServiceImplementationOne());
@@ -47,7 +47,7 @@ namespace CSF.MicroDi.Tests.Builders
     }
 
     [Test,AutoMoqData]
-    public void RegisterFactory_can_create_a_nongeneric_factory_registration([DefaultRegHelper] RegistrationHelper sut)
+    public void RegisterFactory_can_create_a_nongeneric_factory_registration(RegistrationHelper sut)
     {
       // Act
       sut.RegisterFactory(new Func<SampleServiceImplementationOne>(() => new SampleServiceImplementationOne()),
@@ -61,7 +61,7 @@ namespace CSF.MicroDi.Tests.Builders
     }
 
     [Test,AutoMoqData]
-    public void RegisterType_generic_can_create_a_type_registration([DefaultRegHelper] RegistrationHelper sut)
+    public void RegisterType_generic_can_create_a_type_registration(RegistrationHelper sut)
     {
       // Act
       sut.RegisterType<SampleServiceImplementationOne>();
@@ -74,7 +74,7 @@ namespace CSF.MicroDi.Tests.Builders
     }
 
     [Test,AutoMoqData]
-    public void RegisterType_nongeneric_can_create_a_type_registration([DefaultRegHelper] RegistrationHelper sut)
+    public void RegisterType_nongeneric_can_create_a_type_registration(RegistrationHelper sut)
     {
       // Act
       sut.RegisterType(typeof(SampleServiceImplementationOne));
@@ -87,7 +87,7 @@ namespace CSF.MicroDi.Tests.Builders
     }
 
     [Test,AutoMoqData]
-    public void RegisterType_nongeneric_can_create_an_open_generic_type_registration([DefaultRegHelper] RegistrationHelper sut)
+    public void RegisterType_nongeneric_can_create_an_open_generic_type_registration(RegistrationHelper sut)
     {
       // Act
       sut.RegisterType(typeof(GenericService<>));
@@ -112,7 +112,7 @@ namespace CSF.MicroDi.Tests.Builders
     }
 
     [Test,AutoMoqData]
-    public void RegisterInstance_can_create_an_instance_registration([DefaultRegHelper] RegistrationHelper sut,
+    public void RegisterInstance_can_create_an_instance_registration(RegistrationHelper sut,
                                                                      SampleServiceImplementationOne instance)
     {
       // Act
@@ -127,7 +127,7 @@ namespace CSF.MicroDi.Tests.Builders
 
     [Test,AutoMoqData]
     [Description("The RegisterInstance method should use the object's actual type to perform the registration")]
-    public void RegisterInstance_uses_instance_actual_type([DefaultRegHelper] RegistrationHelper sut,
+    public void RegisterInstance_uses_instance_actual_type(RegistrationHelper sut,
                                                            SampleServiceImplementationOne instance)
     {
       // Act
@@ -142,7 +142,7 @@ namespace CSF.MicroDi.Tests.Builders
     }
 
     [Test,AutoMoqData]
-    public void RegisterInstance_raises_exception_if_instance_is_null([DefaultRegHelper] RegistrationHelper sut)
+    public void RegisterInstance_raises_exception_if_instance_is_null(RegistrationHelper sut)
     {
       // Act & assert
       Assert.That(() => sut.RegisterInstance(null), Throws.InstanceOf<ArgumentNullException>());
