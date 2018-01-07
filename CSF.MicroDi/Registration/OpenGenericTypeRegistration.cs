@@ -29,6 +29,8 @@ namespace CSF.MicroDi.Registration
     {
       if(!IsAssignableToGenericType(ImplementationType, ServiceType))
         throw new InvalidTypeRegistrationException($"Invalid {nameof(OpenGenericTypeRegistration)}; the implementation type: `{ImplementationType.FullName}' must derive from the service type: `{ServiceType.FullName}'.");
+      
+      AssertCachabilityAndDisposalAreValid();
     }
 
     // From https://stackoverflow.com/questions/74616/how-to-detect-if-type-is-another-generic-type/1075059#1075059

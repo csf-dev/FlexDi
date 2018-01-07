@@ -1,7 +1,7 @@
 ﻿//
-//    TypedRegistration.cs
+//    ServiceRegistrationTests.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,35 +17,26 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-namespace CSF.MicroDi.Registration
+using CSF.MicroDi.Tests.Autofixture;
+using NUnit.Framework;
+using Moq;
+using CSF.MicroDi.Registration;
+using CSF.MicroDi.Resolution;
+
+namespace CSF.MicroDi.Tests.Registration
 {
-  public abstract class TypedRegistration : ServiceRegistration
+  [TestFixture,Parallelizable(ParallelScope.All)]
+  public class ServiceRegistrationTests : ServiceRegistrationTestBase
   {
-    public abstract Type ImplementationType { get; }
+    protected override ServiceRegistration GetValidServiceRegistration() => new ServiceRegistrationStub();
 
-    public override Type ServiceType
+    class ServiceRegistrationStub : ServiceRegistration
     {
-      get {
-        var explicitType = base.ServiceType;
-        if(explicitType != null) return explicitType;
-        return ImplementationType;
+      public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request)
+      {
+        throw new NotImplementedException();
       }
-      set {
-        base.ServiceType = value;
-      }
-    }
-
-    public override bool MatchesKey(ServiceRegistrationKey key)
-    {
-      if(base.MatchesKey(key))
-        return true;
-      
-      if(key == null)
-        return false;
-
-      return key.ServiceType.IsAssignableFrom(ImplementationType) && Name == key.Name;
     }
   }
 }

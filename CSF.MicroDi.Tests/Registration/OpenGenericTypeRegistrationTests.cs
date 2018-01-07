@@ -1,7 +1,7 @@
 ﻿//
-//    TypeRegistrationTests.cs
+//    OpenGenericTypeRegistrationTests.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,9 +17,7 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using System.Collections;
 using CSF.MicroDi.Registration;
 using CSF.MicroDi.Resolution;
 using CSF.MicroDi.Tests.Autofixture;
@@ -30,19 +28,20 @@ using NUnit.Framework;
 namespace CSF.MicroDi.Tests.Registration
 {
   [TestFixture,Parallelizable(ParallelScope.All)]
-  public class TypeRegistrationTests : ServiceRegistrationTestBase
+  public class OpenGenericTypeRegistrationTests : ServiceRegistrationTestBase
   {
     [Test,AutoMoqData]
-    public void GetFactoryAdapter_uses_constructor_selector(ISelectsConstructor ctorSelector,
-                                                            ResolutionRequest request)
+    public void GetFactoryAdapter_uses_constructor_selector(ISelectsConstructor ctorSelector)
     {
       // Arrange
-      var type = typeof(SampleServiceWithConstructorParameters);
-      var sut = new TypeRegistration(type, ctorSelector);
-      var ctor = type.GetConstructor(new [] { typeof(string), typeof(string)});
+      var genericType = typeof(GenericService<>);
+      var closedType = typeof(GenericService<string>);
+      var sut = new OpenGenericTypeRegistration(genericType, ctorSelector);
+      var ctor = closedType.GetConstructor(Type.EmptyTypes);
       Mock.Get(ctorSelector)
-          .Setup(x => x.SelectConstructor(type))
+          .Setup(x => x.SelectConstructor(closedType))
           .Returns(ctor);
+      var request = new ResolutionRequest(closedType);
 
       // Act
       var result = sut.GetFactoryAdapter(request);
@@ -58,8 +57,8 @@ namespace CSF.MicroDi.Tests.Registration
     public void AssertIsValid_throws_exception_if_implementation_type_does_not_derive_from_service_type(ISelectsConstructor ctorSelector)
     {
       // Arrange
-      var sut = new TypeRegistration(typeof(SampleServiceImplementationOne), ctorSelector) {
-        ServiceType = typeof(IEnumerable),
+      var sut = new OpenGenericTypeRegistration(typeof(GenericService<>), ctorSelector) {
+        ServiceType = typeof(IOtherGenericService<>),
       };
 
       // Act & assert
@@ -70,8 +69,8 @@ namespace CSF.MicroDi.Tests.Registration
     public void AssertIsValid_does_not_throw_when_implementation_type_derives_from_service_type(ISelectsConstructor ctorSelector)
     {
       // Arrange
-      var sut = new TypeRegistration(typeof(SampleServiceImplementationOne), ctorSelector) {
-        ServiceType = typeof(ISampleService),
+      var sut = new OpenGenericTypeRegistration(typeof(GenericService<>), ctorSelector) {
+        ServiceType = typeof(IGenericService<>),
       };
 
       // Act & assert
@@ -82,8 +81,8 @@ namespace CSF.MicroDi.Tests.Registration
     public void AssertIsValid_does_not_throw_when_implementation_type_is_same_as_service_type(ISelectsConstructor ctorSelector)
     {
       // Arrange
-      var sut = new TypeRegistration(typeof(SampleServiceImplementationOne), ctorSelector) {
-        ServiceType = typeof(SampleServiceImplementationOne),
+      var sut = new OpenGenericTypeRegistration(typeof(GenericService<>), ctorSelector) {
+        ServiceType = typeof(GenericService<>),
       };
 
       // Act & assert
@@ -91,6 +90,6 @@ namespace CSF.MicroDi.Tests.Registration
     }
 
     protected override ServiceRegistration GetValidServiceRegistration()
-      => new TypeRegistration(typeof(SampleServiceImplementationOne), GetConstructorSelector());
+      => new OpenGenericTypeRegistration(typeof(GenericService<>), GetConstructorSelector());
   }
 }

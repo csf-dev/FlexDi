@@ -25,4 +25,10 @@ namespace CSF.MicroDi.Tests.Stubs
 
   public class GenericService<T> : IGenericService<T>
   { public void DoSomething(T input) => input?.ToString(); }
+
+  public interface IOtherGenericService<T>
+  { void DoSomethingElse(T input); }
+
+  public class OtherGenericService<T> : IOtherGenericService<T>
+  { public void DoSomethingElse(T input) => input?.ToString(); }
 }

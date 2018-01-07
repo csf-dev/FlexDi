@@ -35,7 +35,7 @@ namespace CSF.MicroDi.Tests.Registration
                                            [SampleService] IServiceRegistration registration)
     {
       // Act & assert
-      Assert.DoesNotThrow(() => sut.Add(registration));
+      Assert.That(() => sut.Add(registration), Throws.Nothing);
     }
 
     [Test,AutoMoqData]
@@ -47,7 +47,7 @@ namespace CSF.MicroDi.Tests.Registration
       sut.Add(registration1);
 
       // Act & assert
-      Assert.DoesNotThrow(() => sut.Add(registration2));
+      Assert.That(() => sut.Add(registration2), Throws.Nothing);
     }
 
 
@@ -59,7 +59,7 @@ namespace CSF.MicroDi.Tests.Registration
       sut.Add(registration);
 
       // Assert
-      Assert.DoesNotThrow(() => sut.Add(registration));
+      Assert.That(() => sut.Add(registration), Throws.Nothing);
     }
 
     [Test,AutoMoqData]

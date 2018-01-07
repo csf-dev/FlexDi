@@ -75,6 +75,10 @@
     <Compile Include="Autofixture\ContainerAttribute.cs" />
     <Compile Include="Builders\RegistrationHelperTests.cs" />
     <Compile Include="Stubs\GenericService.cs" />
+    <Compile Include="Registration\ServiceRegistrationTests.cs" />
+    <Compile Include="Registration\InstanceRegistrationTests.cs" />
+    <Compile Include="Registration\OpenGenericTypeRegistrationTests.cs" />
+    <Compile Include="Registration\ServiceRegistrationTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
