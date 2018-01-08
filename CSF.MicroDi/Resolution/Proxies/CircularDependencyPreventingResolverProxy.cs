@@ -37,7 +37,10 @@ namespace CSF.MicroDi.Resolution.Proxies
                                                      IDetectsCircularDependencies circularDependencyDetector)
       : base(proxiedResolver)
     {
-      this.circularDependencyDetector = circularDependencyDetector?? new CircularDependencyDetector();
+      if(circularDependencyDetector == null)
+        throw new ArgumentNullException(nameof(circularDependencyDetector));
+      
+      this.circularDependencyDetector = circularDependencyDetector;
     }
   }
 }
