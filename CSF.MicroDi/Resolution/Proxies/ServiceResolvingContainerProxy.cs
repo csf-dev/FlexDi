@@ -28,6 +28,8 @@ namespace CSF.MicroDi.Resolution.Proxies
     readonly IContainer proxiedResolver;
     readonly ResolutionPath resolutionPath;
 
+    public IContainer ProxiedResolver => proxiedResolver;
+
     public object Resolve(ResolutionRequest request)
     {
       return proxiedResolver.Resolve(new ResolutionRequest(request.ServiceType, request.Name, resolutionPath));

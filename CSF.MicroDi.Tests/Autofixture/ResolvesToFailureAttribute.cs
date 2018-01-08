@@ -26,7 +26,7 @@ using Ploeh.AutoFixture.NUnit3;
 
 namespace CSF.MicroDi.Tests.Autofixture
 {
-  public class NeverResolvesAttribute : CustomizeAttribute
+  public class ResolvesToFailureAttribute : CustomizeAttribute
   {
     public override ICustomization GetCustomization(ParameterInfo parameter)
     {

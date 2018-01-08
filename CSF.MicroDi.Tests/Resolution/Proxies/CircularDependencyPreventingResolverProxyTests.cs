@@ -33,7 +33,7 @@ namespace CSF.MicroDi.Tests.Resolution.Proxies
   {
     [Test,AutoMoqData]
     public void Resolve_calls_throw_on_circular_dependency_from_detector_service(IDetectsCircularDependencies detector,
-                                                                                 [NeverResolves] IResolver proxiedResolver,
+                                                                                 [ResolvesToFailure] IResolver proxiedResolver,
                                                                                  ResolutionPath path,
                                                                                  [Registration] IServiceRegistration registration)
     {

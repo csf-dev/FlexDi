@@ -82,7 +82,8 @@
     <Compile Include="Registration\StackOfRegistriesRegistrationProviderTests.cs" />
     <Compile Include="Resolution\Proxies\CachingResolverProxyTests.cs" />
     <Compile Include="Resolution\Proxies\CircularDependencyPreventingResolverProxyTests.cs" />
-    <Compile Include="Autofixture\NeverResolvesAttribute.cs" />
+    <Compile Include="Autofixture\ResolvesToFailureAttribute.cs" />
+    <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
