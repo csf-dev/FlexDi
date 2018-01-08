@@ -91,6 +91,9 @@ namespace CSF.MicroDi.Registration
 
       var candidates = (serviceTypeFilter != null)? provider.GetAll(serviceTypeFilter) : provider.GetAll();
 
+      if(candidates == null)
+        candidates = new IServiceRegistration[0];
+
       return (from registration in candidates
               let key = ServiceRegistrationKey.ForRegistration(registration)
               where !alreadyFound.Contains(key)

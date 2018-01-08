@@ -79,6 +79,7 @@
     <Compile Include="Registration\InstanceRegistrationTests.cs" />
     <Compile Include="Registration\OpenGenericTypeRegistrationTests.cs" />
     <Compile Include="Registration\ServiceRegistrationTestBase.cs" />
+    <Compile Include="Registration\StackOfRegistriesRegistrationProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
