@@ -34,18 +34,26 @@ namespace CSF.MicroDi.Tests.Autofixture
 
     public Type ServiceType { get; set; }
 
+    public bool Cacheable { get; set; }
+
     public override ICustomization GetCustomization(ParameterInfo parameter)
     {
       if(parameter.ParameterType != typeof(IServiceRegistration))
         return null;
       
-      return new SampleServiceCustomization(Name, ServiceType);
+      return new SampleServiceCustomization(Name, ServiceType, Cacheable);
+    }
+
+    public RegistrationAttribute()
+    {
+      Cacheable = true;
     }
 
     class SampleServiceCustomization : ICustomization
     {
       readonly string name;
       readonly Type type;
+      readonly bool cacheable;
 
       public void Customize(IFixture fixture)
       {
@@ -53,14 +61,16 @@ namespace CSF.MicroDi.Tests.Autofixture
           return c
             .FromFactory(() => Mock.Of<IServiceRegistration>())
             .Do(reg => {
-              Mock.Get(reg).SetupGet(x => x.ServiceType).Returns(typeof(ISampleService));
+              Mock.Get(reg).SetupGet(x => x.ServiceType).Returns(type);
               Mock.Get(reg).SetupGet(x => x.Name).Returns(name);
+              Mock.Get(reg).SetupGet(x => x.Cacheable).Returns(cacheable);
             });
         });
       }
 
-      public SampleServiceCustomization(string name, Type type)
+      public SampleServiceCustomization(string name, Type type, bool cacheable)
       {
+        this.cacheable = cacheable;
         this.type = type ?? typeof(ISampleService);
         this.name = name;
       }

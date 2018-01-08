@@ -58,6 +58,7 @@
     <Folder Include="Resolution\" />
     <Folder Include="Integration\" />
     <Folder Include="Builders\" />
+    <Folder Include="Resolution\Proxies\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Registration\RegistryTests.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Registration\OpenGenericTypeRegistrationTests.cs" />
     <Compile Include="Registration\ServiceRegistrationTestBase.cs" />
     <Compile Include="Registration\StackOfRegistriesRegistrationProviderTests.cs" />
+    <Compile Include="Resolution\Proxies\CachingResolverProxyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
