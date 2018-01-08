@@ -67,7 +67,6 @@
     <Compile Include="Registration\TypeRegistrationTests.cs" />
     <Compile Include="Resolution\ConstructorWithMostParametersSelectorTests.cs" />
     <Compile Include="Stubs\InterdependentServices.cs" />
-    <Compile Include="Autofixture\ParentServiceAttribute.cs" />
     <Compile Include="Resolution\ResolverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />
