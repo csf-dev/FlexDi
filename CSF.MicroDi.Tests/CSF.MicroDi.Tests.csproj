@@ -84,6 +84,7 @@
     <Compile Include="Resolution\Proxies\CircularDependencyPreventingResolverProxyTests.cs" />
     <Compile Include="Autofixture\ResolvesToFailureAttribute.cs" />
     <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyTests.cs" />
+    <Compile Include="Resolution\Proxies\FallbackResolverProxyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
