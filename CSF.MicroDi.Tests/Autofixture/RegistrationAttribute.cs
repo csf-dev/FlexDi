@@ -28,21 +28,24 @@ using Ploeh.AutoFixture.NUnit3;
 
 namespace CSF.MicroDi.Tests.Autofixture
 {
-  public class SampleServiceAttribute : CustomizeAttribute
+  public class RegistrationAttribute : CustomizeAttribute
   {
     public string Name { get; set; }
+
+    public Type ServiceType { get; set; }
 
     public override ICustomization GetCustomization(ParameterInfo parameter)
     {
       if(parameter.ParameterType != typeof(IServiceRegistration))
         return null;
       
-      return new SampleServiceCustomization(Name);
+      return new SampleServiceCustomization(Name, ServiceType);
     }
 
     class SampleServiceCustomization : ICustomization
     {
       readonly string name;
+      readonly Type type;
 
       public void Customize(IFixture fixture)
       {
@@ -56,8 +59,9 @@ namespace CSF.MicroDi.Tests.Autofixture
         });
       }
 
-      public SampleServiceCustomization(string name)
+      public SampleServiceCustomization(string name, Type type)
       {
+        this.type = type ?? typeof(ISampleService);
         this.name = name;
       }
     }
