@@ -1,5 +1,5 @@
 ﻿//
-//    NamedInstanceDictionaryResolverProxyFactory.cs
+//    IGenericDictionaryBuilderFactory.cs
 //
 //    Copyright 2018  Craig Fowler
 //
@@ -18,19 +18,17 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
-using CSF.MicroDi.Registration;
+using System.Collections;
 
 namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class NamedInstanceDictionaryResolverProxyFactory : ICreatesProxyingResolver
+  public interface IDictionaryFactory
   {
-    public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
-    {
-      if(!resolutionInfo.Options.SupportResolvingNamedInstanceDictionaries)
-        return null;
+    bool IsGenericDictionaryType(Type type);
 
-      var registryStack = new RegistryStackFactory().CreateRegistryStack(resolutionInfo);
-      return new NamedInstanceDictionaryResolverProxy(resolverToProxy, registryStack, new GenericDictionaryFactory());
-    }
+    Type GetKeyType(Type genericDictionaryType);
+    Type GetValueType(Type genericDictionaryType);
+
+    IDictionary Create(Type keyType, Type valueType);
   }
 }
