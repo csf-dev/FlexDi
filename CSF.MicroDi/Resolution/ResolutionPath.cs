@@ -100,6 +100,14 @@ namespace CSF.MicroDi.Resolution
       path.Push(nextRegistration);
     }
 
+    public ResolutionPath(IReadOnlyList<IServiceRegistration> registrations)
+    {
+      if(registrations == null)
+        throw new ArgumentNullException(nameof(registrations));
+
+      path = new Stack<IServiceRegistration>(registrations);
+    }
+
     public ResolutionPath(IServiceRegistration firstRegistration = null)
     {
       path = new Stack<IServiceRegistration>();
