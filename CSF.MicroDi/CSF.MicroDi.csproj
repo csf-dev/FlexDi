@@ -121,6 +121,7 @@
     <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyFactory.cs" />
     <Compile Include="Resolution\Proxies\IDictionaryFactory.cs" />
     <Compile Include="Resolution\Proxies\GenericDictionaryFactory.cs" />
+    <Compile Include="Resolution\ResolverFactoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
