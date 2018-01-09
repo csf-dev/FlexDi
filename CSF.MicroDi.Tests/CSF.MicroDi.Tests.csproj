@@ -88,6 +88,7 @@
     <Compile Include="Resolution\Proxies\GenericDictionaryFactoryTests.cs" />
     <Compile Include="Resolution\Proxies\NamedInstanceDictionaryResolverProxyTests.cs" />
     <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxyTests.cs" />
+    <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">

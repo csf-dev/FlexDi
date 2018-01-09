@@ -21,13 +21,11 @@ using System;
 using NUnit.Framework;
 using CSF.MicroDi.Resolution.Proxies;
 using CSF.MicroDi.Tests.Stubs;
-using System.Collections.Generic;
 using CSF.MicroDi.Tests.Autofixture;
 using CSF.MicroDi.Resolution;
 using Ploeh.AutoFixture.NUnit3;
 using Moq;
 using CSF.MicroDi.Registration;
-using System.Linq;
 
 namespace CSF.MicroDi.Tests.Resolution.Proxies
 {
