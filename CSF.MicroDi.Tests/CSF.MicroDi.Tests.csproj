@@ -90,6 +90,8 @@
     <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxyTests.cs" />
     <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxyTests.cs" />
     <Compile Include="Resolution\CircularDependencyDetectorTests.cs" />
+    <Compile Include="Resolution\InstanceCreatorTests.cs" />
+    <Compile Include="Autofixture\MockParamAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
