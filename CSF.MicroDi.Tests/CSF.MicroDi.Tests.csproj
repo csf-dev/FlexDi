@@ -57,21 +57,46 @@
     <Folder Include="Autofixture\" />
     <Folder Include="Resolution\" />
     <Folder Include="Integration\" />
+    <Folder Include="Builders\" />
+    <Folder Include="Resolution\Proxies\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Registration\RegistryTests.cs" />
     <Compile Include="Stubs\SampleService.cs" />
     <Compile Include="Autofixture\AutoMoqDataAttribute.cs" />
-    <Compile Include="Autofixture\SampleServiceAttribute.cs" />
+    <Compile Include="Autofixture\RegistrationAttribute.cs" />
     <Compile Include="Registration\TypeRegistrationTests.cs" />
     <Compile Include="Resolution\ConstructorWithMostParametersSelectorTests.cs" />
     <Compile Include="Stubs\InterdependentServices.cs" />
-    <Compile Include="Autofixture\ParentServiceAttribute.cs" />
     <Compile Include="Resolution\ResolverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />
     <Compile Include="Integration\FactoryRegistrationTests.cs" />
     <Compile Include="Autofixture\ContainerAttribute.cs" />
+    <Compile Include="Builders\RegistrationHelperTests.cs" />
+    <Compile Include="Stubs\GenericService.cs" />
+    <Compile Include="Registration\ServiceRegistrationTests.cs" />
+    <Compile Include="Registration\InstanceRegistrationTests.cs" />
+    <Compile Include="Registration\OpenGenericTypeRegistrationTests.cs" />
+    <Compile Include="Registration\ServiceRegistrationTestBase.cs" />
+    <Compile Include="Registration\StackOfRegistriesRegistrationProviderTests.cs" />
+    <Compile Include="Resolution\Proxies\CachingResolverProxyTests.cs" />
+    <Compile Include="Resolution\Proxies\CircularDependencyPreventingResolverProxyTests.cs" />
+    <Compile Include="Autofixture\ResolvesToFailureAttribute.cs" />
+    <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyTests.cs" />
+    <Compile Include="Resolution\Proxies\FallbackResolverProxyTests.cs" />
+    <Compile Include="Resolution\Proxies\GenericDictionaryFactoryTests.cs" />
+    <Compile Include="Resolution\Proxies\NamedInstanceDictionaryResolverProxyTests.cs" />
+    <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxyTests.cs" />
+    <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxyTests.cs" />
+    <Compile Include="Resolution\CircularDependencyDetectorTests.cs" />
+    <Compile Include="Resolution\InstanceCreatorTests.cs" />
+    <Compile Include="Autofixture\MockParamAttribute.cs" />
+    <Compile Include="Resolution\ResolutionPathTests.cs" />
+    <Compile Include="Resolution\ServiceInstanceDisposerTests.cs" />
+    <Compile Include="Resolution\ResolvedServiceCacheTests.cs" />
+    <Compile Include="Resolution\ResolverFactoryTests.cs" />
+    <Compile Include="Autofixture\MinimalInfoAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">

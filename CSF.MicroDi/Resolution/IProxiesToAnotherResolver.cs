@@ -1,7 +1,7 @@
 ﻿//
-//    IProvidesResolutionInfo.cs
+//    IProxiesToAnotherResolver.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,23 +17,11 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using CSF.MicroDi.Registration;
-using CSF.MicroDi.Resolution;
-
-namespace CSF.MicroDi
+namespace CSF.MicroDi.Resolution
 {
-  public interface IProvidesResolutionInfo
+  public interface IProxiesToAnotherResolver : IResolver
   {
-    ICachesResolvedServiceInstances Cache { get; }
-
-    IRegistersServices Registry { get; }
-
-    ContainerOptions Options { get; }
-
-    IProvidesResolutionInfo Parent { get; }
-
-    ISelectsConstructor ConstructorSelector { get; }
+    IResolver ProxiedResolver { get; }
   }
 }

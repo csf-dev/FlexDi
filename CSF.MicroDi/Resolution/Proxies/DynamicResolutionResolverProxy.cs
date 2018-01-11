@@ -36,9 +36,6 @@ namespace CSF.MicroDi.Resolution.Proxies
         return result;
 
       var container = (IContainer) result.ResolvedObject;
-      if(container is ServiceResolvingContainerProxy)
-        return result;
-
       var dynamicContainer = new ServiceResolvingContainerProxy(container, request.ResolutionPath);
       var registration = GetFakeContainerRegistration(dynamicContainer, request.Name);
 

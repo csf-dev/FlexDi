@@ -1,7 +1,7 @@
 ﻿//
-//    IProvidesResolutionInfo.cs
+//    GenericService.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,23 +17,18 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using CSF.MicroDi.Registration;
-using CSF.MicroDi.Resolution;
-
-namespace CSF.MicroDi
+namespace CSF.MicroDi.Tests.Stubs
 {
-  public interface IProvidesResolutionInfo
-  {
-    ICachesResolvedServiceInstances Cache { get; }
+  public interface IGenericService<T>
+  { void DoSomething(T input); }
 
-    IRegistersServices Registry { get; }
+  public class GenericService<T> : IGenericService<T>
+  { public void DoSomething(T input) => input?.ToString(); }
 
-    ContainerOptions Options { get; }
+  public interface IOtherGenericService<T>
+  { void DoSomethingElse(T input); }
 
-    IProvidesResolutionInfo Parent { get; }
-
-    ISelectsConstructor ConstructorSelector { get; }
-  }
+  public class OtherGenericService<T> : IOtherGenericService<T>
+  { public void DoSomethingElse(T input) => input?.ToString(); }
 }

@@ -32,39 +32,39 @@ namespace CSF.MicroDi.Tests.Registration
   {
     [Test,AutoMoqData]
     public void Add_can_add_a_registration(Registry sut,
-                                           [SampleService] IServiceRegistration registration)
+                                           [Registration] IServiceRegistration registration)
     {
       // Act & assert
-      Assert.DoesNotThrow(() => sut.Add(registration));
+      Assert.That(() => sut.Add(registration), Throws.Nothing);
     }
 
     [Test,AutoMoqData]
     public void Add_can_add_two_differently_named_registrations(Registry sut,
-                                                                [SampleService(Name = "one")] IServiceRegistration registration1,
-                                                                [SampleService(Name = "two")] IServiceRegistration registration2)
+                                                                [Registration(Name = "one")] IServiceRegistration registration1,
+                                                                [Registration(Name = "two")] IServiceRegistration registration2)
     {
       // Arrange
       sut.Add(registration1);
 
       // Act & assert
-      Assert.DoesNotThrow(() => sut.Add(registration2));
+      Assert.That(() => sut.Add(registration2), Throws.Nothing);
     }
 
 
     [Test,AutoMoqData]
     public void Add_does_not_raise_an_exception_when_adding_the_same_registration_twice(Registry sut,
-                                                                                        [SampleService] IServiceRegistration registration)
+                                                                                        [Registration] IServiceRegistration registration)
     {
       // Act
       sut.Add(registration);
 
       // Assert
-      Assert.DoesNotThrow(() => sut.Add(registration));
+      Assert.That(() => sut.Add(registration), Throws.Nothing);
     }
 
     [Test,AutoMoqData]
     public void Contains_returns_true_when_a_registration_has_been_added(Registry sut,
-                                                                         [SampleService] IServiceRegistration registration)
+                                                                         [Registration] IServiceRegistration registration)
     {
       // Arrange
       sut.Add(registration);
@@ -78,7 +78,7 @@ namespace CSF.MicroDi.Tests.Registration
 
     [Test,AutoMoqData]
     public void Contains_returns_false_when_a_registration_has_not_been_added(Registry sut,
-                                                                              [SampleService] IServiceRegistration registration)
+                                                                              [Registration] IServiceRegistration registration)
     {
       // Act
       var result = sut.Contains(ServiceRegistrationKey.ForRegistration(registration));
@@ -89,7 +89,7 @@ namespace CSF.MicroDi.Tests.Registration
 
     [Test,AutoMoqData]
     public void Get_returns_a_registration_which_has_been_added(Registry sut,
-                                                                [SampleService] IServiceRegistration registration)
+                                                                [Registration] IServiceRegistration registration)
     {
       // Arrange
       sut.Add(registration);
@@ -103,7 +103,7 @@ namespace CSF.MicroDi.Tests.Registration
 
     [Test,AutoMoqData]
     public void Get_returns_null_for_a_registration_which_has_not_been_added(Registry sut,
-                                                                             [SampleService] IServiceRegistration registration)
+                                                                             [Registration] IServiceRegistration registration)
 
     {
       // Act
@@ -115,9 +115,9 @@ namespace CSF.MicroDi.Tests.Registration
 
     [Test,AutoMoqData]
     public void GetAll_can_return_multiple_matching_registrations(Registry sut,
-                                                                  [SampleService(Name = "one")] IServiceRegistration registration1,
-                                                                  [SampleService(Name = "two")] IServiceRegistration registration2,
-                                                                  [SampleService(Name = "three")] IServiceRegistration registration3)
+                                                                  [Registration(Name = "one")] IServiceRegistration registration1,
+                                                                  [Registration(Name = "two")] IServiceRegistration registration2,
+                                                                  [Registration(Name = "three")] IServiceRegistration registration3)
     {
       // Arrange
       sut.Add(registration1);

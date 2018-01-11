@@ -58,7 +58,7 @@ namespace CSF.MicroDi.Builders
     public IRegistrationOptionsBuilderWithCacheability Cacheable(bool cacheable = true)
     {
       registration.Cacheable = cacheable;
-      registration.DisposeWithContainer = cacheable;
+      if(!registration.Cacheable) registration.DisposeWithContainer = false;
       return this;
     }
 

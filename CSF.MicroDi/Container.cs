@@ -38,6 +38,7 @@ namespace CSF.MicroDi
     readonly IDisposesOfResolvedInstances disposer;
     readonly ContainerOptions options;
     readonly IContainer parentContainer;
+    readonly ISelectsConstructor constructorSelector;
 
     #endregion
 
@@ -50,6 +51,8 @@ namespace CSF.MicroDi
     public ContainerOptions Options => options;
 
     public IProvidesResolutionInfo Parent => parentContainer as IProvidesResolutionInfo;
+
+    public ISelectsConstructor ConstructorSelector => constructorSelector;
 
     #endregion
 
@@ -198,7 +201,7 @@ namespace CSF.MicroDi
 
       AssertNotDisposed();
 
-      var helper = new RegistrationHelper(options.UseNonPublicConstructors);
+      var helper = new RegistrationHelper(constructorSelector);
       registrationActions(helper);
 
       AddRegistrations(helper.GetRegistrations());
@@ -270,6 +273,8 @@ namespace CSF.MicroDi
       this.parentContainer = parentContainer;
 
       this.options = GetContainerOptions(options, parentContainer);
+      constructorSelector = new ConstructorWithMostParametersSelector(this.options.UseNonPublicConstructors);
+
       this.registry = registry ?? new Registry();
       this.cache = cache ?? new ResolvedServiceCache();
       this.disposer = disposer ?? new ServiceInstanceDisposer();

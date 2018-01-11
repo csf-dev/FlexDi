@@ -30,7 +30,7 @@ namespace CSF.MicroDi.Resolution.Proxies
         return null;
 
       var registryStack = new RegistryStackFactory().CreateRegistryStack(resolutionInfo);
-      return new NamedInstanceDictionaryResolverProxy(resolverToProxy, registryStack);
+      return new NamedInstanceDictionaryResolverProxy(resolverToProxy, registryStack, new GenericDictionaryFactory());
     }
   }
 }

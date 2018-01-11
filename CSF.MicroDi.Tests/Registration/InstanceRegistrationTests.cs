@@ -1,7 +1,7 @@
 ﻿//
-//    TypedRegistration.cs
+//    InstanceRegistrationTests.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,35 +17,25 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-namespace CSF.MicroDi.Registration
+using CSF.MicroDi.Registration;
+using NUnit.Framework;
+
+namespace CSF.MicroDi.Tests.Registration
 {
-  public abstract class TypedRegistration : ServiceRegistration
+  [TestFixture,Parallelizable(ParallelScope.All)]
+  public class InstanceRegistrationTests : ServiceRegistrationTestBase
   {
-    public abstract Type ImplementationType { get; }
-
-    public override Type ServiceType
+    [Test]
+    public void Cacheable_throws_an_exception_if_set_to_false()
     {
-      get {
-        var explicitType = base.ServiceType;
-        if(explicitType != null) return explicitType;
-        return ImplementationType;
-      }
-      set {
-        base.ServiceType = value;
-      }
+      // Arrange
+      var sut = GetValidServiceRegistration();
+
+      // Act & assert
+      Assert.That(() => sut.Cacheable = false, Throws.InstanceOf<ArgumentException>());
     }
 
-    public override bool MatchesKey(ServiceRegistrationKey key)
-    {
-      if(base.MatchesKey(key))
-        return true;
-      
-      if(key == null)
-        return false;
-
-      return key.ServiceType.IsAssignableFrom(ImplementationType) && Name == key.Name;
-    }
+    protected override ServiceRegistration GetValidServiceRegistration() => new InstanceRegistration(new object());
   }
 }

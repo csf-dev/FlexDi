@@ -24,50 +24,11 @@ using CSF.MicroDi.Resolution.Proxies;
 
 namespace CSF.MicroDi.Resolution
 {
-  public class ResolverFactory : ICreatesResolvers
+  public class ResolverFactory : ResolverFactoryBase
   {
-    public virtual IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo)
-    {
-      return CreateResolver(resolutionInfo, true);
-    }
-
-    protected virtual IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo, bool isInnermostResolver)
-    {
-      AssertResolutionInfoIsValid(resolutionInfo);
-
-      var lateBoundProxy = new LateBoundResolverProxy();
-
-      var coreResolver = GetCoreResolver(resolutionInfo, lateBoundProxy);
-      var proxiedResolver = WrapWithConfiguredProxies(coreResolver, isInnermostResolver, resolutionInfo);
-
-      lateBoundProxy.SetProxiedResolver(proxiedResolver);
-
-      return lateBoundProxy;
-    }
-
-    protected virtual IResolver WrapWithConfiguredProxies(Resolver coreResolver,
-                                                          bool isInnermostResolver,
-                                                          IProvidesResolutionInfo resolutionInfo)
-    {
-      var proxyFactories = new List<ICreatesProxyingResolver>();
-      ConfigureResolverProxyFactories(proxyFactories, isInnermostResolver, coreResolver);
-
-      IResolver currentResolver = coreResolver;
-
-      foreach(var proxyFactory in proxyFactories)
-      {
-        var proxy = proxyFactory.Create(resolutionInfo, currentResolver);
-
-        if(proxy != null)
-          currentResolver = proxy;
-      }
-
-      return currentResolver;
-    }
-
-    protected virtual void ConfigureResolverProxyFactories(IList<ICreatesProxyingResolver> factories,
-                                                           bool isInnermostResolver,
-                                                           IResolvesRegistrations coreResolver)
+    protected override void ConfigureResolverProxyFactories(IList<ICreatesProxyingResolver> factories,
+                                                            bool isInnermostResolver,
+                                                            IResolvesRegistrations coreResolver)
     {
       factories.Add(new CachingResolverProxyFactory());
       factories.Add(new FallbackToParentResolverProxyFactory(r => CreateResolver(r, false)));
@@ -80,23 +41,6 @@ namespace CSF.MicroDi.Resolution
       factories.Add(new RegisteredNameInjectingResolverProxyFactory());
       factories.Add(new NamedInstanceDictionaryResolverProxyFactory());
       factories.Add(new DynamicRecursionResolverProxyFactory());
-    }
-
-    protected virtual Resolver GetCoreResolver(IProvidesResolutionInfo resolutionInfo,
-                                               IResolver outermostResolver)
-    {
-      var instanceCreator = new InstanceCreator(outermostResolver);
-      return new Resolver(resolutionInfo.Registry, instanceCreator);
-    }
-
-    protected virtual void AssertResolutionInfoIsValid(IProvidesResolutionInfo resolutionInfo)
-    {
-      if(resolutionInfo == null)
-        throw new ArgumentNullException(nameof(resolutionInfo));
-      if(resolutionInfo.Registry == null)
-        throw new ArgumentException("The registry provided by the resolution info must not be null.", nameof(resolutionInfo));
-      if(resolutionInfo.Options == null)
-        throw new ArgumentException("The options provided by the resolution info must not be null.", nameof(resolutionInfo));
     }
   }
 }

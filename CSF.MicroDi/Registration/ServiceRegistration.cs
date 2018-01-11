@@ -49,6 +49,11 @@ namespace CSF.MicroDi.Registration
 
     public virtual void AssertIsValid()
     {
+      AssertCachabilityAndDisposalAreValid();
+    }
+
+    protected void AssertCachabilityAndDisposalAreValid()
+    {
       if(!Cacheable && DisposeWithContainer)
         throw new InvalidRegistrationException($"A registration may not have {nameof(DisposeWithContainer)} set to {Boolean.TrueString} if {nameof(Cacheable)} is {Boolean.FalseString}.");
     }

@@ -87,9 +87,12 @@ namespace CSF.MicroDi.Resolution.Proxies
     }
 
     public CachingResolverProxy(IResolver proxiedResolver,
-                                ICachesResolvedServiceInstances cache = null) : base(proxiedResolver)
+                                ICachesResolvedServiceInstances cache) : base(proxiedResolver)
     {
-      this.cache = cache ?? new ResolvedServiceCache();
+      if(cache == null)
+        throw new ArgumentNullException(nameof(cache));
+      
+      this.cache = cache;
     }
   }
 }

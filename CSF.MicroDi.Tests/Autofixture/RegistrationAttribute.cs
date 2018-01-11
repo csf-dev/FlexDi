@@ -1,5 +1,5 @@
 ﻿//
-//    ParentServiceAttribute.cs
+//    SampleServiceAttribute.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -21,7 +21,6 @@
 using System;
 using System.Reflection;
 using CSF.MicroDi.Registration;
-using CSF.MicroDi.Resolution;
 using CSF.MicroDi.Tests.Stubs;
 using Moq;
 using Ploeh.AutoFixture;
@@ -29,21 +28,32 @@ using Ploeh.AutoFixture.NUnit3;
 
 namespace CSF.MicroDi.Tests.Autofixture
 {
-  public class ParentServiceAttribute : CustomizeAttribute
+  public class RegistrationAttribute : CustomizeAttribute
   {
     public string Name { get; set; }
+
+    public Type ServiceType { get; set; }
+
+    public bool Cacheable { get; set; }
 
     public override ICustomization GetCustomization(ParameterInfo parameter)
     {
       if(parameter.ParameterType != typeof(IServiceRegistration))
         return null;
       
-      return new SampleServiceCustomization(Name);
+      return new SampleServiceCustomization(Name, ServiceType, Cacheable);
+    }
+
+    public RegistrationAttribute()
+    {
+      Cacheable = true;
     }
 
     class SampleServiceCustomization : ICustomization
     {
       readonly string name;
+      readonly Type type;
+      readonly bool cacheable;
 
       public void Customize(IFixture fixture)
       {
@@ -51,14 +61,17 @@ namespace CSF.MicroDi.Tests.Autofixture
           return c
             .FromFactory(() => Mock.Of<IServiceRegistration>())
             .Do(reg => {
-              Mock.Get(reg).SetupGet(x => x.ServiceType).Returns(typeof(ParentService));
+              Mock.Get(reg).SetupGet(x => x.ServiceType).Returns(type);
               Mock.Get(reg).SetupGet(x => x.Name).Returns(name);
+              Mock.Get(reg).SetupGet(x => x.Cacheable).Returns(cacheable);
             });
         });
       }
 
-      public SampleServiceCustomization(string name)
+      public SampleServiceCustomization(string name, Type type, bool cacheable)
       {
+        this.cacheable = cacheable;
+        this.type = type ?? typeof(ISampleService);
         this.name = name;
       }
     }

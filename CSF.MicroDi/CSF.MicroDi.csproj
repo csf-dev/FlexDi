@@ -119,6 +119,10 @@
     <Compile Include="Resolution\Proxies\ServiceResolvingContainerProxy.cs" />
     <Compile Include="Resolution\Proxies\DynamicResolutionResolverProxy.cs" />
     <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\IDictionaryFactory.cs" />
+    <Compile Include="Resolution\Proxies\GenericDictionaryFactory.cs" />
+    <Compile Include="Resolution\ResolverFactoryBase.cs" />
+    <Compile Include="Resolution\IProxiesToAnotherResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
