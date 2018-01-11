@@ -94,6 +94,7 @@
     <Compile Include="Autofixture\MockParamAttribute.cs" />
     <Compile Include="Resolution\ResolutionPathTests.cs" />
     <Compile Include="Resolution\ServiceInstanceDisposerTests.cs" />
+    <Compile Include="Resolution\ResolvedServiceCacheTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
