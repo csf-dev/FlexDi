@@ -66,7 +66,7 @@ namespace CSF.MicroDi
 
       object output;
       if(!TryResolve(typeof(T), name, out output))
-        throw new ResolutionException($"The service type `{typeof(T).FullName}' could be resolved");
+        throw new ResolutionException($"The service type `{typeof(T).FullName}' could not be resolved");
       return (T) output;
     }
 
