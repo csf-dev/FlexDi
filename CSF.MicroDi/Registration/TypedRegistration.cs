@@ -25,6 +25,18 @@ namespace CSF.MicroDi.Registration
   {
     public abstract Type ImplementationType { get; }
 
+    public override Type ServiceType
+    {
+      get {
+        var explicitType = base.ServiceType;
+        if(explicitType != null) return explicitType;
+        return ImplementationType;
+      }
+      set {
+        base.ServiceType = value;
+      }
+    }
+
     public override bool MatchesKey(ServiceRegistrationKey key)
     {
       if(base.MatchesKey(key))

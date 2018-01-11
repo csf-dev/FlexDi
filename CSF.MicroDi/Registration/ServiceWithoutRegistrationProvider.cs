@@ -26,6 +26,8 @@ namespace CSF.MicroDi.Registration
 {
   public class ServiceWithoutRegistrationProvider : IServiceRegistrationProvider
   {
+    readonly ISelectsConstructor constructorSelector;
+
     public virtual bool CanFulfilRequest(ResolutionRequest request)
     {
       if(request == null)
@@ -39,7 +41,7 @@ namespace CSF.MicroDi.Registration
       if(request == null)
         throw new ArgumentNullException(nameof(request));
       
-      return new TypeRegistration(request.ServiceType) {
+      return new TypeRegistration(request.ServiceType, constructorSelector) {
         Name = request.Name,
         ServiceType = request.ServiceType,
         Cacheable = true
@@ -73,6 +75,14 @@ namespace CSF.MicroDi.Registration
         throw new ArgumentNullException(nameof(registration));
 
       return true;
+    }
+
+    public ServiceWithoutRegistrationProvider(ISelectsConstructor constructorSelector)
+    {
+      if(constructorSelector == null)
+        throw new ArgumentNullException(nameof(constructorSelector));
+
+      this.constructorSelector = constructorSelector;
     }
   }
 }

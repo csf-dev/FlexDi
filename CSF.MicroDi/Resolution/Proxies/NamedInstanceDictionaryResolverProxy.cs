@@ -20,17 +20,14 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using CSF.MicroDi.Registration;
 
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
   public class NamedInstanceDictionaryResolverProxy : ProxyingResolver
   {
-    static readonly Type
-      DictionaryOpenGenericInterface = typeof(IDictionary<,>),
-      DictionaryOpenGenericType = typeof(Dictionary<,>);
     readonly IServiceRegistrationProvider registrationAccessor;
+    readonly IDictionaryFactory dictionaryFactory;
 
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
@@ -45,25 +42,20 @@ namespace CSF.MicroDi.Resolution
 
     bool IsRequestForNamedInstanceDictionary(ResolutionRequest request)
     {
-      if(!request.ServiceType.IsGenericType)
-        return false;
-      
-      var requestGenericTypeDefinition = request.ServiceType.GetGenericTypeDefinition();
-      if(requestGenericTypeDefinition != DictionaryOpenGenericInterface)
+      if(!dictionaryFactory.IsGenericDictionaryType(request.ServiceType))
         return false;
 
-      var keyType = request.ServiceType.GetGenericArguments()[0];
+      var keyType = dictionaryFactory.GetKeyType(request.ServiceType);
       return (keyType == typeof(string) || keyType.IsEnum);
     }
 
     ResolutionResult ResolveNamedInstanceDictionary(ResolutionRequest request)
     {
-      var genericArgs = request.ServiceType.GetGenericArguments();
-      var nameType = genericArgs[0];
-      var serviceType = genericArgs[1];
+      var keyType = dictionaryFactory.GetKeyType(request.ServiceType);
+      var valueType = dictionaryFactory.GetValueType(request.ServiceType);
+      var dictionary = dictionaryFactory.Create(keyType, valueType);
 
-      var allServiceTypeRegistrations = registrationAccessor.GetAll(serviceType);
-      var dictionary = CreateDictionary(nameType, serviceType);
+      var allServiceTypeRegistrations = registrationAccessor.GetAll(valueType);
 
       foreach(var registration in allServiceTypeRegistrations)
       {
@@ -74,7 +66,7 @@ namespace CSF.MicroDi.Resolution
           continue;
         }
 
-        var dictionaryKey = ConvertToNameType(registration.Name, nameType);
+        var dictionaryKey = ConvertToNameType(registration.Name, keyType);
         dictionary.Add(dictionaryKey, serviceResult.ResolvedObject);
       }
 
@@ -87,13 +79,6 @@ namespace CSF.MicroDi.Resolution
     {
       var subRequest = new ResolutionRequest(registration.ServiceType, registration.Name, request.ResolutionPath);
       return ProxiedResolver.Resolve(subRequest);
-    }
-
-    IDictionary CreateDictionary(Type nameType, Type serviceType)
-    {
-      var dictionaryConcreteType = DictionaryOpenGenericType.MakeGenericType(nameType, serviceType);
-      var dictionaryInstance = Activator.CreateInstance(dictionaryConcreteType);
-      return (IDictionary) dictionaryInstance;
     }
 
     object ConvertToNameType(string registeredName, Type nameType)
@@ -116,12 +101,16 @@ namespace CSF.MicroDi.Resolution
       => new InstanceRegistration(dictionary) { ServiceType = serviceType };
 
     public NamedInstanceDictionaryResolverProxy(IResolver proxiedResolver,
-                                                IServiceRegistrationProvider registrationAccessor) : base(proxiedResolver)
+                                                IServiceRegistrationProvider registrationAccessor,
+                                                IDictionaryFactory dictionaryFactory) : base(proxiedResolver)
     {
+      if(dictionaryFactory == null)
+        throw new ArgumentNullException(nameof(dictionaryFactory));
       if(registrationAccessor == null)
         throw new ArgumentNullException(nameof(registrationAccessor));
 
       this.registrationAccessor = registrationAccessor;
+      this.dictionaryFactory = dictionaryFactory;
     }
   }
 }

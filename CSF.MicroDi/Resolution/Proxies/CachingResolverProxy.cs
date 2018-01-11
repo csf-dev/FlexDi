@@ -21,7 +21,7 @@
 using System;
 using CSF.MicroDi.Registration;
 
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
   public class CachingResolverProxy : ProxyingResolver
   {
@@ -87,9 +87,12 @@ namespace CSF.MicroDi.Resolution
     }
 
     public CachingResolverProxy(IResolver proxiedResolver,
-                                ICachesResolvedServiceInstances cache = null) : base(proxiedResolver)
+                                ICachesResolvedServiceInstances cache) : base(proxiedResolver)
     {
-      this.cache = cache ?? new ResolvedServiceCache();
+      if(cache == null)
+        throw new ArgumentNullException(nameof(cache));
+      
+      this.cache = cache;
     }
   }
 }

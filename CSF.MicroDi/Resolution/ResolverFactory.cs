@@ -19,120 +19,28 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
-using CSF.MicroDi.Registration;
+using System.Collections.Generic;
+using CSF.MicroDi.Resolution.Proxies;
 
 namespace CSF.MicroDi.Resolution
 {
-  public class ResolverFactory : ICreatesResolvers
+  public class ResolverFactory : ResolverFactoryBase
   {
-    public virtual IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo)
+    protected override void ConfigureResolverProxyFactories(IList<ICreatesProxyingResolver> factories,
+                                                            bool isInnermostResolver,
+                                                            IResolvesRegistrations coreResolver)
     {
-      return CreateResolver(resolutionInfo, isInnermostResolver: true);
-    }
-
-    protected virtual IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo, bool isInnermostResolver)
-    {
-      AssertResolutionInfoIsValid(resolutionInfo);
-
-      var output = new LateBoundResolverProxy();
-
-      var coreResolver = GetCoreResolver(resolutionInfo, output);
-      IResolver currentResolver = coreResolver;
-
-      currentResolver = GetCachingResolver(resolutionInfo, currentResolver) ?? currentResolver;
-      currentResolver = GetParentResolver(resolutionInfo, currentResolver) ?? currentResolver;
+      factories.Add(new CachingResolverProxyFactory());
+      factories.Add(new FallbackToParentResolverProxyFactory(r => CreateResolver(r, false)));
 
       // Only the innermost resolver (the most deeply nested) can resolve unregistered services
       if(isInnermostResolver)
-        currentResolver = GetUnregisteredServiceResolver(resolutionInfo, currentResolver, coreResolver) ?? currentResolver;
+        factories.Add(new UnregisteredServiceResolverProxyFactory(coreResolver));
 
-      currentResolver = GetCircularDependencyProtectingResolver(resolutionInfo, currentResolver) ?? currentResolver;
-      currentResolver = GetRegisteredNameInjectingResolver(currentResolver) ?? currentResolver;
-      currentResolver = GetNamedInstanceDictionaryResolver(resolutionInfo, currentResolver) ?? currentResolver;
-
-      output.ProvideProxiedResolver(currentResolver);
-
-      return output;
-    }
-
-    protected virtual Resolver GetCoreResolver(IProvidesResolutionInfo resolutionInfo,
-                             IResolver outermostResolver)
-    {
-      var instanceCreator = new InstanceCreator(outermostResolver);
-      return new Resolver(resolutionInfo.Registry, instanceCreator);
-    }
-
-    protected virtual IResolver GetCachingResolver(IProvidesResolutionInfo resolutionInfo,
-                                 IResolver resolverToProxy)
-    {
-      if(!resolutionInfo.Options.UseInstanceCache)
-        return null;
-      if(resolutionInfo.Cache == null)
-        throw new ArgumentException("The cache provided by the resolution info must not be null.", nameof(resolutionInfo));
-
-      return new CachingResolverProxy(resolverToProxy, resolutionInfo.Cache);
-    }
-
-    protected virtual IResolver GetCircularDependencyProtectingResolver(IProvidesResolutionInfo resolutionInfo,
-                                                      IResolver resolverToProxy)
-    {
-      if(!resolutionInfo.Options.ThrowOnCircularDependencies)
-        return null;
-
-      var detector = new CircularDependencyDetector();
-      return new CircularDependencyPreventingResolverProxy(resolverToProxy, detector);
-    }
-
-    protected virtual IResolver GetParentResolver(IProvidesResolutionInfo resolutionInfo,
-                                IResolver resolverToProxy)
-    {
-      var parentInfo = resolutionInfo.Parent;
-
-      if(parentInfo == null)
-        return null;
-
-      var parentResolver = CreateResolver(parentInfo, isInnermostResolver: false);
-      return new FallbackResolverProxy(resolverToProxy, parentResolver);
-    }
-
-    protected virtual IResolver GetUnregisteredServiceResolver(IProvidesResolutionInfo resolutionInfo,
-                                             IResolver resolverToProxy,
-                                             IResolvesRegistrations registrationResolver)
-    {
-      if(registrationResolver == null)
-        throw new ArgumentNullException(nameof(registrationResolver));
-      
-      if(!resolutionInfo.Options.ResolveUnregisteredTypes)
-        return null;
-      
-      var unregisteredServiceRegistry = new ServiceWithoutRegistrationProvider();
-      return new UnregisteredServiceResolverProxy(resolverToProxy,
-                                                  registrationResolver,
-                                                  unregisteredServiceRegistry);
-    }
-
-    protected virtual IResolver GetRegisteredNameInjectingResolver(IResolver resolverToProxy)
-    {
-      return new RegisteredNameInjectingResolverProxy(resolverToProxy);
-    }
-
-    protected virtual IResolver GetNamedInstanceDictionaryResolver(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
-    {
-      if(!resolutionInfo.Options.SupportResolvingNamedInstanceDictionaries)
-        return null;
-
-      var registryStack = new RegistryStackFactory().CreateRegistryStack(resolutionInfo);
-      return new NamedInstanceDictionaryResolverProxy(resolverToProxy, registryStack);
-    }
-
-    protected virtual void AssertResolutionInfoIsValid(IProvidesResolutionInfo resolutionInfo)
-    {
-      if(resolutionInfo == null)
-        throw new ArgumentNullException(nameof(resolutionInfo));
-      if(resolutionInfo.Registry == null)
-        throw new ArgumentException("The registry provided by the resolution info must not be null.", nameof(resolutionInfo));
-      if(resolutionInfo.Options == null)
-        throw new ArgumentException("The options provided by the resolution info must not be null.", nameof(resolutionInfo));
+      factories.Add(new CircularDependencyPreventingResolverProxyFactory());
+      factories.Add(new RegisteredNameInjectingResolverProxyFactory());
+      factories.Add(new NamedInstanceDictionaryResolverProxyFactory());
+      factories.Add(new DynamicRecursionResolverProxyFactory());
     }
   }
 }

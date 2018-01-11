@@ -1,5 +1,5 @@
 ﻿//
-//    LateBoundResolverProxy.cs
+//    FallbackResolverProxy.cs
 //
 //    Copyright 2018  Craig Fowler et al
 //
@@ -19,36 +19,40 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
-using CSF.MicroDi.Registration;
-
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class LateBoundResolverProxy : ResolverBase
+  public class FallbackResolverProxy : ProxyingResolver
   {
-    IResolver proxiedResolver;
+    readonly IResolver fallbackResolver;
 
-    public IResolver ProxiedResolver => proxiedResolver;
-
-    public override IServiceRegistration GetRegistration(ResolutionRequest request)
-      => ProxiedResolver.GetRegistration(request);
+    public IResolver FallbackResolver => fallbackResolver;
 
     public override ResolutionResult Resolve(ResolutionRequest request)
-      => ProxiedResolver.Resolve(request);
-
-    public void ProvideProxiedResolver(IResolver proxiedResolver)
     {
-      if(proxiedResolver == null)
-        throw new ArgumentNullException(nameof(proxiedResolver));
-      if(this.proxiedResolver != null)
-        throw new InvalidOperationException("The proxied resolver must be set only once.");
+      var output = ProxiedResolver.Resolve(request);
+      if(output.IsSuccess)
+        return output;
 
-      this.proxiedResolver = proxiedResolver;
-      proxiedResolver.ServiceResolved += OnServiceResolved;
+      return fallbackResolver.Resolve(request);
+    }
+
+    public override Registration.IServiceRegistration GetRegistration(ResolutionRequest request)
+    {
+      return ProxiedResolver.GetRegistration(request) ?? fallbackResolver.GetRegistration(request);
     }
 
     void OnServiceResolved(object sender, ServiceResolutionEventArgs args)
     {
       InvokeServiceResolved(sender, args);
+    }
+
+    public FallbackResolverProxy(IResolver proxiedResolver, IResolver fallbackResolver) : base(proxiedResolver)
+    {
+      if(fallbackResolver == null)
+        throw new ArgumentNullException(nameof(fallbackResolver));
+      
+      this.fallbackResolver = fallbackResolver;
+      fallbackResolver.ServiceResolved += OnServiceResolved;
     }
   }
 }

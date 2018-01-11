@@ -18,42 +18,22 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
+using System.Collections.Generic;
 using CSF.MicroDi;
 using CSF.MicroDi.Resolution;
+using CSF.MicroDi.Resolution.Proxies;
 
 namespace BoDi.Internal
 {
   public class BoDiResolverFactory : ResolverFactory
   {
-    protected override IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo, bool isInnermostResolver)
+    protected override void ConfigureResolverProxyFactories(IList<ICreatesProxyingResolver> factories,
+                                                            bool isInnermostResolver,
+                                                            IResolvesRegistrations coreResolver)
     {
-      AssertResolutionInfoIsValid(resolutionInfo);
+      base.ConfigureResolverProxyFactories(factories, isInnermostResolver, coreResolver);
 
-      var output = new LateBoundResolverProxy();
-
-      var coreResolver = GetCoreResolver(resolutionInfo, output);
-      IResolver currentResolver = coreResolver;
-
-      currentResolver = GetCachingResolver(resolutionInfo, currentResolver) ?? currentResolver;
-      currentResolver = GetParentResolver(resolutionInfo, currentResolver) ?? currentResolver;
-
-      // Only the innermost resolver (the most deeply nested) can resolve unregistered services
-      if(isInnermostResolver)
-        currentResolver = GetUnregisteredServiceResolver(resolutionInfo, currentResolver, coreResolver) ?? currentResolver;
-
-      currentResolver = GetCircularDependencyProtectingResolver(resolutionInfo, currentResolver) ?? currentResolver;
-      currentResolver = GetRegisteredNameInjectingResolver(currentResolver) ?? currentResolver;
-      currentResolver = GetNamedInstanceDictionaryResolver(resolutionInfo, currentResolver) ?? currentResolver;
-      currentResolver = GetDynamicRecursiveResolver(currentResolver) ?? currentResolver;
-
-      output.ProvideProxiedResolver(currentResolver);
-
-      return output;
-    }
-
-    protected virtual IResolver GetDynamicRecursiveResolver(IResolver resolverToProxy)
-    {
-      return new DynamicRecursionResolverProxy(resolverToProxy);
+      factories.Add(new DynamicRecursionResolverProxyFactory());
     }
   }
 }

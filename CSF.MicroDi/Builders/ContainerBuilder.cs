@@ -23,76 +23,101 @@ using CSF.MicroDi.Resolution;
 
 namespace CSF.MicroDi.Builders
 {
-  public class ContainerBuilder : IContainerBuilder
+  public class ContainerBuilder
   {
-    bool useNonPublicConstructors;
-    bool resolveUnregisteredTypes;
-    bool useInstanceCache;
-    bool throwOnCircularDependencies;
-    bool supportResolvingNamedInstanceDictionaries;
+    bool
+      useNonPublicConstructors,
+      resolveUnregisteredTypes,
+      useInstanceCache,
+      throwOnCircularDependencies,
+      supportResolvingNamedInstanceDictionaries,
+      selfRegisterAResolver,
+      selfRegisterTheRegistry;
     ICreatesResolvers resolverFactory;
 
-    public IContainerBuilder DoNotUseNonPublicConstructors()
+    public ContainerBuilder DoNotUseNonPublicConstructors()
     {
       useNonPublicConstructors = false;
       return this;
     }
 
-    public IContainerBuilder UseNonPublicConstructors(bool useNonPublicConstructors = true)
+    public ContainerBuilder UseNonPublicConstructors(bool useNonPublicConstructors = true)
     {
       this.useNonPublicConstructors = useNonPublicConstructors;
       return this;
     }
 
-    public IContainerBuilder DoNotResolveUnregisteredTypes()
+    public ContainerBuilder DoNotResolveUnregisteredTypes()
     {
       resolveUnregisteredTypes = false;
       return this;
     }
 
-    public IContainerBuilder ResolveUnregisteredTypes(bool resolveUnregisteredTypes = true)
+    public ContainerBuilder ResolveUnregisteredTypes(bool resolveUnregisteredTypes = true)
     {
       this.resolveUnregisteredTypes = resolveUnregisteredTypes;
       return this;
     }
 
-    public IContainerBuilder DoNotUseInstanceCache()
+    public ContainerBuilder DoNotUseInstanceCache()
     {
       useInstanceCache = false;
       return this;
     }
 
-    public IContainerBuilder UseInstanceCache(bool useInstanceCache = true)
+    public ContainerBuilder UseInstanceCache(bool useInstanceCache = true)
     {
       this.useInstanceCache = useInstanceCache;
       return this;
     }
 
-    public IContainerBuilder DoNotThrowOnCircularDependencies()
+    public ContainerBuilder DoNotSelfRegisterAResolver()
+    {
+      return SelfRegisterAResolver(false);
+    }
+
+    public ContainerBuilder SelfRegisterAResolver(bool selfRegisterTheRegistry = true)
+    {
+      this.selfRegisterTheRegistry = selfRegisterTheRegistry;
+      return this;
+    }
+
+    public ContainerBuilder DoNotSelfRegisterTheRegistry()
+    {
+      return SelfRegisterTheRegistry(false);
+    }
+
+    public ContainerBuilder SelfRegisterTheRegistry(bool selfRegisterTheRegistry = true)
+    {
+      this.selfRegisterTheRegistry = selfRegisterTheRegistry;
+      return this;
+    }
+
+    public ContainerBuilder DoNotThrowOnCircularDependencies()
     {
       throwOnCircularDependencies = false;
       return this;
     }
 
-    public IContainerBuilder ThrowOnCircularDependencies(bool throwOnCircularDependencies = true)
+    public ContainerBuilder ThrowOnCircularDependencies(bool throwOnCircularDependencies = true)
     {
       this.throwOnCircularDependencies = throwOnCircularDependencies;
       return this;
     }
 
-    public IContainerBuilder DoNotSupportResolvingNamedInstanceDictionaries()
+    public ContainerBuilder DoNotSupportResolvingNamedInstanceDictionaries()
     {
       supportResolvingNamedInstanceDictionaries = false;
       return this;
     }
 
-    public IContainerBuilder SupportResolvingNamedInstanceDictionaries(bool supportResolvingNamedInstanceDictionaries = true)
+    public ContainerBuilder SupportResolvingNamedInstanceDictionaries(bool supportResolvingNamedInstanceDictionaries = true)
     {
       this.supportResolvingNamedInstanceDictionaries = supportResolvingNamedInstanceDictionaries;
       return this;
     }
 
-    public IContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory)
+    public ContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory)
     {
       if(resolverFactory == null)
         throw new ArgumentNullException(nameof(resolverFactory));
@@ -109,11 +134,12 @@ namespace CSF.MicroDi.Builders
 
     ContainerOptions GetContainerOptions()
     {
-      return new ContainerOptions(useNonPublicConstructors: useNonPublicConstructors,
-                                  resolveUnregisteredTypes: resolveUnregisteredTypes,
-                                  useInstanceCache: useInstanceCache,
-                                  throwOnCircularDependencies: throwOnCircularDependencies,
-                                  supportResolvingNamedInstanceDictionaries: supportResolvingNamedInstanceDictionaries);
+      return new ContainerOptions(useNonPublicConstructors,
+                                  resolveUnregisteredTypes,
+                                  useInstanceCache,
+                                  throwOnCircularDependencies,
+                                  supportResolvingNamedInstanceDictionaries,
+                                  selfRegisterAResolver);
     }
 
     public ContainerBuilder()
@@ -123,6 +149,8 @@ namespace CSF.MicroDi.Builders
       useInstanceCache = ContainerOptions.Default.UseInstanceCache;
       throwOnCircularDependencies = ContainerOptions.Default.ThrowOnCircularDependencies;
       supportResolvingNamedInstanceDictionaries = ContainerOptions.Default.SupportResolvingNamedInstanceDictionaries;
+      selfRegisterAResolver = ContainerOptions.Default.SelfRegisterAResolver;
+      selfRegisterTheRegistry = ContainerOptions.Default.SelfRegisterTheRegistry;
     }
   }
 }

@@ -34,7 +34,7 @@ namespace CSF.MicroDi.Tests.Resolution
   {
     [Test,AutoMoqData]
     public void Resolve_using_request_can_get_registered_service(IServiceRegistrationProvider provider,
-                                                                 [SampleService] IServiceRegistration registration,
+                                                                 [Registration] IServiceRegistration registration,
                                                                  ResolutionRequest request)
     {
       // Arrange
@@ -55,7 +55,7 @@ namespace CSF.MicroDi.Tests.Resolution
 
     [Test,AutoMoqData]
     public void Resolve_using_request_can_get_registered_service_without_name(IServiceRegistrationProvider provider,
-                                                                              [SampleService] IServiceRegistration registration,
+                                                                              [Registration] IServiceRegistration registration,
                                                                               ResolutionRequest request)
     {
       // Arrange

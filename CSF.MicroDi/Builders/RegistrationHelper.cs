@@ -29,7 +29,7 @@ namespace CSF.MicroDi.Builders
   public class RegistrationHelper : IRegistrationHelper, IBulkRegistrationProvider
   {
     readonly ICollection<IServiceRegistration> registrations;
-    readonly bool useNonPublicConstructors;
+    readonly ISelectsConstructor constructorSelector;
 
     public IRegistrationOptionsBuilderWithCacheability RegisterFactory(Delegate factory, Type serviceType)
     {
@@ -57,6 +57,16 @@ namespace CSF.MicroDi.Builders
       return new RegistrationBuilder(registration);
     }
 
+    public IAsBuilderWithCacheability RegisterFactory<T>(Func<IResolvesServices,T> factory) where T : class
+    {
+      if(factory == null)
+        throw new ArgumentNullException(nameof(factory));
+
+      var registration = new FactoryRegistration<T>(factory) { ServiceType = typeof(T) };
+      registrations.Add(registration);
+      return new RegistrationBuilder(registration);
+    }
+
     public IAsBuilder RegisterInstance(object instance)
     {
       if(instance == null)
@@ -73,16 +83,15 @@ namespace CSF.MicroDi.Builders
         throw new ArgumentNullException(nameof(concreteType));
 
       ServiceRegistration registration;
-      var ctorSelector = GetConstructorSelector();
 
       if(concreteType.IsGenericTypeDefinition)
       {
-        registration = new OpenGenericTypeRegistration(concreteType, ctorSelector)
+        registration = new OpenGenericTypeRegistration(concreteType, constructorSelector)
         { ServiceType = concreteType };
       }
       else
       {
-        registration = new TypeRegistration(concreteType, ctorSelector)
+        registration = new TypeRegistration(concreteType, constructorSelector)
         { ServiceType = concreteType };
       }
 
@@ -96,14 +105,14 @@ namespace CSF.MicroDi.Builders
 
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations() => registrations.ToArray();
 
-    ISelectsConstructor GetConstructorSelector()
-      => new ConstructorWithMostParametersSelector(useNonPublicConstructors);
-
-    public RegistrationHelper(bool useNonPublicConstructors = false)
+    public RegistrationHelper(ISelectsConstructor constructorSelector)
     {
-      registrations = new List<IServiceRegistration>();
+      if(constructorSelector == null)
+        throw new ArgumentNullException(nameof(constructorSelector));
 
-      this.useNonPublicConstructors = useNonPublicConstructors;
+      this.constructorSelector = constructorSelector;
+
+      registrations = new List<IServiceRegistration>();
     }
   }
 }

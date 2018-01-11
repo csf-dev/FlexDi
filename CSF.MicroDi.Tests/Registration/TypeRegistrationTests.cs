@@ -19,6 +19,7 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using System.Collections;
 using CSF.MicroDi.Registration;
 using CSF.MicroDi.Resolution;
 using CSF.MicroDi.Tests.Autofixture;
@@ -29,7 +30,7 @@ using NUnit.Framework;
 namespace CSF.MicroDi.Tests.Registration
 {
   [TestFixture,Parallelizable(ParallelScope.All)]
-  public class TypeRegistrationTests
+  public class TypeRegistrationTests : ServiceRegistrationTestBase
   {
     [Test,AutoMoqData]
     public void GetFactoryAdapter_uses_constructor_selector(ISelectsConstructor ctorSelector,
@@ -51,8 +52,45 @@ namespace CSF.MicroDi.Tests.Registration
       Assert.That(result, Is.InstanceOf<ConstructorFactory>());
       var ctorFactory = (ConstructorFactory) result;
       Assert.That(ctorFactory.Constructor, Is.SameAs(ctor));
-      Mock.Get(ctorSelector)
-          .Verify(x => x.SelectConstructor(type), Times.Once);
     }
+
+    [Test,AutoMoqData]
+    public void AssertIsValid_throws_exception_if_implementation_type_does_not_derive_from_service_type(ISelectsConstructor ctorSelector)
+    {
+      // Arrange
+      var sut = new TypeRegistration(typeof(SampleServiceImplementationOne), ctorSelector) {
+        ServiceType = typeof(IEnumerable),
+      };
+
+      // Act & assert
+      Assert.That(() => sut.AssertIsValid(), Throws.InstanceOf<InvalidTypeRegistrationException>());
+    }
+
+    [Test,AutoMoqData]
+    public void AssertIsValid_does_not_throw_when_implementation_type_derives_from_service_type(ISelectsConstructor ctorSelector)
+    {
+      // Arrange
+      var sut = new TypeRegistration(typeof(SampleServiceImplementationOne), ctorSelector) {
+        ServiceType = typeof(ISampleService),
+      };
+
+      // Act & assert
+      Assert.That(() => sut.AssertIsValid(), Throws.Nothing);
+    }
+
+    [Test,AutoMoqData]
+    public void AssertIsValid_does_not_throw_when_implementation_type_is_same_as_service_type(ISelectsConstructor ctorSelector)
+    {
+      // Arrange
+      var sut = new TypeRegistration(typeof(SampleServiceImplementationOne), ctorSelector) {
+        ServiceType = typeof(SampleServiceImplementationOne),
+      };
+
+      // Act & assert
+      Assert.That(() => sut.AssertIsValid(), Throws.Nothing);
+    }
+
+    protected override ServiceRegistration GetValidServiceRegistration()
+      => new TypeRegistration(typeof(SampleServiceImplementationOne), GetConstructorSelector());
   }
 }

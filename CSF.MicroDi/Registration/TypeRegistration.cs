@@ -28,6 +28,8 @@ namespace CSF.MicroDi.Registration
     readonly Type implementationType;
     readonly ISelectsConstructor constructorSelector;
 
+    public ISelectsConstructor ConstructorSelector => constructorSelector;
+
     public override Type ImplementationType => implementationType;
 
     public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request)
@@ -49,15 +51,15 @@ namespace CSF.MicroDi.Registration
       base.AssertIsValid();
     }
 
-    public TypeRegistration(Type implementationType) : this(implementationType, null) {}
-
     public TypeRegistration(Type implementationType, ISelectsConstructor constructorSelector)
     {
+      if(constructorSelector == null)
+        throw new ArgumentNullException(nameof(constructorSelector));
       if(implementationType == null)
         throw new ArgumentNullException(nameof(implementationType));
 
       this.implementationType = implementationType;
-      this.constructorSelector = constructorSelector ?? new ConstructorWithMostParametersSelector();
+      this.constructorSelector = constructorSelector;
     }
   }
 }

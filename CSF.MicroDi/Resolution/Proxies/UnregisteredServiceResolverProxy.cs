@@ -21,7 +21,7 @@
 using System;
 using CSF.MicroDi.Registration;
 
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
   public class UnregisteredServiceResolverProxy : ProxyingResolver
   {
@@ -49,14 +49,16 @@ namespace CSF.MicroDi.Resolution
 
     public UnregisteredServiceResolverProxy(IResolver proxiedResolver,
                                             IResolvesRegistrations registrationResolver,
-                                            IServiceRegistrationProvider unregisteredRegistrationProvider = null)
+                                            IServiceRegistrationProvider unregisteredRegistrationProvider)
       : base(proxiedResolver)
     {
+      if(unregisteredRegistrationProvider == null)
+        throw new ArgumentNullException(nameof(unregisteredRegistrationProvider));
       if(registrationResolver == null)
         throw new ArgumentNullException(nameof(registrationResolver));
 
       this.registrationResolver = registrationResolver;
-      this.unregisteredRegistrationProvider = unregisteredRegistrationProvider ?? new ServiceWithoutRegistrationProvider();
+      this.unregisteredRegistrationProvider = unregisteredRegistrationProvider;
     }
   }
 }

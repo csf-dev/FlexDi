@@ -33,7 +33,22 @@ namespace CSF.MicroDi.Tests.Stubs
     }
   }
 
-  public class ChildServiceOne {}
+  public class ChildServiceOne
+  {
+    public string AProperty { get; set; }
+  }
 
   public class ChildServiceTwo {}
+
+  public class ChildServiceWithCircularDependency : ChildServiceTwo
+  {
+    public ParentService Parent { get; set; }
+
+    public ChildServiceWithCircularDependency(ParentService parent)
+    {
+      if(parent == null)
+        throw new ArgumentNullException(nameof(parent));
+      Parent = parent;
+    }
+  }
 }

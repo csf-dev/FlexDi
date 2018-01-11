@@ -38,6 +38,7 @@ namespace CSF.MicroDi
     readonly IDisposesOfResolvedInstances disposer;
     readonly ContainerOptions options;
     readonly IContainer parentContainer;
+    readonly ISelectsConstructor constructorSelector;
 
     #endregion
 
@@ -50,6 +51,8 @@ namespace CSF.MicroDi
     public ContainerOptions Options => options;
 
     public IProvidesResolutionInfo Parent => parentContainer as IProvidesResolutionInfo;
+
+    public ISelectsConstructor ConstructorSelector => constructorSelector;
 
     #endregion
 
@@ -198,7 +201,7 @@ namespace CSF.MicroDi
 
       AssertNotDisposed();
 
-      var helper = new RegistrationHelper(options.UseNonPublicConstructors);
+      var helper = new RegistrationHelper(constructorSelector);
       registrationActions(helper);
 
       AddRegistrations(helper.GetRegistrations());
@@ -267,8 +270,10 @@ namespace CSF.MicroDi
     {
       disposedValue = false;
 
-      this.options = options ?? ContainerOptions.Default;
       this.parentContainer = parentContainer;
+
+      this.options = GetContainerOptions(options, parentContainer);
+      constructorSelector = new ConstructorWithMostParametersSelector(this.options.UseNonPublicConstructors);
 
       this.registry = registry ?? new Registry();
       this.cache = cache ?? new ResolvedServiceCache();
@@ -277,6 +282,21 @@ namespace CSF.MicroDi
       this.resolver = resolver ?? GetResolver(resolverFactory);
 
       this.resolver.ServiceResolved += InvokeServiceResolved;
+
+      PerformSelfRegistrations();
+    }
+
+    ContainerOptions GetContainerOptions(ContainerOptions explicitOptions,
+                                         IContainer parent)
+    {
+      if(explicitOptions != null)
+        return explicitOptions;
+
+      var providesInfo = parent as IProvidesResolutionInfo;
+      if(providesInfo != null)
+        return providesInfo.Options;
+
+      return ContainerOptions.Default;
     }
 
     IResolver GetResolver(ICreatesResolvers resolverFactory)
@@ -290,11 +310,44 @@ namespace CSF.MicroDi
       return output;
     }
 
+    void PerformSelfRegistrations()
+    {
+      if(Options.SelfRegisterAResolver)
+        SelfRegisterAResolver();
+      
+      if(Options.SelfRegisterTheRegistry)
+        SelfRegisterTheRegistry();
+    }
+
+    void SelfRegisterAResolver()
+    {
+      var resolverRegistration = new InstanceRegistration(this) {
+        DisposeWithContainer = false,
+        ServiceType = typeof(IResolvesServices),
+      };
+      Registry.Add(resolverRegistration);
+
+      var containerRegistration = new InstanceRegistration(this) {
+        DisposeWithContainer = false,
+        ServiceType = typeof(IContainer),
+      };
+      Registry.Add(containerRegistration);
+    }
+
+    void SelfRegisterTheRegistry()
+    {
+      var registration = new InstanceRegistration(this) {
+        DisposeWithContainer = false,
+        ServiceType = typeof(IReceivesRegistrations),
+      };
+      Registry.Add(registration);
+    }
+
     #endregion
 
     #region static methods
 
-    public static IContainerBuilder CreateBuilder() => new ContainerBuilder();
+    public static ContainerBuilder CreateBuilder() => new ContainerBuilder();
 
     #endregion
   }

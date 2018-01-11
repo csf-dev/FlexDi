@@ -1,7 +1,7 @@
 ﻿//
-//    SampleServiceAttribute.cs
+//    MockParamAttribute.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,47 +17,58 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
 using System.Reflection;
-using CSF.MicroDi.Registration;
-using CSF.MicroDi.Tests.Stubs;
 using Moq;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.NUnit3;
 
 namespace CSF.MicroDi.Tests.Autofixture
 {
-  public class SampleServiceAttribute : CustomizeAttribute
+  public class MockParamAttribute : CustomizeAttribute
   {
+    readonly Type type;
+    public virtual Type Type => type;
     public string Name { get; set; }
 
     public override ICustomization GetCustomization(ParameterInfo parameter)
     {
-      if(parameter.ParameterType != typeof(IServiceRegistration))
-        return null;
-      
-      return new SampleServiceCustomization(Name);
+      return new MockParamCustomization(type, Name);
     }
 
-    class SampleServiceCustomization : ICustomization
+    public MockParamAttribute(Type type)
     {
+      if(type == null)
+        throw new ArgumentNullException(nameof(type));
+      this.type = type;
+    }
+
+    class MockParamCustomization : ICustomization
+    {
+      readonly Type type;
       readonly string name;
 
       public void Customize(IFixture fixture)
       {
-        fixture.Customize<IServiceRegistration>(c => {
-          return c
-            .FromFactory(() => Mock.Of<IServiceRegistration>())
-            .Do(reg => {
-              Mock.Get(reg).SetupGet(x => x.ServiceType).Returns(typeof(ISampleService));
-              Mock.Get(reg).SetupGet(x => x.Name).Returns(name);
-            });
-        });
+        fixture.Customize<ParameterInfo>(c => c.FromFactory(GetParameterFactory()));
       }
 
-      public SampleServiceCustomization(string name)
+      Func<string,ParameterInfo> GetParameterFactory() => CreateParameterInfo;
+
+      ParameterInfo CreateParameterInfo(string randomName)
       {
+        var mockParam = new Mock<ParameterInfo>();
+        mockParam.SetupGet(x => x.ParameterType).Returns(type);
+        mockParam.SetupGet(x => x.Name).Returns(() => name ?? randomName);
+        return mockParam.Object;
+      }
+
+      public MockParamCustomization(Type type, string name)
+      {
+        if(type == null)
+          throw new ArgumentNullException(nameof(type));
+        
+        this.type = type;
         this.name = name;
       }
     }

@@ -19,7 +19,7 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
-namespace CSF.MicroDi.Resolution
+namespace CSF.MicroDi.Resolution.Proxies
 {
   public class CircularDependencyPreventingResolverProxy : ProxyingResolver
   {
@@ -37,7 +37,10 @@ namespace CSF.MicroDi.Resolution
                                                      IDetectsCircularDependencies circularDependencyDetector)
       : base(proxiedResolver)
     {
-      this.circularDependencyDetector = circularDependencyDetector?? new CircularDependencyDetector();
+      if(circularDependencyDetector == null)
+        throw new ArgumentNullException(nameof(circularDependencyDetector));
+      
+      this.circularDependencyDetector = circularDependencyDetector;
     }
   }
 }

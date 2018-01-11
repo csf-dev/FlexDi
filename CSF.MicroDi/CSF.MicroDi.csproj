@@ -8,7 +8,7 @@
     <RootNamespace>CSF.MicroDi</RootNamespace>
     <AssemblyName>CSF.MicroDi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <ReleaseVersion>0.2.0</ReleaseVersion>
+    <ReleaseVersion>0.3.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,7 +63,6 @@
     <Compile Include="Resolution\ICachesResolvedServiceInstances.cs" />
     <Compile Include="Resolution\IFulfilsResolutionRequests.cs" />
     <Compile Include="Resolution\ResolvedServiceCache.cs" />
-    <Compile Include="Resolution\CachingResolverProxy.cs" />
     <Compile Include="Resolution\IDisposesOfResolvedInstances.cs" />
     <Compile Include="Resolution\ServiceInstanceDisposer.cs" />
     <Compile Include="IContainer.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Resolution\InvalidResolutionRequestException.cs" />
     <Compile Include="Registration\OpenGenericTypeRegistration.cs" />
     <Compile Include="Builders\ContainerBuilder.cs" />
-    <Compile Include="Builders\IContainerBuilder.cs" />
     <Compile Include="ContainerOptions.cs" />
     <Compile Include="Resolution\ServiceCacheKey.cs" />
     <Compile Include="Resolution\CacheKeySpecificityComparer.cs" />
@@ -98,23 +96,39 @@
     <Compile Include="Resolution\InstanceCreator.cs" />
     <Compile Include="Resolution\CannotResolveParameterException.cs" />
     <Compile Include="Resolution\ResolverBase.cs" />
-    <Compile Include="Resolution\CircularDependencyPreventingResolverProxy.cs" />
-    <Compile Include="Resolution\UnregisteredServiceResolverProxy.cs" />
     <Compile Include="IProvidesResolutionInfo.cs" />
     <Compile Include="Resolution\ResolverFactory.cs" />
-    <Compile Include="Resolution\LateBoundResolverProxy.cs" />
-    <Compile Include="Resolution\FallbackResolverProxy.cs" />
     <Compile Include="Resolution\IResolvesRegistrations.cs" />
     <Compile Include="Registration\RegistryStackFactory.cs" />
-    <Compile Include="Resolution\RegisteredNameInjectingResolverProxy.cs" />
-    <Compile Include="Resolution\NamedInstanceDictionaryResolverProxy.cs" />
     <Compile Include="Resolution\NoMatchingEnumerationConstantException.cs" />
     <Compile Include="Resolution\ICreatesResolvers.cs" />
+    <Compile Include="Resolution\Proxies\CachingResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\CircularDependencyPreventingResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\FallbackResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\LateBoundResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\NamedInstanceDictionaryResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\ICreatesProxyingResolver.cs" />
+    <Compile Include="Resolution\Proxies\CachingResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\CircularDependencyPreventingResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\FallbackToParentResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\UnregisteredServiceResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\NamedInstanceDictionaryResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\RegisteredNameInjectingResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\ServiceResolvingContainerProxy.cs" />
+    <Compile Include="Resolution\Proxies\DynamicResolutionResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\DynamicRecursionResolverProxyFactory.cs" />
+    <Compile Include="Resolution\Proxies\IDictionaryFactory.cs" />
+    <Compile Include="Resolution\Proxies\GenericDictionaryFactory.cs" />
+    <Compile Include="Resolution\ResolverFactoryBase.cs" />
+    <Compile Include="Resolution\IProxiesToAnotherResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
     <Folder Include="Registration\" />
     <Folder Include="Resolution\" />
+    <Folder Include="Resolution\Proxies\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CSF.MicroDi.nuspec" />
