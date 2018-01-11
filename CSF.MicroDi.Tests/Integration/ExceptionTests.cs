@@ -34,7 +34,20 @@ namespace CSF.MicroDi.Tests.Integration
       var container = Container.CreateBuilder().SupportResolvingLazyInstances().Build();
 
       // Act & assert
-      Assert.That(() => container.Resolve<Lazy<ISampleService>>(), Throws.InstanceOf<ResolutionException>());
+      Assert.That(() => container.Resolve<ISampleService>(), Throws.InstanceOf<ResolutionException>());
+    }
+
+    [Test]
+    public void Accessing_the_value_from_an_unregistered_lazy_interface_throws_resolution_exception()
+    {
+      // Arrange
+      var container = Container.CreateBuilder().SupportResolvingLazyInstances().Build();
+
+      // Act
+      var result = container.Resolve<Lazy<ISampleService>>();
+
+      // Assert
+      Assert.That(() => result.Value, Throws.InstanceOf<ResolutionException>());
     }
   }
 }
