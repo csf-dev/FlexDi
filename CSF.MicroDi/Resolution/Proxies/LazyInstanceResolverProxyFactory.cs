@@ -1,5 +1,5 @@
 ﻿//
-//    BoDiMicroDiContainerFactory.cs
+//    LazyInstanceResolverProxyFactory.cs
 //
 //    Copyright 2018  Craig Fowler
 //
@@ -18,26 +18,16 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
-using CSF.MicroDi;
-
-namespace BoDi.Internal
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class BoDiMicroDiContainerFactory
+  public class LazyInstanceResolverProxyFactory : ICreatesProxyingResolver
   {
-    public IContainer GetContainer()
+    public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
-      return Container
-        .CreateBuilder()
-        .UseNonPublicConstructors()
-        .ResolveUnregisteredTypes()
-        .ThrowOnCircularDependencies()
-        .UseInstanceCache()
-        .SupportResolvingNamedInstanceDictionaries()
-        .UseCustomResolverFactory(new BoDiResolverFactory())
-        .DoNotSelfRegisterAResolver()
-        .DoNotSelfRegisterTheRegistry()
-        .DoNotSupportResolvingLazyInstances()
-        .Build();
+      if(!resolutionInfo.Options.SupportResolvingLazyInstances)
+        return null;
+
+      return new LazyInstanceResolverProxy(resolverToProxy);
     }
   }
 }

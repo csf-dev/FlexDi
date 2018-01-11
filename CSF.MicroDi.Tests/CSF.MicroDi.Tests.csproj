@@ -97,6 +97,8 @@
     <Compile Include="Resolution\ResolvedServiceCacheTests.cs" />
     <Compile Include="Resolution\ResolverFactoryTests.cs" />
     <Compile Include="Autofixture\MinimalInfoAttribute.cs" />
+    <Compile Include="Integration\LazyInstanceResolutionTests.cs" />
+    <Compile Include="Integration\ExceptionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
