@@ -25,6 +25,8 @@ namespace CSF.MicroDi.Resolution.Proxies
   {
     readonly IResolver fallbackResolver;
 
+    public IResolver FallbackResolver => fallbackResolver;
+
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       var output = ProxiedResolver.Resolve(request);

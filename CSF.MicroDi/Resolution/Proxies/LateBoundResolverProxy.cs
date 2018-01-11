@@ -23,7 +23,7 @@ using CSF.MicroDi.Registration;
 
 namespace CSF.MicroDi.Resolution.Proxies
 {
-  public class LateBoundResolverProxy : ResolverBase
+  public class LateBoundResolverProxy : ResolverBase, IProxiesToAnotherResolver
   {
     IResolver proxiedResolver;
 

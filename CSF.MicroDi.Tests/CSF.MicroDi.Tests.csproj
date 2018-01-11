@@ -95,6 +95,8 @@
     <Compile Include="Resolution\ResolutionPathTests.cs" />
     <Compile Include="Resolution\ServiceInstanceDisposerTests.cs" />
     <Compile Include="Resolution\ResolvedServiceCacheTests.cs" />
+    <Compile Include="Resolution\ResolverFactoryTests.cs" />
+    <Compile Include="Autofixture\MinimalInfoAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
