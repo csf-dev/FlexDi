@@ -10,4 +10,4 @@ before_build:
 build:
   verbosity: minimal
 test_script:
-- cmd: testrunner\\NUnit.ConsoleRunner.3.6.1\\tools\\nunit3-console.exe CSF.MicroDi.Tests\\bin\\Debug\\CSF.MicroDi.Tests.dll CSF.MicroDi.BoDiCompatibility.Tests\\bin\\Debug\\CSF.MicroDi.BoDiCompatibility.Tests.dll CSF.MicroDi.BoDiCompatibility.IntegrationTests\\bin\\Debug\\BoDi.Tests.dll --result=myresults.xml;format=AppVeyor
+- cmd: testrunner\\NUnit.ConsoleRunner.3.6.1\\tools\\nunit3-console.exe CSF.MicroDi.Tests\\bin\\Debug\\CSF.MicroDi.Tests.dll CSF.MicroDi.BoDiCompatibility.Tests\\bin\\Debug\\CSF.MicroDi.BoDiCompatibility.Tests.dll CSF.MicroDi.BoDiCompatibility.IntegrationTests\\bin\\Debug\\BoDi.Tests.dll --result=myresults.xml
