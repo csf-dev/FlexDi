@@ -36,6 +36,7 @@ namespace BoDi.Internal
         .UseCustomResolverFactory(new BoDiResolverFactory())
         .DoNotSelfRegisterAResolver()
         .DoNotSelfRegisterTheRegistry()
+        .DoNotSupportResolvingLazyInstances()
         .Build();
     }
   }
