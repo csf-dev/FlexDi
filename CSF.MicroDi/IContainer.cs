@@ -33,5 +33,7 @@ namespace CSF.MicroDi
     IReadOnlyCollection<IServiceRegistration> GetRegistrations(Type serviceType);
 
     event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
+
+    IContainer CreateChildContainer();
   }
 }

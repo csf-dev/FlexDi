@@ -183,6 +183,11 @@ namespace CSF.MicroDi
       return registryStack.GetAll(serviceType);
     }
 
+    public IContainer CreateChildContainer()
+    {
+      return new Container(options: Options, parentContainer: this);
+    }
+
     public event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
 
     void InvokeServiceResolved(object sender, ServiceResolutionEventArgs args)
