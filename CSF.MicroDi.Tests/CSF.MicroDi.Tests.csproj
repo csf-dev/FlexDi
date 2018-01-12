@@ -100,6 +100,7 @@
     <Compile Include="Integration\LazyInstanceResolutionTests.cs" />
     <Compile Include="Integration\ExceptionTests.cs" />
     <Compile Include="Integration\OptionalResolutionTests.cs" />
+    <Compile Include="Integration\RegistrationlessResolutionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">
