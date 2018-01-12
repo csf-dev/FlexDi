@@ -33,10 +33,12 @@ namespace CSF.MicroDi.Resolution.Proxies
         return null;
 
       var provider = GetUnregisteredServiceRegistrationProvider(resolutionInfo);
+      var cache = resolutionInfo.Options.UseInstanceCache? resolutionInfo.Cache : null;
 
       return new UnregisteredServiceResolverProxy(resolverToProxy,
                                                   registrationResolver,
-                                                  provider);
+                                                  provider,
+                                                  cache);
     }
 
     IServiceRegistrationProvider GetUnregisteredServiceRegistrationProvider(IProvidesResolutionInfo resolutionInfo)

@@ -29,5 +29,6 @@ namespace CSF.MicroDi.Resolution
     bool Has(IServiceRegistration registration);
     bool Has(ServiceRegistrationKey key);
     bool TryGet(IServiceRegistration registration, out object instance);
+    bool TryGet(Type serviceType, string name, out object instance);
   }
 }

@@ -28,7 +28,9 @@ namespace CSF.MicroDi.Resolution.Proxies
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       var registration = GetRegistration(request);
-      circularDependencyDetector.ThrowOnCircularDependency(registration, request.ResolutionPath);
+
+      if(registration != null)
+        circularDependencyDetector.ThrowOnCircularDependency(registration, request.ResolutionPath);
 
       return ProxiedResolver.Resolve(request);
     }

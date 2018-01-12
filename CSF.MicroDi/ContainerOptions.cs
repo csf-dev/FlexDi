@@ -32,6 +32,8 @@ namespace CSF.MicroDi
     public bool SupportResolvingNamedInstanceDictionaries { get; private set; }
     public bool SelfRegisterAResolver { get; private set; }
     public bool SelfRegisterTheRegistry { get; private set; }
+    public bool SupportResolvingLazyInstances { get; private set; }
+    public bool MakeAllResolutionOptional { get; private set; }
 
     public ContainerOptions(bool useNonPublicConstructors = false,
                             bool resolveUnregisteredTypes = false,
@@ -39,8 +41,11 @@ namespace CSF.MicroDi
                             bool throwOnCircularDependencies = true,
                             bool supportResolvingNamedInstanceDictionaries = false,
                             bool selfRegisterAResolver = true,
-                            bool selfRegisterTheRegistry = false)
+                            bool selfRegisterTheRegistry = false,
+                            bool supportResolvingLazyInstances = true,
+                            bool makeAllResolutionOptional = false)
     {
+      MakeAllResolutionOptional = makeAllResolutionOptional;
       SelfRegisterTheRegistry = selfRegisterTheRegistry;
       SelfRegisterAResolver = selfRegisterAResolver;
       UseNonPublicConstructors = useNonPublicConstructors;
@@ -48,6 +53,7 @@ namespace CSF.MicroDi
       UseInstanceCache = useInstanceCache;
       ThrowOnCircularDependencies = throwOnCircularDependencies;
       SupportResolvingNamedInstanceDictionaries = supportResolvingNamedInstanceDictionaries;
+      SupportResolvingLazyInstances = supportResolvingLazyInstances;
     }
 
     static ContainerOptions()

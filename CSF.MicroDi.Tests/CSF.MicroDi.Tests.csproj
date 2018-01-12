@@ -8,7 +8,7 @@
     <RootNamespace>CSF.MicroDi.Tests</RootNamespace>
     <AssemblyName>CSF.MicroDi.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <ReleaseVersion>0.3.0</ReleaseVersion>
+    <ReleaseVersion>0.4.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -97,6 +97,10 @@
     <Compile Include="Resolution\ResolvedServiceCacheTests.cs" />
     <Compile Include="Resolution\ResolverFactoryTests.cs" />
     <Compile Include="Autofixture\MinimalInfoAttribute.cs" />
+    <Compile Include="Integration\LazyInstanceResolutionTests.cs" />
+    <Compile Include="Integration\ExceptionTests.cs" />
+    <Compile Include="Integration\OptionalResolutionTests.cs" />
+    <Compile Include="Integration\RegistrationlessResolutionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">

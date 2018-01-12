@@ -1,7 +1,7 @@
 ﻿//
-//    IContainer.cs
+//    OptionalResolutionResolverProxy.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,23 +17,25 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using System.Collections.Generic;
-using CSF.MicroDi.Registration;
-
-namespace CSF.MicroDi
+namespace CSF.MicroDi.Resolution.Proxies
 {
-  public interface IContainer : IResolvesServices, IReceivesRegistrations, IDisposable
+  public class OptionalResolutionResolverProxy : ProxyingResolver
   {
-    bool HasRegistration<T>(string name = null);
-    bool HasRegistration(Type serviceType, string name = null);
+    public override ResolutionResult Resolve(ResolutionRequest request)
+    {
+      var result = ProxiedResolver.Resolve(request);
 
-    IReadOnlyCollection<IServiceRegistration> GetRegistrations();
-    IReadOnlyCollection<IServiceRegistration> GetRegistrations(Type serviceType);
+      if(result.IsSuccess)
+        return result;
 
-    event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
+      var defaultValue = GetDefaultForType(request.ServiceType);
+      return ResolutionResult.Success(request.ResolutionPath, defaultValue);
+    }
 
-    IContainer CreateChildContainer();
+    object GetDefaultForType(Type serviceType)
+      => serviceType.IsValueType ? Activator.CreateInstance(serviceType) : null;
+
+    public OptionalResolutionResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}
   }
 }

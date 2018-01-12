@@ -1,5 +1,5 @@
 ﻿//
-//    BoDiMicroDiContainerFactory.cs
+//    RegistrationlessResolutionTests.cs
 //
 //    Copyright 2018  Craig Fowler
 //
@@ -18,26 +18,27 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
-using CSF.MicroDi;
+using CSF.MicroDi.Resolution;
+using CSF.MicroDi.Tests.Stubs;
+using NUnit.Framework;
 
-namespace BoDi.Internal
+namespace CSF.MicroDi.Tests.Integration
 {
-  public class BoDiMicroDiContainerFactory
+  [TestFixture,Parallelizable(ParallelScope.All)]
+  public class RegistrationlessResolutionTests
   {
-    public IContainer GetContainer()
+    [Test]
+    public void When_caching_and_registrationless_resolution_are_enabled_resolving_the_same_object_twice_uses_the_cache()
     {
-      return Container
-        .CreateBuilder()
-        .UseNonPublicConstructors()
-        .ResolveUnregisteredTypes()
-        .ThrowOnCircularDependencies()
-        .UseInstanceCache()
-        .SupportResolvingNamedInstanceDictionaries()
-        .UseCustomResolverFactory(new BoDiResolverFactory())
-        .DoNotSelfRegisterAResolver()
-        .DoNotSelfRegisterTheRegistry()
-        .DoNotSupportResolvingLazyInstances()
-        .Build();
+      // Arrange
+      var container = Container.CreateBuilder().UseInstanceCache().ResolveUnregisteredTypes().Build();
+
+      // Act
+      var obj1 = container.Resolve<SampleServiceImplementationOne>();
+      var obj2 = container.Resolve<SampleServiceImplementationOne>();
+
+      // Assert
+      Assert.That(obj1, Is.SameAs(obj2));
     }
   }
 }
