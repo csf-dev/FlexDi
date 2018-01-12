@@ -41,6 +41,7 @@ namespace CSF.MicroDi.Resolution
       factories.Add(new LazyInstanceResolverProxyFactory());
       factories.Add(new RegisteredNameInjectingResolverProxyFactory());
       factories.Add(new NamedInstanceDictionaryResolverProxyFactory());
+      factories.Add(new OptionalResolutionResolverProxyFactory());
       factories.Add(new DynamicRecursionResolverProxyFactory());
     }
   }

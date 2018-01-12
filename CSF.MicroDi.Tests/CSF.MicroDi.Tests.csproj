@@ -99,6 +99,7 @@
     <Compile Include="Autofixture\MinimalInfoAttribute.cs" />
     <Compile Include="Integration\LazyInstanceResolutionTests.cs" />
     <Compile Include="Integration\ExceptionTests.cs" />
+    <Compile Include="Integration\OptionalResolutionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.MicroDi\CSF.MicroDi.csproj">

@@ -126,6 +126,8 @@
     <Compile Include="Resolution\Proxies\LazyInstanceResolverProxy.cs" />
     <Compile Include="Resolution\Proxies\LazyInstanceResolverProxyFactory.cs" />
     <Compile Include="Resolution\Proxies\LazyFactory.cs" />
+    <Compile Include="Resolution\Proxies\OptionalResolutionResolverProxy.cs" />
+    <Compile Include="Resolution\Proxies\OptionalResolutionResolverProxyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />

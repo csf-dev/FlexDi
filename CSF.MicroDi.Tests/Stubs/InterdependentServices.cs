@@ -21,6 +21,8 @@
 using System;
 namespace CSF.MicroDi.Tests.Stubs
 {
+  public interface IChild {}
+
   public class ParentService
   {
     public ChildServiceOne ChildOne { get; set; }
@@ -33,14 +35,24 @@ namespace CSF.MicroDi.Tests.Stubs
     }
   }
 
-  public class ChildServiceOne
+  public class ChildServiceOne : IChild
   {
     public string AProperty { get; set; }
   }
 
-  public class ChildServiceTwo {}
+  public class ChildServiceTwo : IChild {}
 
-  public class ChildServiceWithCircularDependency : ChildServiceTwo
+  public class ServiceWithOtherChildDependency
+  {
+    public IChild OtherChild { get; set; }
+
+    public ServiceWithOtherChildDependency(IChild otherChild)
+    {
+      OtherChild = otherChild;
+    }
+  }
+
+  public class ChildServiceWithCircularDependency : ChildServiceTwo, IChild
   {
     public ParentService Parent { get; set; }
 
