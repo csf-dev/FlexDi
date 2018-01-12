@@ -63,7 +63,20 @@ namespace CSF.MicroDi.Resolution
       if(registration == null)
         throw new ArgumentNullException(nameof(registration));
       var key = ServiceRegistrationKey.ForRegistration(registration);
+      return TryGet(key, out instance);
+    }
 
+    public bool TryGet(Type serviceType, string name, out object instance)
+    {
+      if(serviceType == null)
+        throw new ArgumentNullException(nameof(serviceType));
+      
+      var key = new ServiceRegistrationKey(serviceType, name);
+      return TryGet(key, out instance);
+    }
+
+    bool TryGet(ServiceRegistrationKey key, out object instance)
+    {
       var cacheKey = GetCandidateCacheKeys(key).FirstOrDefault();
       if(cacheKey == null)
       {
