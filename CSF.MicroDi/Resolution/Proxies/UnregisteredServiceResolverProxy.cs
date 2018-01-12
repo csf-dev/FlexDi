@@ -27,6 +27,7 @@ namespace CSF.MicroDi.Resolution.Proxies
   {
     readonly IServiceRegistrationProvider unregisteredRegistrationProvider;
     readonly IResolvesRegistrations registrationResolver;
+    readonly ICachesResolvedServiceInstances cache;
 
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
@@ -34,8 +35,19 @@ namespace CSF.MicroDi.Resolution.Proxies
       if(output.IsSuccess)
         return output;
 
+      if(cache != null)
+      {
+        object instance;
+        if(cache.TryGet(request.ServiceType, request.Name, out instance))
+          return ResolutionResult.Success(request.ResolutionPath, instance);
+      }
+
       var registration = unregisteredRegistrationProvider.Get(request);
-      return registrationResolver.Resolve(request, registration);
+      output = registrationResolver.Resolve(request, registration);
+      if(output.IsSuccess && cache != null)
+        cache.Add(registration, output.ResolvedObject);
+
+      return output;
     }
 
     public override IServiceRegistration GetRegistration(ResolutionRequest request)
@@ -49,7 +61,8 @@ namespace CSF.MicroDi.Resolution.Proxies
 
     public UnregisteredServiceResolverProxy(IResolver proxiedResolver,
                                             IResolvesRegistrations registrationResolver,
-                                            IServiceRegistrationProvider unregisteredRegistrationProvider)
+                                            IServiceRegistrationProvider unregisteredRegistrationProvider,
+                                            ICachesResolvedServiceInstances cache)
       : base(proxiedResolver)
     {
       if(unregisteredRegistrationProvider == null)
@@ -57,6 +70,7 @@ namespace CSF.MicroDi.Resolution.Proxies
       if(registrationResolver == null)
         throw new ArgumentNullException(nameof(registrationResolver));
 
+      this.cache = cache;
       this.registrationResolver = registrationResolver;
       this.unregisteredRegistrationProvider = unregisteredRegistrationProvider;
     }
