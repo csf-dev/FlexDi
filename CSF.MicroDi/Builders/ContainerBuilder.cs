@@ -166,6 +166,7 @@ namespace CSF.MicroDi.Builders
                                   throwOnCircularDependencies,
                                   supportResolvingNamedInstanceDictionaries,
                                   selfRegisterAResolver,
+                                  selfRegisterTheRegistry,
                                   supportResolvingLazyInstances,
                                   makeAllResolutionOptional);
     }
