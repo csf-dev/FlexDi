@@ -49,5 +49,40 @@ namespace CSF.MicroDi.Tests.Integration
       // Assert
       Assert.That(result, Is.Null);
     }
+
+    [Test]
+    public void Resolving_an_unregistered_dependency_throws_resolution_exception_when_optional_resolution_is_off()
+    {
+      // Arrange
+      var container = Container.CreateBuilder()
+                               .DoNotMakeAllResolutionOptional()
+                               .DoNotResolveUnregisteredTypes()
+                               .Build();
+      container.AddRegistrations(helper => {
+        helper.RegisterType<ServiceWithOtherChildDependency>();
+      });
+
+      // Act & assert
+      Assert.That(() => container.Resolve<ServiceWithOtherChildDependency>(), Throws.InstanceOf<ResolutionException>());
+    }
+
+    [Test]
+    public void Resolving_an_unregistered_dependency_returns_null_when_optional_resolution_is_on()
+    {
+      // Arrange
+      var container = Container.CreateBuilder()
+                               .MakeAllResolutionOptional()
+                               .DoNotResolveUnregisteredTypes()
+                               .Build();
+      container.AddRegistrations(helper => {
+        helper.RegisterType<ServiceWithOtherChildDependency>();
+      });
+
+      // Act
+      var result = container.Resolve<ServiceWithOtherChildDependency>();
+
+      // Assert
+      Assert.That(result.OtherChild, Is.Null);
+    }
   }
 }
