@@ -33,6 +33,7 @@ namespace CSF.MicroDi
     public bool SelfRegisterAResolver { get; private set; }
     public bool SelfRegisterTheRegistry { get; private set; }
     public bool SupportResolvingLazyInstances { get; private set; }
+    public bool MakeAllResolutionOptional { get; private set; }
 
     public ContainerOptions(bool useNonPublicConstructors = false,
                             bool resolveUnregisteredTypes = false,
@@ -41,8 +42,10 @@ namespace CSF.MicroDi
                             bool supportResolvingNamedInstanceDictionaries = false,
                             bool selfRegisterAResolver = true,
                             bool selfRegisterTheRegistry = false,
-                            bool supportResolvingLazyInstances = true)
+                            bool supportResolvingLazyInstances = true,
+                            bool makeAllResolutionOptional = false)
     {
+      MakeAllResolutionOptional = makeAllResolutionOptional;
       SelfRegisterTheRegistry = selfRegisterTheRegistry;
       SelfRegisterAResolver = selfRegisterAResolver;
       UseNonPublicConstructors = useNonPublicConstructors;

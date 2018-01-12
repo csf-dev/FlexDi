@@ -33,7 +33,8 @@ namespace CSF.MicroDi.Builders
       supportResolvingNamedInstanceDictionaries,
       selfRegisterAResolver,
       selfRegisterTheRegistry,
-      supportResolvingLazyInstances;
+      supportResolvingLazyInstances,
+      makeAllResolutionOptional;
     ICreatesResolvers resolverFactory;
 
     public ContainerBuilder DoNotUseNonPublicConstructors()
@@ -130,6 +131,18 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
+    public ContainerBuilder DoNotMakeAllResolutionOptional()
+    {
+      makeAllResolutionOptional = false;
+      return this;
+    }
+
+    public ContainerBuilder MakeAllResolutionOptional(bool makeAllResolutionOptional = true)
+    {
+      this.makeAllResolutionOptional = makeAllResolutionOptional;
+      return this;
+    }
+
     public ContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory)
     {
       if(resolverFactory == null)
@@ -153,7 +166,8 @@ namespace CSF.MicroDi.Builders
                                   throwOnCircularDependencies,
                                   supportResolvingNamedInstanceDictionaries,
                                   selfRegisterAResolver,
-                                  supportResolvingLazyInstances);
+                                  supportResolvingLazyInstances,
+                                  makeAllResolutionOptional);
     }
 
     public ContainerBuilder()
@@ -166,6 +180,7 @@ namespace CSF.MicroDi.Builders
       selfRegisterAResolver = ContainerOptions.Default.SelfRegisterAResolver;
       selfRegisterTheRegistry = ContainerOptions.Default.SelfRegisterTheRegistry;
       supportResolvingLazyInstances = ContainerOptions.Default.SupportResolvingLazyInstances;
+      makeAllResolutionOptional = ContainerOptions.Default.MakeAllResolutionOptional;
     }
   }
 }
