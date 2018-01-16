@@ -67,12 +67,12 @@ namespace CSF.MicroDi.Builders
       return new RegistrationBuilder(registration);
     }
 
-    public IAsBuilder RegisterInstance(object instance)
+    public IAsBuilder RegisterInstance<T>(T instance) where T : class
     {
       if(instance == null)
         throw new ArgumentNullException(nameof(instance));
 
-      var registration = new InstanceRegistration(instance) { ServiceType = instance.GetType() };
+      var registration = new InstanceRegistration(instance) { ServiceType = typeof(T) };
       registrations.Add(registration);
       return new RegistrationBuilder(registration);
     }

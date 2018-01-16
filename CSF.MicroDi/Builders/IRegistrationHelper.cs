@@ -31,6 +31,6 @@ namespace CSF.MicroDi.Builders
     IRegistrationOptionsBuilderWithCacheability RegisterFactory(Delegate factory, Type serviceType);
     IRegistrationOptionsBuilderWithCacheability RegisterFactory<TService>(Delegate factory) where TService : class;
 
-    IAsBuilder RegisterInstance(object instance);
+    IAsBuilder RegisterInstance<T>(T instance) where T : class;
   }
 }

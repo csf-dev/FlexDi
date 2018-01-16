@@ -126,9 +126,9 @@ namespace CSF.MicroDi.Tests.Builders
     }
 
     [Test,AutoMoqData]
-    [Description("The RegisterInstance method should use the object's actual type to perform the registration")]
-    public void RegisterInstance_uses_instance_actual_type(RegistrationHelper sut,
-                                                           SampleServiceImplementationOne instance)
+    [Description("The RegisterInstance method should use the object's inferred generic type to perform the registration")]
+    public void RegisterInstance_uses_inferred_type(RegistrationHelper sut,
+                                                    SampleServiceImplementationOne instance)
     {
       // Act
       ISampleService regInstance = instance;
@@ -138,14 +138,14 @@ namespace CSF.MicroDi.Tests.Builders
       var registrations = sut.GetRegistrations();
       Assert.That(registrations, Has.Some.InstanceOf<InstanceRegistration>());
       var matchingReg = registrations.FirstOrDefault(x => x is InstanceRegistration);
-      Assert.That(matchingReg.ServiceType, Is.EqualTo(typeof(SampleServiceImplementationOne)));
+      Assert.That(matchingReg.ServiceType, Is.EqualTo(typeof(ISampleService)));
     }
 
     [Test,AutoMoqData]
     public void RegisterInstance_raises_exception_if_instance_is_null(RegistrationHelper sut)
     {
       // Act & assert
-      Assert.That(() => sut.RegisterInstance(null), Throws.InstanceOf<ArgumentNullException>());
+      Assert.That(() => sut.RegisterInstance((object) null), Throws.InstanceOf<ArgumentNullException>());
     }
   }
 }

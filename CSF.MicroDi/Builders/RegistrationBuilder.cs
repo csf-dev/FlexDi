@@ -112,6 +112,26 @@ namespace CSF.MicroDi.Builders
       return this;
     }
 
+    IRegistrationOptionsBuilder IAsBuilder.As<T>()
+    {
+      registration.ServiceType = typeof(T);
+      return this;
+    }
+
+    IRegistrationOptionsBuilder IAsBuilder.As(Type serviceType)
+    {
+      if(serviceType == null)
+        throw new ArgumentNullException(nameof(serviceType));
+      registration.ServiceType = serviceType;
+      return this;
+    }
+
+    IRegistrationOptionsBuilder IAsBuilder.AsOwnType()
+    {
+      // Intentional no-op, we already have the correct type
+      return this;
+    }
+
     public RegistrationBuilder(ServiceRegistration registration)
     {
       if(registration == null)

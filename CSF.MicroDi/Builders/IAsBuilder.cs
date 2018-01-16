@@ -25,5 +25,6 @@ namespace CSF.MicroDi.Builders
   {
     IRegistrationOptionsBuilder As<T>() where T : class;
     IRegistrationOptionsBuilder As(Type serviceType);
+    IRegistrationOptionsBuilder AsOwnType();
   }
 }
