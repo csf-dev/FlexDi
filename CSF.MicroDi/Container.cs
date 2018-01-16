@@ -88,6 +88,33 @@ namespace CSF.MicroDi
       return true;
     }
 
+    public T TryResolve<T>() where T : class => TryResolve<T>(null);
+
+    public T TryResolve<T>(string name) where T : class
+    {
+      T output;
+      if(!TryResolve<T>(name, out output))
+        return null;
+      
+      return output;
+    }
+
+    public object TryResolve(Type serviceType) => TryResolve(serviceType, null);
+
+    public object TryResolve(Type serviceType, string name)
+    {
+      if(serviceType == null)
+        throw new ArgumentNullException(nameof(serviceType));
+      if(serviceType.IsValueType)
+        throw new ArgumentException("The service type must be a nullable reference type.", nameof(serviceType));
+
+      object output;
+      if(!TryResolve(serviceType, name, out output))
+        return null;
+      
+      return output;
+    }
+
     public object Resolve(Type serviceType) => Resolve(serviceType, null);
 
     public object Resolve(Type serviceType, string name)

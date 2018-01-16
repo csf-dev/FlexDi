@@ -36,6 +36,11 @@ namespace CSF.MicroDi
     bool TryResolve(Type serviceType, out object output);
     bool TryResolve(Type serviceType, string name, out object output);
 
+    T TryResolve<T>() where T : class;
+    T TryResolve<T>(string name) where T : class;
+    object TryResolve(Type serviceType);
+    object TryResolve(Type serviceType, string name);
+
     ResolutionResult TryResolve(ResolutionRequest request);
     object Resolve(ResolutionRequest request);
 
