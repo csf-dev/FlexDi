@@ -26,8 +26,16 @@ namespace CSF.MicroDi.Builders
     IAsBuilderWithCacheability RegisterType<T>() where T : class;
     IAsBuilderWithCacheability RegisterType(Type concreteType);
 
-    IAsBuilderWithCacheability RegisterFactory<T>(Func<T> factory) where T : class;
-    IAsBuilderWithCacheability RegisterFactory<T>(Func<IResolvesServices,T> factory) where T : class;
+    IAsBuilderWithCacheability RegisterFactory<TReg>(Func<TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,TReg>(Func<T1,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,T2,TReg>(Func<T1,T2,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,TReg>(Func<T1,T2,T3,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,TReg>(Func<T1,T2,T3,T4,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,TReg>(Func<T1,T2,T3,T4,T5,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,T6,TReg>(Func<T1,T2,T3,T4,T5,T6,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,T6,T7,TReg>(Func<T1,T2,T3,T4,T5,T6,T7,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,T6,T7,T8,TReg>(Func<T1,T2,T3,T4,T5,T6,T7,T8,TReg> factory) where TReg : class;
+    IAsBuilderWithCacheability RegisterDynamicFactory<T>(Func<IResolvesServices,T> factory) where T : class;
     IRegistrationOptionsBuilderWithCacheability RegisterFactory(Delegate factory, Type serviceType);
     IRegistrationOptionsBuilderWithCacheability RegisterFactory<TService>(Delegate factory) where TService : class;
 

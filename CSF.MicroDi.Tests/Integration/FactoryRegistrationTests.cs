@@ -34,7 +34,7 @@ namespace CSF.MicroDi.Tests.Integration
       // Arrange
       container.AddRegistrations(x => {
         x.RegisterFactory(() => new ChildServiceOne { AProperty = arbitraryString });
-        x.RegisterFactory(c => new ParentService(c.Resolve<ChildServiceOne>(), null));
+        x.RegisterDynamicFactory(c => new ParentService(c.Resolve<ChildServiceOne>(), null));
       });
 
       // Act
@@ -50,7 +50,7 @@ namespace CSF.MicroDi.Tests.Integration
       // Arrange
       container.AddRegistrations(x => {
         x.RegisterType<ChildServiceWithCircularDependency>().As<ChildServiceTwo>();
-        x.RegisterFactory(c => new ParentService(c.Resolve<ChildServiceOne>(), c.Resolve<ChildServiceTwo>()));
+        x.RegisterDynamicFactory(c => new ParentService(c.Resolve<ChildServiceOne>(), c.Resolve<ChildServiceTwo>()));
       });
 
       // Act & assert

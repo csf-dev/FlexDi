@@ -47,25 +47,55 @@ namespace CSF.MicroDi.Builders
       where TService : class
       => RegisterFactory(factory, typeof(TService));
 
-    public IAsBuilderWithCacheability RegisterFactory<T>(Func<T> factory) where T : class
+    public IAsBuilderWithCacheability RegisterFactory<TReg>(Func<TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,TReg>(Func<T1,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,T2,TReg>(Func<T1,T2,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,TReg>(Func<T1,T2,T3,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,TReg>(Func<T1,T2,T3,T4,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,TReg>(Func<T1,T2,T3,T4,T5,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,T6,TReg>(Func<T1,T2,T3,T4,T5,T6,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,T6,T7,TReg>(Func<T1,T2,T3,T4,T5,T6,T7,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    public IAsBuilderWithCacheability RegisterFactory<T1,T2,T3,T4,T5,T6,T7,T8,TReg>(Func<T1,T2,T3,T4,T5,T6,T7,T8,TReg> factory)
+      where TReg : class
+      => RegisterTypedFactory<TReg>(factory);
+
+    IAsBuilderWithCacheability RegisterTypedFactory<TService>(Delegate factory) where TService : class
     {
       if(factory == null)
         throw new ArgumentNullException(nameof(factory));
 
-      var registration = new FactoryRegistration<T>(factory) { ServiceType = typeof(T) };
+      var registration = new FactoryRegistration<TService>(factory) { ServiceType = typeof(TService) };
       registrations.Add(registration);
       return new RegistrationBuilder(registration);
     }
 
-    public IAsBuilderWithCacheability RegisterFactory<T>(Func<IResolvesServices,T> factory) where T : class
-    {
-      if(factory == null)
-        throw new ArgumentNullException(nameof(factory));
-
-      var registration = new FactoryRegistration<T>(factory) { ServiceType = typeof(T) };
-      registrations.Add(registration);
-      return new RegistrationBuilder(registration);
-    }
+    public IAsBuilderWithCacheability RegisterDynamicFactory<T>(Func<IResolvesServices,T> factory)
+      where T : class
+      => RegisterTypedFactory<T>(factory);
 
     public IAsBuilder RegisterInstance<T>(T instance) where T : class
     {
