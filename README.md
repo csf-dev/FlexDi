@@ -46,5 +46,5 @@ Below are links to the most recent build statuses for these two CI platforms.
 
 Platform | Status
 -------- | ------
-Linux/Mono (Travis) | [![Travis Status](https://travis-ci.org/csf-dev/FlexDi.svg?branch=feature%2F10-continuous-integration)](https://travis-ci.org/csf-dev/FlexDi)
-Windows/.NET (AppVeyor) | [![AppVeyor status](https://ci.appveyor.com/api/projects/status/nahafeweohn4sy1n?svg=true)](https://ci.appveyor.com/project/craigfowler/microdi)
+Linux/Mono (Travis) | [![Travic Status](https://travis-ci.org/csf-dev/FlexDi.svg?branch=master)](https://travis-ci.org/csf-dev/FlexDi)
+Windows/.NET (AppVeyor) | [![AppVeyor status](https://ci.appveyor.com/api/projects/status/u9u4f99p45jyhd6u?svg=true)](https://ci.appveyor.com/project/craigfowler/flexdi)
