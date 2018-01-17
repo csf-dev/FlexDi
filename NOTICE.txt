@@ -1,20 +1,20 @@
 Project information
 ===================
-The main project website for MicroDi may be found at:
+The main project website for FlexDi may be found at:
 
-  https://github.com/csf-dev/MicroDi
+  https://github.com/csf-dev/FlexDi
 
 Please refer here for documentation, upgrade news and to
 file bug reports or feature requests.
 
-MicroDi is based upon (and retains some source code from)
+FlexDi is based upon (and retains some source code from)
 another project named BoDi:
 
   https://github.com/gasparnagy/BoDi
 
 Copyright and licensing
 =======================
-MicroDi, as an open source software project, is the copyright
+FlexDi, as an open source software project, is the copyright
 of various authors and contributors.  You may find a complete
 contributor list at the end of this file.
 
@@ -34,6 +34,6 @@ BoDi authors/contributors
 * "slawomir-brzezinski-at-interxion" - https://github.com/slawomir-brzezinski-at-interxion
 * Darren Cauthon - https://github.com/darrencauthon
 
-MicroDi authors/contributors
+FlexDi authors/contributors
 ----------------------------
 * Craig Fowler - https://github.com/craigfowler

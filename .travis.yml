@@ -1,9 +1,9 @@
 language: csharp
-solution: CSF.MicroDi.sln
+solution: CSF.FlexDi.sln
 
 install:
   - tools/install.sh
 
 script:
-  - msbuild /p:Configuration=Debug CSF.MicroDi.sln
+  - msbuild /p:Configuration=Debug CSF.FlexDi.sln
   - tools/run-tests.sh
