@@ -21,21 +21,24 @@
 using System;
 namespace CSF.FlexDi
 {
-  
+  /// <summary>
+  /// Base class for all expected exceptions which stem from a container, or resolution.  This does not
+  /// include the very simple things, such as ArgumentNullException.
+  /// </summary>
   [System.Serializable]
   public class ContainerException : Exception
   {
     public Resolution.ResolutionPath ResolutionPath { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:ContainerException"/> class
+    /// Initializes a new instance of the <see cref="ContainerException"/> class
     /// </summary>
     public ContainerException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ContainerException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public ContainerException(string message) : base(message)
@@ -43,7 +46,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ContainerException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -52,7 +55,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ContainerException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>

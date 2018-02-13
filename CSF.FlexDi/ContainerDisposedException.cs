@@ -21,19 +21,21 @@
 using System;
 namespace CSF.FlexDi
 {
-  
+  /// <summary>
+  /// Exception raised when an attempt is made to use an <see cref="IContainer"/> instance which has been disposed.
+  /// </summary>
   [System.Serializable]
   public class ContainerDisposedException : ContainerException
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:ContainerDisposedException"/> class
+    /// Initializes a new instance of the <see cref="ContainerDisposedException"/> class
     /// </summary>
     public ContainerDisposedException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ContainerDisposedException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public ContainerDisposedException(string message) : base(message)
@@ -41,7 +43,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ContainerDisposedException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -50,7 +52,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ContainerDisposedException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>
