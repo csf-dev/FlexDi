@@ -21,19 +21,35 @@
 using System;
 namespace CSF.FlexDi
 {
-  
+  /// <summary>
+  /// A specialisation of <see cref="InvalidRegistrationException"/> which indicates that an attempt has been made
+  /// to re-register a service which has already been resolved (and cached).
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// This exception can only be raised if <see cref="ContainerOptions.UseInstanceCache"/> is <c>true</c> (by default
+  /// it is).  It is acceptable to re-register a component; that is, to add a registration for a service type
+  /// and name which has already been registered.  Normally that second registration will override the first; the
+  /// second registration is the one which would be used for resolution.
+  /// </para>
+  /// <para>
+  /// However, it is impossible to re-register a service if the component instance has already been resolved from the
+  /// same container, and thus added to the cache.  This would break the operation of the cache if it were permitted
+  /// (because the existing instance in the cache was created from the registration which is now being overridden).
+  /// </para>
+  /// </remarks>
   [System.Serializable]
   public class ServiceReRegisteredAfterResolutionException : InvalidRegistrationException
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:ServiceReRegisteredAfterResolutionException"/> class
+    /// Initializes a new instance of the <see cref="ServiceReRegisteredAfterResolutionException"/> class
     /// </summary>
     public ServiceReRegisteredAfterResolutionException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ServiceReRegisteredAfterResolutionException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public ServiceReRegisteredAfterResolutionException(string message) : base(message)
@@ -41,7 +57,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ServiceReRegisteredAfterResolutionException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -50,7 +66,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="ServiceReRegisteredAfterResolutionException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>

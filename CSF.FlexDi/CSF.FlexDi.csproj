@@ -98,7 +98,6 @@
     <Compile Include="Resolution\InstanceCreator.cs" />
     <Compile Include="Resolution\CannotResolveParameterException.cs" />
     <Compile Include="Resolution\ResolverBase.cs" />
-    <Compile Include="IProvidesResolutionInfo.cs" />
     <Compile Include="Resolution\ResolverFactory.cs" />
     <Compile Include="Resolution\IResolvesRegistrations.cs" />
     <Compile Include="Registration\RegistryStackFactory.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="Resolution\Proxies\LazyFactory.cs" />
     <Compile Include="Resolution\Proxies\OptionalResolutionResolverProxy.cs" />
     <Compile Include="Resolution\Proxies\OptionalResolutionResolverProxyFactory.cs" />
+    <Compile Include="IProvidesResolutionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
