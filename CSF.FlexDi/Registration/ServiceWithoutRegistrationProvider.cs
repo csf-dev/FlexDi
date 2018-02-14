@@ -24,10 +24,21 @@ using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi.Registration
 {
+  /// <summary>
+  /// A specialised implementation of <see cref="IServiceRegistrationProvider"/> which is used in order to
+  /// provide registrations for components which have not been registered.
+  /// </summary>
+  /// <seealso cref="ContainerOptions.ResolveUnregisteredTypes"/>
   public class ServiceWithoutRegistrationProvider : IServiceRegistrationProvider
   {
     readonly ISelectsConstructor constructorSelector;
 
+    /// <summary>
+    /// Gets a value which indicates whether or not the current provider can fulfil the given resolution request.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if the request can be fulfilled, <c>false</c> otherwise.</returns>
+    /// <param name="request">A resolution request.</param>
     public virtual bool CanFulfilRequest(ResolutionRequest request)
     {
       if(request == null)
@@ -36,6 +47,10 @@ namespace CSF.FlexDi.Registration
       return true;
     }
 
+    /// <summary>
+    /// Gets a registration.
+    /// </summary>
+    /// <param name="request">A resolution request.</param>
     public virtual IServiceRegistration Get(ResolutionRequest request)
     {
       if(request == null)
@@ -48,6 +63,11 @@ namespace CSF.FlexDi.Registration
       };
     }
 
+    /// <summary>
+    /// Gets all of the registrations which can fulfil a given service/component type.
+    /// </summary>
+    /// <returns>All of the matching registrations.</returns>
+    /// <param name="serviceType">A service type.</param>
     public virtual IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType)
     {
       if(serviceType == null)
@@ -56,6 +76,10 @@ namespace CSF.FlexDi.Registration
       return new [] { Get(new ResolutionRequest(serviceType, null)) };
     }
 
+    /// <summary>
+    /// Gets all of the registrations available to the current provider
+    /// </summary>
+    /// <returns>All of the registrations.</returns>
     public virtual IReadOnlyCollection<IServiceRegistration> GetAll()
     {
       throw new NotSupportedException($"This type does not support use of {nameof(GetAll)} with no parameters.");
@@ -77,6 +101,10 @@ namespace CSF.FlexDi.Registration
       return true;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceWithoutRegistrationProvider"/> class.
+    /// </summary>
+    /// <param name="constructorSelector">Constructor selector.</param>
     public ServiceWithoutRegistrationProvider(ISelectsConstructor constructorSelector)
     {
       if(constructorSelector == null)

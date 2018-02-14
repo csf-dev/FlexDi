@@ -21,8 +21,15 @@
 using System;
 namespace CSF.FlexDi.Registration
 {
+  /// <summary>
+  /// A service type which is able to add new registrations to a registry of some kind.
+  /// </summary>
   public interface IRegistersServices : IServiceRegistrationProvider
   {
+    /// <summary>
+    /// Add the specified component registration.
+    /// </summary>
+    /// <param name="registration">Registration.</param>
     void Add(IServiceRegistration registration);
   }
 }
