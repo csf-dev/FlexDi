@@ -26,12 +26,21 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// Implementation of <see cref="ICachesResolvedServiceInstances"/> which uses an in-memory cache to
+  /// store resolved instances.
+  /// </summary>
   public class ResolvedServiceCache : ICachesResolvedServiceInstances
   {
     readonly ConcurrentDictionary<ServiceCacheKey,object> instances;
     readonly object syncRoot;
     static readonly CacheKeySpecificityComparer specificityComparer;
 
+    /// <summary>
+    /// Adds a component to the cache.
+    /// </summary>
+    /// <param name="registration">Registration.</param>
+    /// <param name="instance">Instance.</param>
     public void Add(IServiceRegistration registration, object instance)
     {
       if(registration == null)
@@ -43,6 +52,12 @@ namespace CSF.FlexDi.Resolution
         instances.TryAdd(cacheKey, instance);
     }
 
+    /// <summary>
+    /// Gets a value indicating whether or not the cache contains a component which matches the given registration.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if the cache contains a matching component; <c>false</c> otherwise.</returns>
+    /// <param name="registration">Registration.</param>
     public bool Has(IServiceRegistration registration)
     {
       if(registration == null)
@@ -51,6 +66,12 @@ namespace CSF.FlexDi.Resolution
       return Has(key);
     }
 
+    /// <summary>
+    /// Gets a value indicating whether or not the cache contains a component which matches the given key.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if the cache contains a matching component; <c>false</c> otherwise.</returns>
+    /// <param name="key">Key.</param>
     public bool Has(ServiceRegistrationKey key)
     {
       if(key == null)
@@ -58,6 +79,13 @@ namespace CSF.FlexDi.Resolution
       return GetCandidateCacheKeys(key).Any();
     }
 
+    /// <summary>
+    /// Attempts to get a service/component instance from the cache, matching a given registration.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if a component was found and retrieved, <c>false</c> otherwise.</returns>
+    /// <param name="registration">The registration for which to get a component.</param>
+    /// <param name="instance">Exposes the component instance found (only if this method returns <c>true</c>).</param>
     public bool TryGet(IServiceRegistration registration, out object instance)
     {
       if(registration == null)
@@ -66,6 +94,14 @@ namespace CSF.FlexDi.Resolution
       return TryGet(key, out instance);
     }
 
+    /// <summary>
+    /// Attempts to get a service/component instance from the cache, matching a given type and name.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if a component was found and retrieved, <c>false</c> otherwise.</returns>
+    /// <param name="serviceType">The service/component type.</param>
+    /// <param name="name">The registration name.</param>
+    /// <param name="instance">Exposes the component instance found (only if this method returns <c>true</c>).</param>
     public bool TryGet(Type serviceType, string name, out object instance)
     {
       if(serviceType == null)
@@ -111,12 +147,18 @@ namespace CSF.FlexDi.Resolution
       }
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ResolvedServiceCache"/> class.
+    /// </summary>
     public ResolvedServiceCache()
     {
       instances = new ConcurrentDictionary<ServiceCacheKey, object>();
       syncRoot = new object();
     }
 
+    /// <summary>
+    /// Initializes the <see cref="T:CSF.FlexDi.Resolution.ResolvedServiceCache"/> class.
+    /// </summary>
     static ResolvedServiceCache()
     {
       specificityComparer = new CacheKeySpecificityComparer();

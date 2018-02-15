@@ -25,8 +25,16 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// Default implementation of <see cref="IDisposesOfResolvedInstances"/>.
+  /// </summary>
   public class ServiceInstanceDisposer : IDisposesOfResolvedInstances
   {
+    /// <summary>
+    /// Coordinates the disposal of all disposable service/component instances within the given cache.
+    /// </summary>
+    /// <param name="registrationProvider">Registration provider.</param>
+    /// <param name="instanceCache">A cache which provides access to the component instances.</param>
     public void DisposeInstances(IServiceRegistrationProvider registrationProvider,
                                  ICachesResolvedServiceInstances instanceCache)
     {
@@ -39,6 +47,11 @@ namespace CSF.FlexDi.Resolution
       Dispose(registrationsToDispose, instanceCache);
     }
 
+    /// <summary>
+    /// Gets a collection of the service/component registrations which are eligible for disposal.
+    /// </summary>
+    /// <returns>The registrations to dispose.</returns>
+    /// <param name="registrationProvider">Registration provider.</param>
     protected virtual IReadOnlyCollection<IServiceRegistration> GetRegistrationsToDispose(IServiceRegistrationProvider registrationProvider)
     {
       if(registrationProvider == null)
@@ -50,6 +63,11 @@ namespace CSF.FlexDi.Resolution
         .ToArray();
     }
 
+    /// <summary>
+    /// Disposes of any instances contained within the cache, which are eligible for disposal.
+    /// </summary>
+    /// <param name="registrations">Registrations.</param>
+    /// <param name="instanceCache">Instance cache.</param>
     protected virtual void Dispose(IReadOnlyCollection<IServiceRegistration> registrations,
                                    ICachesResolvedServiceInstances instanceCache)
     {
@@ -62,6 +80,11 @@ namespace CSF.FlexDi.Resolution
         Dispose(reg, instanceCache);
     }
 
+    /// <summary>
+    /// Disposes of a single component instance, matching a given registration.
+    /// </summary>
+    /// <param name="registration">Registration.</param>
+    /// <param name="instanceCache">Instance cache.</param>
     protected virtual void Dispose(IServiceRegistration registration, ICachesResolvedServiceInstances instanceCache)
     {
       if(registration == null)

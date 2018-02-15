@@ -23,8 +23,30 @@ using System.Collections.Generic;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A comparer implementation for <see cref="ServiceCacheKey"/> instances.  It compares then by how 'specific' they are.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// If the <see cref="ServiceCacheKey.ImplementationType"/> of two cache keys is identical then this comparer considers
+  /// the two implementations to be equal (return value zero).
+  /// </para>
+  /// <para>
+  /// If the implementation type of the first cache key (x) is assignable from the implementation type
+  /// of the second cache key (y), then the first key is considered to be 'smaller than' the second (return
+  /// value minus one).
+  /// </para>
+  /// <para>
+  /// Otherwise, the first cache key is considered to be greater than the second (return value 1).
+  /// </para>
+  /// </remarks>
   public class CacheKeySpecificityComparer : Comparer<ServiceCacheKey>
   {
+    /// <summary>
+    /// Compare the first cache key (<paramref name="x"/>) with the second (<paramref name="y"/>).
+    /// </summary>
+    /// <param name="x">The first cache key.</param>
+    /// <param name="y">The second cache key.</param>
     public override int Compare(ServiceCacheKey x, ServiceCacheKey y)
     {
       if(x == null)

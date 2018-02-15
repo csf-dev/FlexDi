@@ -24,8 +24,19 @@ using CSF.FlexDi.Resolution.Proxies;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// Default implementation of <see cref="ICreatesResolvers"/>, which provides the standard FlexDi functionality.
+  /// </summary>
   public class ResolverFactory : ResolverFactoryBase
   {
+    /// <summary>
+    /// Configures a collection of <see cref="T:CSF.FlexDi.Resolution.Proxies.ICreatesProxyingResolver" />.  This method should add any number of
+    /// such factories to the <paramref name="factories" /> collection.  These will be added, in order, to the 'stack'
+    /// of proxies in which to wrap created resolvers.
+    /// </summary>
+    /// <param name="factories">The resolver proxy factories to use.</param>
+    /// <param name="isInnermostResolver">If set to <c>true</c> is innermost resolver.</param>
+    /// <param name="coreResolver">The core resolver.</param>
     protected override void ConfigureResolverProxyFactories(IList<ICreatesProxyingResolver> factories,
                                                             bool isInnermostResolver,
                                                             IResolvesRegistrations coreResolver)

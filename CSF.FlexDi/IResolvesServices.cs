@@ -144,6 +144,12 @@ namespace CSF.FlexDi
     /// <returns>A collection of resolved components.</returns>
     /// <typeparam name="T">The type of the components to be resolved.</typeparam>
     IReadOnlyCollection<T> ResolveAll<T>();
+
+    /// <summary>
+    /// Creates a collection which contains resolved instances of all of the components registered for a given type.
+    /// </summary>
+    /// <returns>A collection of resolved components.</returns>
+    /// <param name="serviceType">The type of the components to be resolved.</param>
     IReadOnlyCollection<object> ResolveAll(Type serviceType);
   }
 }

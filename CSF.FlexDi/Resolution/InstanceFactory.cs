@@ -25,18 +25,61 @@ using System.Reflection;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// An implementation of <see cref="IFactoryAdapter"/> which doesn't actually create object instances at all,
+  /// but rather always provides an pre-created component instance.
+  /// </summary>
   public class InstanceFactory : IFactoryAdapter
   {
     readonly object instance;
 
+    /// <summary>
+    /// Gets the component instance.
+    /// </summary>
+    /// <value>The instance.</value>
     public object Instance => instance;
 
+    /// <summary>
+    /// Gets a value indicating whether this <see cref="T:CSF.FlexDi.Resolution.IFactoryAdapter" /> requires the resolution/provision
+    /// of any parameters.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// If this value returns <c>false</c>, then the <see cref="M:CSF.FlexDi.Resolution.IFactoryAdapter.Execute(System.Object[])" /> method may always be executed with
+    /// an empty array.
+    /// </para>
+    /// <para>
+    /// If it returns <c>true</c> then the <see cref="M:CSF.FlexDi.Resolution.IFactoryAdapter.GetParameters" /> method should be used in order to determine
+    /// which parameters are required by the execute method.  The execute method should then be used with those
+    /// parameters.
+    /// </para>
+    /// </remarks>
+    /// <value>
+    /// <c>true</c> if this adapter requires parameter resolution; otherwise, <c>false</c>.</value>
     public bool RequiresParameterResolution => false;
 
+    /// <summary>
+    /// Executes the logic contained within the factory adapter and gets the component.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The array of parameters passed to this method should correspond to those returned by the
+    /// <see cref="M:CSF.FlexDi.Resolution.IFactoryAdapter.GetParameters" /> method.
+    /// </para>
+    /// </remarks>
+    /// <param name="parameters">Parameters.</param>
     public object Execute(object[] parameters) => instance;
 
+    /// <summary>
+    /// Exposes a collection of the parameters which are required by the <see cref="M:CSF.FlexDi.Resolution.IFactoryAdapter.Execute(System.Object[])" /> method.
+    /// </summary>
+    /// <returns>The required parameters.</returns>
     public IReadOnlyList<ParameterInfo> GetParameters() => Enumerable.Empty<ParameterInfo>().ToArray();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.InstanceFactory"/> class.
+    /// </summary>
+    /// <param name="instance">The component instance.</param>
     public InstanceFactory(object instance)
     {
       this.instance = instance;

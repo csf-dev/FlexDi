@@ -28,6 +28,10 @@ namespace CSF.FlexDi
   [System.Serializable]
   public class ContainerException : Exception
   {
+    /// <summary>
+    /// Gets or sets the resolution path which lead to this exception.
+    /// </summary>
+    /// <value>The resolution path.</value>
     public Resolution.ResolutionPath ResolutionPath { get; set; }
 
     /// <summary>

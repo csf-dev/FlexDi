@@ -23,8 +23,16 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A service which bulk-disposes of <c>IDisposable</c> objects which are stored within a given cache.
+  /// </summary>
   public interface IDisposesOfResolvedInstances
   {
+    /// <summary>
+    /// Coordinates the disposal of all disposable service/component instances within the given cache.
+    /// </summary>
+    /// <param name="registrationProvider">Registration provider.</param>
+    /// <param name="instances">A cache which provides access to the component instances.</param>
     void DisposeInstances(IServiceRegistrationProvider registrationProvider, ICachesResolvedServiceInstances instances);
   }
 }

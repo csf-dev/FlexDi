@@ -23,8 +23,17 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A service which not only fulfils resolution requests but also provides access to the registration which
+  /// corresponds to those requests.
+  /// </summary>
   public interface IResolver : IFulfilsResolutionRequests
   {
+    /// <summary>
+    /// Gets the registration which corresponds to a given resolution request.
+    /// </summary>
+    /// <returns>The registration.</returns>
+    /// <param name="request">Request.</param>
     IServiceRegistration GetRegistration(ResolutionRequest request);
   }
 }
