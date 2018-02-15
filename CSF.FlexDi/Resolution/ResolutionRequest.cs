@@ -31,7 +31,7 @@ namespace CSF.FlexDi.Resolution
 
     public ResolutionRequest GetCopyWithoutName()
     {
-      return new ResolutionRequest(ServiceType, null);
+      return new ResolutionRequest(ServiceType, null, ResolutionPath);
     }
 
     public override string ToString()

@@ -101,6 +101,7 @@
     <Compile Include="Integration\ExceptionTests.cs" />
     <Compile Include="Integration\OptionalResolutionTests.cs" />
     <Compile Include="Integration\RegistrationlessResolutionTests.cs" />
+    <Compile Include="Resolution\ResolutionRequestTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.FlexDi\CSF.FlexDi.csproj">
