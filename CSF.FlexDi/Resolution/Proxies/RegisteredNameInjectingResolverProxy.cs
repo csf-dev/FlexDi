@@ -23,10 +23,20 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A proxying resolver which resolves a special string value.  If a string parameter is included in an object constructor
+  /// or a factory, and that parameter is named <c>registeredName</c>, then it will be resolved using the
+  /// <see cref="IServiceRegistration.Name"/> of the service registration which was used to resolve the component which
+  /// declared that string as a dependency.
+  /// </summary>
   public class RegisteredNameInjectingResolverProxy : ProxyingResolver
   {
     const string RegisteredName = "registeredName";
 
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       if(request == null)
@@ -51,6 +61,11 @@ namespace CSF.FlexDi.Resolution.Proxies
       return parentPath.CreateChild(registration);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the
+    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.RegisteredNameInjectingResolverProxy"/> class.
+    /// </summary>
+    /// <param name="proxiedResolver">Proxied resolver.</param>
     public RegisteredNameInjectingResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}
   }
 }

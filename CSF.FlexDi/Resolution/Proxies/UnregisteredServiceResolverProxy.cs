@@ -23,12 +23,20 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A proxying resolver which resolves components which have no registration.  It does this by creating a registration
+  /// from a special provider instance.
+  /// </summary>
   public class UnregisteredServiceResolverProxy : ProxyingResolver
   {
     readonly IServiceRegistrationProvider unregisteredRegistrationProvider;
     readonly IResolvesRegistrations registrationResolver;
     readonly ICachesResolvedServiceInstances cache;
 
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       var output = ProxiedResolver.Resolve(request);
@@ -50,6 +58,11 @@ namespace CSF.FlexDi.Resolution.Proxies
       return output;
     }
 
+    /// <summary>
+    /// Gets the registration which corresponds to a given resolution request.
+    /// </summary>
+    /// <returns>The registration.</returns>
+    /// <param name="request">Request.</param>
     public override IServiceRegistration GetRegistration(ResolutionRequest request)
     {
       var registration = base.GetRegistration(request);
@@ -59,6 +72,13 @@ namespace CSF.FlexDi.Resolution.Proxies
       return unregisteredRegistrationProvider.Get(request);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.UnregisteredServiceResolverProxy"/> class.
+    /// </summary>
+    /// <param name="proxiedResolver">Proxied resolver.</param>
+    /// <param name="registrationResolver">Registration resolver.</param>
+    /// <param name="unregisteredRegistrationProvider">Unregistered registration provider.</param>
+    /// <param name="cache">Cache.</param>
     public UnregisteredServiceResolverProxy(IResolver proxiedResolver,
                                             IResolvesRegistrations registrationResolver,
                                             IServiceRegistrationProvider unregisteredRegistrationProvider,

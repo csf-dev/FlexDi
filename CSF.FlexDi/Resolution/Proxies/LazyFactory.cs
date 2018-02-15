@@ -22,14 +22,27 @@ using System.Reflection;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A service which creates instances of <c>System.Lazy&lt;T&gt;</c>.
+  /// </summary>
   public class LazyFactory
   {
     static readonly Type
       LazyOpenGenericType = typeof(Lazy<>);
     static readonly MethodInfo CreateLazyObjectMethod;
 
+    /// <summary>
+    /// Gets a value which indicates whether or not the specified type is lazy or not.
+    /// </summary>
+    /// <returns><c>true</c>, if the specified type is a <c>System.Lazy&lt;T&gt;</c>, <c>false</c> otherwise.</returns>
+    /// <param name="type">Type.</param>
     public bool IsLazyType(Type type) => GetInnerLazyType(type) != null;
 
+    /// <summary>
+    /// Gets the 'inner' type of a <c>System.Lazy&lt;T&gt;</c>.
+    /// </summary>
+    /// <returns>The inner type.</returns>
+    /// <param name="type">A lazy type.</param>
     public Type GetInnerLazyType(Type type)
     {
       if(type == null) return null;
@@ -39,6 +52,12 @@ namespace CSF.FlexDi.Resolution.Proxies
       return type.GetGenericArguments()[0];
     }
 
+    /// <summary>
+    /// Creates and returns a <c>System.Lazy&lt;T&gt;</c> which wraps the given factory delegate.
+    /// </summary>
+    /// <returns>The lazy object.</returns>
+    /// <param name="innerLazyType">Inner lazy type.</param>
+    /// <param name="factory">The delegate which would create the value for the lazy instance.</param>
     public object GetLazyObject(Type innerLazyType, Func<object> factory)
       => GetLazyObject(innerLazyType, (Delegate) factory);
 
@@ -67,6 +86,9 @@ namespace CSF.FlexDi.Resolution.Proxies
       });
     }
 
+    /// <summary>
+    /// Initializes the <see cref="T:CSF.FlexDi.Resolution.Proxies.LazyFactory"/> class.
+    /// </summary>
     static LazyFactory()
     {
       var thisType = typeof(LazyFactory);

@@ -20,8 +20,18 @@
 using System;
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A service which creates a <see cref="IResolver"/> which implements <see cref="IProxiesToAnotherResolver"/>.
+  /// This interface provides a common point of contact for many such services, which construct resolver proxies
+  /// from possibly diverse dependencies.
+  /// </summary>
   public interface ICreatesProxyingResolver
   {
+    /// <summary>
+    /// Creates a resolver which wraps/proxies an inner resolver.
+    /// </summary>
+    /// <param name="resolutionInfo">Resolution info.</param>
+    /// <param name="resolverToProxy">The resolver to proxy.</param>
     IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy);
   }
 }

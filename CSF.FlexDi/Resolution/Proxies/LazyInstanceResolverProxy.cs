@@ -20,10 +20,17 @@
 using System;
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A proxying resolver which resolves lazy object instances.
+  /// </summary>
   public class LazyInstanceResolverProxy : ProxyingResolver
   {
     static readonly LazyFactory lazyFactory;
 
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       if(!lazyFactory.IsLazyType(request.ServiceType))
@@ -52,8 +59,15 @@ namespace CSF.FlexDi.Resolution.Proxies
       };
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.LazyInstanceResolverProxy"/> class.
+    /// </summary>
+    /// <param name="proxiedResolver">Proxied resolver.</param>
     public LazyInstanceResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}
 
+    /// <summary>
+    /// Initializes the <see cref="T:CSF.FlexDi.Resolution.Proxies.LazyInstanceResolverProxy"/> class.
+    /// </summary>
     static LazyInstanceResolverProxy()
     {
       lazyFactory = new LazyFactory();

@@ -23,12 +23,20 @@ using System.Collections.Generic;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// Implementation of <see cref="IDictionaryFactory"/> which creates dictionary instances.
+  /// </summary>
   public class GenericDictionaryFactory : IDictionaryFactory
   {
     static readonly Type
       DictionaryOpenGenericInterface = typeof(IDictionary<,>),
       DictionaryOpenGenericType = typeof(Dictionary<,>);
 
+    /// <summary>
+    /// Creates and returns an empty generic <c>IDictionary&lt;TKey,TValue&gt;</c> instance.
+    /// </summary>
+    /// <param name="keyType">Key type.</param>
+    /// <param name="valueType">Value type.</param>
     public IDictionary Create(Type keyType, Type valueType)
     {
       if(keyType == null)
@@ -41,6 +49,11 @@ namespace CSF.FlexDi.Resolution.Proxies
       return (IDictionary) dictionaryInstance;
     }
 
+    /// <summary>
+    /// Gets the key type: 'TKey' for the given dictionary type.
+    /// </summary>
+    /// <returns>The key type.</returns>
+    /// <param name="genericDictionaryType">Generic dictionary type.</param>
     public Type GetKeyType(Type genericDictionaryType)
     {
       if(!IsGenericDictionaryType(genericDictionaryType))
@@ -49,6 +62,11 @@ namespace CSF.FlexDi.Resolution.Proxies
       return genericDictionaryType.GetGenericArguments()[0];
     }
 
+    /// <summary>
+    /// Gets the key type: 'TKey' for the given dictionary type.
+    /// </summary>
+    /// <returns>The value type.</returns>
+    /// <param name="genericDictionaryType">Generic dictionary type.</param>
     public Type GetValueType(Type genericDictionaryType)
     {
       if(!IsGenericDictionaryType(genericDictionaryType))
@@ -57,6 +75,12 @@ namespace CSF.FlexDi.Resolution.Proxies
       return genericDictionaryType.GetGenericArguments()[1];
     }
 
+    /// <summary>
+    /// Gets a value which indicates whether or not the specified type is a generic dictionary type.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if the specied type is an <c>IDictionary&lt;TKey,TValue&gt;</c>, <c>false</c> otherwise.</returns>
+    /// <param name="type">The type.</param>
     public bool IsGenericDictionaryType(Type type)
     {
       if(type == null)
