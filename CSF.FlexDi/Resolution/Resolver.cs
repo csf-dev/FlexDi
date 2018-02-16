@@ -23,17 +23,31 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// This is the default implementation of <see cref="IResolver"/> and <see cref="IResolvesRegistrations"/>.
+  /// It performs actual resolution of services/components, looking up an appropriate registration and then
+  /// getting the object instance using that registration's information.
+  /// </summary>
   public class Resolver : ResolverBase, IResolvesRegistrations
   {
     readonly IServiceRegistrationProvider registrationProvider;
     readonly ICreatesObjectInstances instanceCreator;
 
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       var registration = GetRegistration(request);
       return Resolve(request, registration);
     }
 
+    /// <summary>
+    /// Gets a registration which matches the given resolution request.
+    /// </summary>
+    /// <returns>The registration.</returns>
+    /// <param name="request">Request.</param>
     public override IServiceRegistration GetRegistration(ResolutionRequest request)
     {
       if(request == null)
@@ -49,6 +63,11 @@ namespace CSF.FlexDi.Resolution
       return null;
     }
 
+    /// <summary>
+    /// Resolves the given resolution request, using the given service registration.
+    /// </summary>
+    /// <param name="request">Request.</param>
+    /// <param name="registration">Registration.</param>
     protected virtual ResolutionResult Resolve(ResolutionRequest request, IServiceRegistration registration)
     {
       if(request == null)
@@ -70,6 +89,10 @@ namespace CSF.FlexDi.Resolution
     ResolutionResult IResolvesRegistrations.Resolve(ResolutionRequest request, IServiceRegistration registration)
       => Resolve(request, registration);
 
+    /// <summary>
+    /// Asserts that a resolution request is valid.
+    /// </summary>
+    /// <param name="request">Request.</param>
     protected virtual void AssertIsValidRequest(ResolutionRequest request)
     {
       var serviceType = request.ServiceType;
@@ -82,6 +105,11 @@ namespace CSF.FlexDi.Resolution
       }
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Resolver"/> class.
+    /// </summary>
+    /// <param name="registrationProvider">Registration provider.</param>
+    /// <param name="instanceCreator">Instance creator.</param>
     public Resolver(IServiceRegistrationProvider registrationProvider,
                     ICreatesObjectInstances instanceCreator)
     {

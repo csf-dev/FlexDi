@@ -26,11 +26,19 @@ using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi.Registration
 {
+  /// <summary>
+  /// Concrete implementation of <see cref="IRegistersServices"/> and <see cref="IServiceRegistrationProvider"/>,
+  /// which keeps an in-memory collection of a number of registrations and coordinates addition and querying.
+  /// </summary>
   public class Registry : IRegistersServices
   {
     readonly object syncRoot;
     readonly ConcurrentDictionary<ServiceRegistrationKey,IServiceRegistration> registrations;
 
+    /// <summary>
+    /// Gets a value which indicates whether or not a matching registration is contained within the current instance.
+    /// </summary>
+    /// <param name="key">A service registration key.</param>
     public bool Contains(ServiceRegistrationKey key)
     {
       if(key == null)
@@ -40,6 +48,10 @@ namespace CSF.FlexDi.Registration
       return candidates.Any();
     }
 
+    /// <summary>
+    /// Add the specified component registration.
+    /// </summary>
+    /// <param name="registration">Registration.</param>
     public void Add(IServiceRegistration registration)
     {
       if(registration == null)
@@ -56,6 +68,10 @@ namespace CSF.FlexDi.Registration
       }
     }
 
+    /// <summary>
+    /// Gets a registration matching the specified key.
+    /// </summary>
+    /// <param name="key">Key.</param>
     public IServiceRegistration Get(ServiceRegistrationKey key)
     {
       if(key == null)
@@ -87,6 +103,11 @@ namespace CSF.FlexDi.Registration
       return output.ToArray();
     }
 
+    /// <summary>
+    /// Gets all of the registrations which can fulfil a given service/component type.
+    /// </summary>
+    /// <returns>All of the matching registrations.</returns>
+    /// <param name="serviceType">A service type.</param>
     public IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType)
     {
       if(serviceType == null)
@@ -98,11 +119,21 @@ namespace CSF.FlexDi.Registration
         .ToArray();
     }
 
+    /// <summary>
+    /// Gets all of the registrations available to the current provider
+    /// </summary>
+    /// <returns>All of the registrations.</returns>
     public IReadOnlyCollection<IServiceRegistration> GetAll()
     {
       return registrations.Values.ToArray();
     }
 
+    /// <summary>
+    /// Gets a value which indicates whether or not the current provider has a specified registrations.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if the registration is contained within this provider, <c>false</c> otherwise.</returns>
+    /// <param name="registration">A registration.</param>
     public bool HasRegistration(IServiceRegistration registration)
     {
       if(registration == null)
@@ -136,6 +167,9 @@ namespace CSF.FlexDi.Registration
       return Contains(key);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Registry"/> class.
+    /// </summary>
     public Registry()
     {
       syncRoot = new object();

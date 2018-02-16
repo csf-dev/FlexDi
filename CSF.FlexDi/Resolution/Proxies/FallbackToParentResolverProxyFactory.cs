@@ -20,10 +20,19 @@
 using System;
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// Implementation of <see cref="ICreatesProxyingResolver"/> which creates instances of
+  /// <see cref="FallbackResolverProxy"/>.
+  /// </summary>
   public class FallbackToParentResolverProxyFactory : ICreatesProxyingResolver
   {
     readonly Func<IProvidesResolutionInfo,IResolver> parentResolverCreator;
 
+    /// <summary>
+    /// Creates a resolver which wraps/proxies an inner resolver.
+    /// </summary>
+    /// <param name="resolutionInfo">Resolution info.</param>
+    /// <param name="resolverToProxy">The resolver to proxy.</param>
     public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
       var parentInfo = resolutionInfo.Parent;
@@ -38,6 +47,11 @@ namespace CSF.FlexDi.Resolution.Proxies
       return new FallbackResolverProxy(resolverToProxy, parentResolver);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the
+    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.FallbackToParentResolverProxyFactory"/> class.
+    /// </summary>
+    /// <param name="parentResolverCreator">Parent resolver creator.</param>
     public FallbackToParentResolverProxyFactory(Func<IProvidesResolutionInfo,IResolver> parentResolverCreator)
     {
       if(parentResolverCreator == null)

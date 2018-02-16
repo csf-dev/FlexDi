@@ -21,10 +21,20 @@
 using System;
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A service which fulfils requests to resolve a component.
+  /// </summary>
   public interface IFulfilsResolutionRequests
   {
+    /// <summary>
+    /// Performs component resolution based upon the given request, returning an object which indicates the outcome.
+    /// </summary>
+    /// <param name="request">The resolution request to fulfil.</param>
     ResolutionResult Resolve(ResolutionRequest request);
 
+    /// <summary>
+    /// An event which occurs when a service/component is resolved.
+    /// </summary>
     event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
   }
 }

@@ -25,10 +25,20 @@ using System.Reflection;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// Implementation of <see cref="ISelectsConstructor"/> which will choose the single constructor of a type which
+  /// has the most parameters.  If multiple constructors are tied for the most parameters then an exception will
+  /// be raised.
+  /// </summary>
   public class ConstructorWithMostParametersSelector : ISelectsConstructor
   {
     readonly bool includeNonPublicConstructors;
 
+    /// <summary>
+    /// Selects and returns a constructor from the given type.
+    /// </summary>
+    /// <returns>The selected constructor.</returns>
+    /// <param name="type">The type for which to select a constructor.</param>
     public ConstructorInfo SelectConstructor(Type type)
     {
       if(type == null)
@@ -77,8 +87,15 @@ namespace CSF.FlexDi.Resolution
       }
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ConstructorWithMostParametersSelector"/> class.
+    /// </summary>
     public ConstructorWithMostParametersSelector() : this(false) {}
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ConstructorWithMostParametersSelector"/> class.
+    /// </summary>
+    /// <param name="includeNonPublicConstructors">If set to <c>true</c> then non-public constructors will be considered, otherwise they will not.</param>
     public ConstructorWithMostParametersSelector(bool includeNonPublicConstructors)
     {
       this.includeNonPublicConstructors = includeNonPublicConstructors;

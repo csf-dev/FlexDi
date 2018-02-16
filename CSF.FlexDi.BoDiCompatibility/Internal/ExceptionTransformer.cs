@@ -25,6 +25,10 @@ using CSF.FlexDi.Registration;
 
 namespace BoDi.Internal
 {
+  /// <summary>
+  /// This class catches FlexDi exceptions and transforms them to the same exception type that BoDi would have raised
+  /// under the same circumstances.
+  /// </summary>
   class ExceptionTransformer
   {
     internal void TransformExceptions(Action action)

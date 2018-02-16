@@ -21,19 +21,21 @@
 using System;
 namespace CSF.FlexDi.Resolution
 {
-  
+  /// <summary>
+  /// An exception which is raised when a <see cref="ResolutionRequest"/> is invalid.
+  /// </summary>
   [System.Serializable]
   public class InvalidResolutionRequestException : ResolutionException
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:InvalidResolutionRequestException"/> class
+    /// Initializes a new instance of the <see cref="InvalidResolutionRequestException"/> class
     /// </summary>
     public InvalidResolutionRequestException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="InvalidResolutionRequestException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public InvalidResolutionRequestException(string message) : base(message)
@@ -41,7 +43,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="InvalidResolutionRequestException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -50,7 +52,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="InvalidResolutionRequestException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>

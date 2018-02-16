@@ -20,8 +20,16 @@
 using System;
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A proxying resolver which makes every single resolution operation optional.  It achieves this by ensuring that
+  /// the outcome of every resolution operation has <see cref="ResolutionResult.IsSuccess"/> set to <c>true</c>.
+  /// </summary>
   public class OptionalResolutionResolverProxy : ProxyingResolver
   {
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       var result = ProxiedResolver.Resolve(request);
@@ -36,6 +44,10 @@ namespace CSF.FlexDi.Resolution.Proxies
     object GetDefaultForType(Type serviceType)
       => serviceType.IsValueType ? Activator.CreateInstance(serviceType) : null;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.OptionalResolutionResolverProxy"/> class.
+    /// </summary>
+    /// <param name="proxiedResolver">Proxied resolver.</param>
     public OptionalResolutionResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}
   }
 }

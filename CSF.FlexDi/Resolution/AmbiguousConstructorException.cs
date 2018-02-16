@@ -21,19 +21,22 @@
 using System;
 namespace CSF.FlexDi.Resolution
 {
-  
+  /// <summary>
+  /// An exception raised when an implementation of <see cref="ISelectsConstructor"/> finds more than one constructor
+  /// which is eligible to execute.
+  /// </summary>
   [System.Serializable]
   public class AmbiguousConstructorException : ResolutionException
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:AmbiguousConstructorException"/> class
+    /// Initializes a new instance of the <see cref="AmbiguousConstructorException"/> class
     /// </summary>
     public AmbiguousConstructorException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="AmbiguousConstructorException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public AmbiguousConstructorException(string message) : base(message)
@@ -41,7 +44,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="AmbiguousConstructorException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -50,7 +53,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="AmbiguousConstructorException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>

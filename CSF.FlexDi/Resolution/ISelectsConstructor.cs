@@ -23,8 +23,16 @@ using System.Reflection;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A service which selects a <c>ConstructorInfo</c> of a given type, according to a set of rules.
+  /// </summary>
   public interface ISelectsConstructor
   {
+    /// <summary>
+    /// Selects and returns a constructor from the given type.
+    /// </summary>
+    /// <returns>The selected constructor.</returns>
+    /// <param name="type">The type for which to select a constructor.</param>
     ConstructorInfo SelectConstructor(Type type);
   }
 }

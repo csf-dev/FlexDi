@@ -21,10 +21,22 @@
 using System;
 namespace CSF.FlexDi.Registration
 {
+  /// <summary>
+  /// Base type for registrations in which the implementation type of the component is known in advance.
+  /// </summary>
   public abstract class TypedRegistration : ServiceRegistration
   {
+    /// <summary>
+    /// Gets the type of the concrete component implementation.  This should be either the same as the
+    /// <see cref="ServiceType"/> or a derived type.
+    /// </summary>
+    /// <value>The implementation type.</value>
     public abstract Type ImplementationType { get; }
 
+    /// <summary>
+    /// Gets the <c>System.Type</c> which will be fulfilled by this registration.
+    /// </summary>
+    /// <value>The service/component type.</value>
     public override Type ServiceType
     {
       get {
@@ -37,6 +49,12 @@ namespace CSF.FlexDi.Registration
       }
     }
 
+    /// <summary>
+    /// Gets a value that indicates whether or not the current registration matches the specified registration key or not.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if the current instance matches the specified key, <c>false</c> otherwise.</returns>
+    /// <param name="key">The registration key against which to test.</param>
     public override bool MatchesKey(ServiceRegistrationKey key)
     {
       if(base.MatchesKey(key))

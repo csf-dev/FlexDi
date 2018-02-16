@@ -23,9 +23,27 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A service which detects circular dependencies within a <see cref="ResolutionPath"/>.
+  /// </summary>
   public interface IDetectsCircularDependencies
   {
+    /// <summary>
+    /// Gets a value which indicates whether the given resolution path contains the given registration.  This would
+    /// indicate a circular dependency, because it means that in order to resolve the given registration, that
+    /// same registration has been traversed again.
+    /// </summary>
+    /// <returns><c>true</c>, if a circular dependency was detected, <c>false</c> otherwise.</returns>
+    /// <param name="registration">The registration to find.</param>
+    /// <param name="resolutionPath">A resolution path.</param>
     bool HasCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath);
+
+    /// <summary>
+    /// Performs the same check as <see cref="HasCircularDependency"/> but raises an exception if a circular dependency
+    /// is found.
+    /// </summary>
+    /// <param name="registration">The registration to find.</param>
+    /// <param name="resolutionPath">A resolution path.</param>
     void ThrowOnCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath);
   }
 }

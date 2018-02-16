@@ -24,18 +24,49 @@ using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi.Registration
 {
+  /// <summary>
+  /// A service type which is able to provide access to service/component registrations.
+  /// </summary>
   public interface IServiceRegistrationProvider
   {
+    /// <summary>
+    /// Gets a value which indicates whether or not the current provider can fulfil the given resolution request.
+    /// </summary>
+    /// <returns><c>true</c>, if the request can be fulfilled, <c>false</c> otherwise.</returns>
+    /// <param name="request">A resolution request.</param>
     bool CanFulfilRequest(ResolutionRequest request);
 
+    /// <summary>
+    /// Gets a value which indicates whether or not the current provider has a matching registrations.
+    /// </summary>
+    /// <returns><c>true</c>, if a matching registration is available, <c>false</c> otherwise.</returns>
+    /// <param name="key">A registration key.</param>
     bool HasRegistration(ServiceRegistrationKey key);
 
+    /// <summary>
+    /// Gets a value which indicates whether or not the current provider has a specified registrations.
+    /// </summary>
+    /// <returns><c>true</c>, if the registration is contained within this provider, <c>false</c> otherwise.</returns>
+    /// <param name="registration">A registration.</param>
     bool HasRegistration(IServiceRegistration registration);
 
+    /// <summary>
+    /// Gets a registration.
+    /// </summary>
+    /// <param name="request">A resolution request.</param>
     IServiceRegistration Get(ResolutionRequest request);
 
+    /// <summary>
+    /// Gets all of the registrations which can fulfil a given service/component type.
+    /// </summary>
+    /// <returns>All of the matching registrations.</returns>
+    /// <param name="serviceType">A service type.</param>
     IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType);
 
+    /// <summary>
+    /// Gets all of the registrations available to the current provider
+    /// </summary>
+    /// <returns>All of the registrations.</returns>
     IReadOnlyCollection<IServiceRegistration> GetAll();
   }
 }

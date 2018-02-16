@@ -13,11 +13,8 @@
   </metadata>
   <files>
     <file src="bin/Release/CSF.FlexDi.dll" target="lib/net45" />
+    <file src="bin/Release/CSF.FlexDi.xml" target="lib/net45" />
     <file src="bin/Release/NOTICE.txt" target="" />
     <file src="bin/Release/LICENSE.txt" target="" />
-    <!--
-    TODO: Once issue #19 is resolved, uncomment this to include the documentation
-    <file src="bin/Release/CSF.FlexDi.xml" target="lib/net45" />
-    -->
   </files>
 </package>

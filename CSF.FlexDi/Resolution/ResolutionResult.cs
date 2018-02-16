@@ -21,14 +21,35 @@
 using System;
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// Represents the result of a <see cref="ResolutionRequest"/>.
+  /// </summary>
   public class ResolutionResult
   {
+    /// <summary>
+    /// Gets a value indicating whether this <see cref="T:CSF.FlexDi.Resolution.ResolutionResult"/> is a success.
+    /// </summary>
+    /// <value><c>true</c> if is success; otherwise, <c>false</c>.</value>
     public bool IsSuccess { get; }
 
+    /// <summary>
+    /// Gets the resolution path.
+    /// </summary>
+    /// <value>The resolution path.</value>
     public ResolutionPath ResolutionPath { get; }
 
+    /// <summary>
+    /// Gets the resolved service/component instance.
+    /// </summary>
+    /// <value>The resolved object.</value>
     public object ResolvedObject { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ResolutionResult"/> class.
+    /// </summary>
+    /// <param name="success">If set to <c>true</c> success.</param>
+    /// <param name="resolutionPath">Resolution path.</param>
+    /// <param name="resolvedObject">Resolved object.</param>
     public ResolutionResult(bool success, ResolutionPath resolutionPath, object resolvedObject)
     {
       if(resolutionPath == null)
@@ -38,9 +59,18 @@ namespace CSF.FlexDi.Resolution
       ResolvedObject = resolvedObject;
     }
 
+    /// <summary>
+    /// Creates an instance of <see cref="ResolutionResult"/> representing failed resolution.
+    /// </summary>
+    /// <param name="resolutionPath">Resolution path.</param>
     public static ResolutionResult Failure(ResolutionPath resolutionPath)
       => new ResolutionResult(false, resolutionPath, null);
 
+    /// <summary>
+    /// Creates an instance of <see cref="ResolutionResult"/> representing successful resolution.
+    /// </summary>
+    /// <param name="resolutionPath">Resolution path.</param>
+    /// <param name="resolvedObject">Resolved object.</param>
     public static ResolutionResult Success(ResolutionPath resolutionPath, object resolvedObject)
       => new ResolutionResult(true, resolutionPath, resolvedObject);
   }

@@ -21,10 +21,17 @@
 using System;
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A proxying resolver which raises exceptions when circular dependencies are detected.
+  /// </summary>
   public class CircularDependencyPreventingResolverProxy : ProxyingResolver
   {
     readonly IDetectsCircularDependencies circularDependencyDetector;
 
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       var registration = GetRegistration(request);
@@ -35,6 +42,12 @@ namespace CSF.FlexDi.Resolution.Proxies
       return ProxiedResolver.Resolve(request);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the
+    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.CircularDependencyPreventingResolverProxy"/> class.
+    /// </summary>
+    /// <param name="proxiedResolver">Proxied resolver.</param>
+    /// <param name="circularDependencyDetector">Circular dependency detector.</param>
     public CircularDependencyPreventingResolverProxy(IResolver proxiedResolver,
                                                      IDetectsCircularDependencies circularDependencyDetector)
       : base(proxiedResolver)

@@ -21,19 +21,21 @@
 using System;
 namespace CSF.FlexDi.Registration
 {
-  
+  /// <summary>
+  /// An exception which is raised when a <see cref="TypeRegistration"/> is invalid.
+  /// </summary>
   [System.Serializable]
   public class InvalidTypeRegistrationException : InvalidRegistrationException
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:InvalidTypeRegistrationException"/> class
+    /// Initializes a new instance of the <see cref="InvalidTypeRegistrationException"/> class
     /// </summary>
     public InvalidTypeRegistrationException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="InvalidTypeRegistrationException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public InvalidTypeRegistrationException(string message) : base(message)
@@ -41,7 +43,7 @@ namespace CSF.FlexDi.Registration
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="InvalidTypeRegistrationException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -50,7 +52,7 @@ namespace CSF.FlexDi.Registration
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="InvalidTypeRegistrationException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>

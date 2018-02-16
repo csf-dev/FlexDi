@@ -21,10 +21,29 @@
 using System;
 namespace CSF.FlexDi.Builders
 {
+  /// <summary>
+  /// Helper type which assists in choosing the 'service type' for a component registration.
+  /// </summary>
   public interface IAsBuilderWithCacheability
   {
+    /// <summary>
+    /// Indicates that the component will be registered 'as' the specified generic type parameter.
+    /// </summary>
+    /// <typeparam name="T">The service type for which to register the component.</typeparam>
+    /// <returns>A builder with which to specify registration options.</returns>
     IRegistrationOptionsBuilderWithCacheability As<T>() where T : class;
+
+    /// <summary>
+    /// Indicates that the component will be registered 'as' the specified type.
+    /// </summary>
+    /// <param name="serviceType">The service type for which to register the component.</param>
+    /// <returns>A builder with which to specify registration options.</returns>
     IRegistrationOptionsBuilderWithCacheability As(Type serviceType);
+
+    /// <summary>
+    /// Indicates that the component will be registered as its own type (and not under a more general type).
+    /// </summary>
+    /// <returns>A builder with which to specify registration options.</returns>
     IRegistrationOptionsBuilderWithCacheability AsOwnType();
   }
 }
