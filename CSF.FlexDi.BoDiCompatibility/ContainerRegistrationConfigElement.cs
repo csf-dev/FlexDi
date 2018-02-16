@@ -24,10 +24,17 @@ using System.Configuration;
 
 namespace BoDi
 {
+  /// <summary>
+  /// A configuration element representing a single service registration.
+  /// </summary>
   public class ContainerRegistrationConfigElement : ConfigurationElement
   {
     const string ServiceType = "as", ImplementationType = "type", RegistrationName = "name";
 
+    /// <summary>
+    /// Gets or sets the interface/service/component type registered by this element.
+    /// </summary>
+    /// <value>The interface.</value>
     [ConfigurationProperty(ServiceType, IsRequired = true)]
     public string Interface
     {
@@ -35,6 +42,10 @@ namespace BoDi
       set { this[ServiceType] = value; }
     }
 
+    /// <summary>
+    /// Gets or sets the concrete implementation type for this element.
+    /// </summary>
+    /// <value>The implementation.</value>
     [ConfigurationProperty(ImplementationType, IsRequired = true)]
     public string Implementation
     {
@@ -42,6 +53,10 @@ namespace BoDi
       set { this[ImplementationType] = value; }
     }
 
+    /// <summary>
+    /// Gets or sets an optional registration name for this element.
+    /// </summary>
+    /// <value>The name.</value>
     [ConfigurationProperty(RegistrationName, IsRequired = false, DefaultValue = null)]
     public string Name
     {

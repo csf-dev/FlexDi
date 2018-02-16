@@ -23,6 +23,9 @@ using System.Collections.Generic;
 
 namespace BoDi
 {
+  /// <summary>
+  /// The is the BoDi container service.  It provides functionality to register and resolve services/components.
+  /// </summary>
   public interface IObjectContainer: IDisposable
   {
     /// <summary>

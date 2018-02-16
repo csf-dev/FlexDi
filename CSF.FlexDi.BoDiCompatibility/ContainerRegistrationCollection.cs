@@ -24,13 +24,25 @@ using System.Configuration;
 
 namespace BoDi
 {
+  /// <summary>
+  /// A configuration collection type which represents the configured DI registrations.
+  /// </summary>
   public class ContainerRegistrationCollection : ConfigurationElementCollection
   {
+    /// <summary>
+    /// Creates a the new configuration element.
+    /// </summary>
+    /// <returns>The new element.</returns>
     protected override ConfigurationElement CreateNewElement()
     {
       return new ContainerRegistrationConfigElement();
     }
 
+    /// <summary>
+    /// Gets the key (a unique identifier for an element) for the specified element.
+    /// </summary>
+    /// <returns>The element key.</returns>
+    /// <param name="element">Element.</param>
     protected override object GetElementKey(ConfigurationElement element)
     {
       var registrationConfigElement = ((ContainerRegistrationConfigElement)element);
@@ -40,6 +52,12 @@ namespace BoDi
       return elementKey;
     }
 
+    /// <summary>
+    /// Adds a new configuration element with the specified implementation type, interface type and name.
+    /// </summary>
+    /// <param name="implementationType">Implementation type.</param>
+    /// <param name="interfaceType">Interface type.</param>
+    /// <param name="name">Name.</param>
     public void Add(string implementationType, string interfaceType, string name = null)
     {
       BaseAdd(new ContainerRegistrationConfigElement

@@ -48,6 +48,7 @@
     <Compile Include="Internal\DynamicRecursionResolverProxy.cs" />
     <Compile Include="Internal\BoDiFlexDiContainerFactory.cs" />
     <Compile Include="Internal\DynamicRecursionResolverProxyFactory.cs" />
+    <Compile Include="Internal\IProvidesFlexDiContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.FlexDi\CSF.FlexDi.csproj">

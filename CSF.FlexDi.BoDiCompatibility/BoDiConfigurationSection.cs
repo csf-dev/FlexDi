@@ -24,10 +24,18 @@ using System.Configuration;
 
 namespace BoDi
 {
+  /// <summary>
+  /// A configuration section used by BoDi to create and add registrations from the application configuration.
+  /// </summary>
+  /// <seealso cref="ObjectContainer.RegisterFromConfiguration()"/>
   public class BoDiConfigurationSection : ConfigurationSection
   {
     const string CollectionName = "", AddItemKey = "register";
 
+    /// <summary>
+    /// Gets or sets the collection of registrations.
+    /// </summary>
+    /// <value>The registrations.</value>
     [ConfigurationProperty(CollectionName, Options = ConfigurationPropertyOptions.IsDefaultCollection)]
     [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = AddItemKey)]
     public ContainerRegistrationCollection Registrations

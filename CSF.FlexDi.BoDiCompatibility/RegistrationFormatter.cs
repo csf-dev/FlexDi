@@ -25,8 +25,15 @@ using CSF.FlexDi.Registration;
 
 namespace BoDi
 {
+  /// <summary>
+  /// A service which formats the names of <see cref="IServiceRegistration"/> instances into human-readable strings.
+  /// </summary>
   public class RegistrationFormatter
   {
+    /// <summary>
+    /// Gets a collection of the formatted strings representing the specified registrations.
+    /// </summary>
+    /// <param name="registrations">The registrations to format.</param>
     public IEnumerable<string> Format(IEnumerable<IServiceRegistration> registrations)
     {
       if(registrations == null)
@@ -35,6 +42,10 @@ namespace BoDi
       return registrations.Select(x => Format(x));
     }
 
+    /// <summary>
+    /// Gets a formatted string representing the specified registration.
+    /// </summary>
+    /// <param name="registration">The registration to format.</param>
     public string Format(IServiceRegistration registration)
     {
       if(registration == null)
