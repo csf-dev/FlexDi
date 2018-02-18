@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>CSF.FlexDi</id>
-    <version>0.5.0-beta</version>
+    <version>1.0.0</version>
     <title>FlexDi - lightweight &amp; extensible DI container</title>
     <authors>CSF Software Ltd</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
