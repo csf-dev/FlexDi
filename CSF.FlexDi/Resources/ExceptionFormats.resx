@@ -15,8 +15,14 @@
 	<data name="ResolutionInfoCacheMustNotBeNull">
     <value>The cache provided by the resolution info must not be null.</value>
 	</data>
+  <data name="ResolutionInfoRegistryMustNotBeNull">
+    <value>The registry provided by the resolution info must not be null.</value>
+  </data>
+  <data name="ResolutionInfoOptionsMustNotBeNull">
+    <value>The optoins provided by the resolution info must not be null.</value>
+  </data>
   <data name="CircularDependencyDetected">
-    <value>A circular dependency was detected whilst resolving a component; this is not supported.</value>
+    <value>Circular dependency was detected whilst resolving a component; this is not supported.</value>
   </data>
   <data name="ImplementationTypeMustHaveAConstructor">
     <value>The type `{0}' must have at least one constructor.
@@ -67,7 +73,26 @@ Refer to the inner exception for further details.</value>
   <data name="RequestMustBeForGenericType">
     <value>The request must be for a generic type; the actual request type was `{0}'.</value>
   </data>
+  <data name="AsOwnTypeOnlyForTypedRegistrations">
+    <value>This operation is only suitable for registrations which derive from `{0}'.</value>
+  </data>
+	<data name="PrimitiveTypesCannotBeResolved">
+    <value>Primitive types or structs cannot be resolved.
+{0}</value>
+  </data>
+  <data name="InvalidCacheableAndDisposeWithContainerCombination">
+    <value>It is invalid for a registration to have both:
+{0} = {1}
+{2} = {3}</value>
+  </data>
+  <data name="GetAllWithNoParametersUnsupported">
+    <value>This type does not support use of {0} with no parameters.</value>
+  </data>
+  <data name="ImplementationTypeMustDeriveFromComponentType">
+    <value>Invalid {0}; the implementation type: `{1}' must derive from the component type: `{2}'.</value>
+  </data>
 
+	
 	
 	
 </root>

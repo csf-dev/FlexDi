@@ -53,6 +53,18 @@ namespace CSF.FlexDi.Resources {
             }
         }
         
+        internal static string ResolutionInfoRegistryMustNotBeNull {
+            get {
+                return ResourceManager.GetString("ResolutionInfoRegistryMustNotBeNull", resourceCulture);
+            }
+        }
+        
+        internal static string ResolutionInfoOptionsMustNotBeNull {
+            get {
+                return ResourceManager.GetString("ResolutionInfoOptionsMustNotBeNull", resourceCulture);
+            }
+        }
+        
         internal static string CircularDependencyDetected {
             get {
                 return ResourceManager.GetString("CircularDependencyDetected", resourceCulture);
@@ -146,6 +158,36 @@ namespace CSF.FlexDi.Resources {
         internal static string RequestMustBeForGenericType {
             get {
                 return ResourceManager.GetString("RequestMustBeForGenericType", resourceCulture);
+            }
+        }
+        
+        internal static string AsOwnTypeOnlyForTypedRegistrations {
+            get {
+                return ResourceManager.GetString("AsOwnTypeOnlyForTypedRegistrations", resourceCulture);
+            }
+        }
+        
+        internal static string PrimitiveTypesCannotBeResolved {
+            get {
+                return ResourceManager.GetString("PrimitiveTypesCannotBeResolved", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidCacheableAndDisposeWithContainerCombination {
+            get {
+                return ResourceManager.GetString("InvalidCacheableAndDisposeWithContainerCombination", resourceCulture);
+            }
+        }
+        
+        internal static string GetAllWithNoParametersUnsupported {
+            get {
+                return ResourceManager.GetString("GetAllWithNoParametersUnsupported", resourceCulture);
+            }
+        }
+        
+        internal static string ImplementationTypeMustDeriveFromComponentType {
+            get {
+                return ResourceManager.GetString("ImplementationTypeMustDeriveFromComponentType", resourceCulture);
             }
         }
     }

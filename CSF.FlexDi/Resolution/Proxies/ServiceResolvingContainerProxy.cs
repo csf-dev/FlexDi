@@ -236,7 +236,7 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
       if(serviceType.IsValueType)
-        throw new ArgumentException("The service type must be a nullable reference type.", nameof(serviceType));
+        throw new ArgumentException(Resources.ExceptionFormats.TypeToResolveMustBeNullableReferenceType, nameof(serviceType));
 
       object output;
       if(!TryResolve(serviceType, name, out output))

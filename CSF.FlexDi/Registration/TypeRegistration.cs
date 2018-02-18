@@ -76,7 +76,13 @@ namespace CSF.FlexDi.Registration
     public override void AssertIsValid()
     {
       if(!ServiceType.IsAssignableFrom(ImplementationType))
-        throw new InvalidTypeRegistrationException($"Invalid {nameof(TypeRegistration)}; the implementation type: `{ImplementationType.FullName}' must derive from the service type: `{ServiceType.FullName}'.");
+      {
+        var message = String.Format(Resources.ExceptionFormats.ImplementationTypeMustDeriveFromComponentType,
+                                    nameof(TypeRegistration),
+                                    ImplementationType.FullName,
+                                    ServiceType.FullName);
+        throw new InvalidTypeRegistrationException(message);
+      }
 
       base.AssertIsValid();
     }

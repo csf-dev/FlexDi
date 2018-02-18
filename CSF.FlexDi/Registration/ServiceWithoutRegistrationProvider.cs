@@ -82,7 +82,9 @@ namespace CSF.FlexDi.Registration
     /// <returns>All of the registrations.</returns>
     public virtual IReadOnlyCollection<IServiceRegistration> GetAll()
     {
-      throw new NotSupportedException($"This type does not support use of {nameof(GetAll)} with no parameters.");
+      var message = String.Format(Resources.ExceptionFormats.GetAllWithNoParametersUnsupported,
+                                  nameof(GetAll));
+      throw new NotSupportedException(message);
     }
 
     bool IServiceRegistrationProvider.HasRegistration(ServiceRegistrationKey key)

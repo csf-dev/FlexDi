@@ -110,9 +110,9 @@ namespace CSF.FlexDi.Resolution
       if(resolutionInfo == null)
         throw new ArgumentNullException(nameof(resolutionInfo));
       if(resolutionInfo.Registry == null)
-        throw new ArgumentException("The registry provided by the resolution info must not be null.", nameof(resolutionInfo));
+        throw new ArgumentException(Resources.ExceptionFormats.ResolutionInfoRegistryMustNotBeNull, nameof(resolutionInfo));
       if(resolutionInfo.Options == null)
-        throw new ArgumentException("The options provided by the resolution info must not be null.", nameof(resolutionInfo));
+        throw new ArgumentException(Resources.ExceptionFormats.ResolutionInfoOptionsMustNotBeNull, nameof(resolutionInfo));
     }
 
     /// <summary>
