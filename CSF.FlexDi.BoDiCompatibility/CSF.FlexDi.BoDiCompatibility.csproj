@@ -49,6 +49,9 @@
     <Compile Include="Internal\BoDiFlexDiContainerFactory.cs" />
     <Compile Include="Internal\DynamicRecursionResolverProxyFactory.cs" />
     <Compile Include="Internal\IProvidesFlexDiContainer.cs" />
+    <Compile Include="Resources\ExceptionFormats.Designer.cs">
+      <DependentUpon>ExceptionFormats.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSF.FlexDi\CSF.FlexDi.csproj">
@@ -58,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Internal\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CSF.FlexDi.BoDiCompatibility.nuspec" />
@@ -69,6 +73,13 @@
       <Link>NOTICE.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ExceptionFormats.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionFormats.Designer.cs</LastGenOutput>
+      <LogicalName>ExceptionFormats.resources</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

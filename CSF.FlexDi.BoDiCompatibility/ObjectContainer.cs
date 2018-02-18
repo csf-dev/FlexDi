@@ -388,7 +388,9 @@ namespace BoDi
       }
       catch(InvalidCastException ex)
       {
-        throw new ArgumentException($"Base container must be a FlexDi-based {nameof(ObjectContainer)}", nameof(baseContainer), ex);
+        var message = String.Format(Resources.ExceptionFormats.BaseContainerMustProvideFlexDiContainer,
+                                    nameof(IProvidesFlexDiContainer));
+        throw new ArgumentException(message, nameof(baseContainer), ex);
       }
     }
 
