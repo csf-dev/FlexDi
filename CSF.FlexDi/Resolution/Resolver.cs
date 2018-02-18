@@ -98,7 +98,7 @@ namespace CSF.FlexDi.Resolution
       var serviceType = request.ServiceType;
       if(serviceType.IsPrimitive || serviceType.IsValueType || serviceType == typeof(string))
       {
-        var message = $"Primitive types or structs cannot be resolved.{Environment.NewLine}{request.ToString()}";
+        var message = String.Format(Resources.ExceptionFormats.PrimitiveTypesCannotBeResolved, request);
         throw new InvalidResolutionRequestException(message) {
           ResolutionPath = request.ResolutionPath
         };

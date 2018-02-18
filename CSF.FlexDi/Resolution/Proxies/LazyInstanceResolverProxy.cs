@@ -52,7 +52,8 @@ namespace CSF.FlexDi.Resolution.Proxies
         var result = ProxiedResolver.Resolve(lazyRequest);
         if(!result.IsSuccess)
         {
-          var message = $"The type `{lazyRequest.ServiceType.FullName}' could not be lazily-resolved.";
+          var message = String.Format(Resources.ExceptionFormats.LazyResolutionFailure,
+                                      lazyRequest.ServiceType.FullName);
           throw new ResolutionException(message) { ResolutionPath = lazyRequest.ResolutionPath };
         }
         return result.ResolvedObject;

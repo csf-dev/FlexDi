@@ -62,7 +62,11 @@ namespace CSF.FlexDi.Builders
     {
       var typedRegistration = registration as TypedRegistration;
       if(typedRegistration == null)
-        throw new InvalidOperationException($"This operation is only suitable for {nameof(TypedRegistration)} instances.");
+      {
+        var message = String.Format(Resources.ExceptionFormats.AsOwnTypeOnlyForTypedRegistrations,
+                                    nameof(TypedRegistration));
+        throw new InvalidOperationException(message);
+      }
 
       registration.ServiceType = typedRegistration.ImplementationType;
       return this;

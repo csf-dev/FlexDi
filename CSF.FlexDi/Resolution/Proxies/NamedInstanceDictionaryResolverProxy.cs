@@ -100,7 +100,9 @@ namespace CSF.FlexDi.Resolution.Proxies
       }
       catch(ArgumentException ex)
       {
-        var message = $"There must be a value in the enumeration `{nameType.FullName}' which matches the name '{registeredName}'.";
+        var message = String.Format(Resources.ExceptionFormats.MissingEnumerationContant,
+                                    nameType.FullName,
+                                    registeredName);
         throw new NoMatchingEnumerationConstantException(message, ex);
       }
     }

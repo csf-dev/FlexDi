@@ -71,7 +71,10 @@ namespace CSF.FlexDi.Resolution
     void AssertAConstructorIsFound(Type type, ConstructorInfo ctor)
     {
       if(ctor == null)
-        throw new CannotInstantiateTypeWithoutAnyConstructorsException($"The type {type.FullName} must have at least one constructor.{Environment.NewLine}Interfaces must be registered with a concrete implementation.");
+      {
+        var message = String.Format(Resources.ExceptionFormats.ImplementationTypeMustHaveAConstructor, type.FullName); 
+        throw new CannotInstantiateTypeWithoutAnyConstructorsException(message);
+      }
     }
 
     void AssertConstructorIsNotAmbiguous(Type type,
@@ -82,8 +85,8 @@ namespace CSF.FlexDi.Resolution
       if(allConstructors.Count(x => x.GetParameters().Count() == paramCount) > 1)
       {
         var parametersText = (paramCount == 1)? "1 parameter" : $"{paramCount} parameters";
-        throw new AmbiguousConstructorException($"The type {type.FullName} has multiple constructors with {parametersText}.{Environment.NewLine}" +
-                                                "If you wish to register this type, you must use a factory registration and manually choose the appropriate constructor.");
+        var message = String.Format(Resources.ExceptionFormats.AmbiguousConstructor, type.FullName, parametersText);
+        throw new AmbiguousConstructorException(message);
       }
     }
 

@@ -95,7 +95,14 @@ namespace CSF.FlexDi.Registration
     protected void AssertCachabilityAndDisposalAreValid()
     {
       if(!Cacheable && DisposeWithContainer)
-        throw new InvalidRegistrationException($"A registration may not have {nameof(DisposeWithContainer)} set to {Boolean.TrueString} if {nameof(Cacheable)} is {Boolean.FalseString}.");
+      {
+        var message = String.Format(Resources.ExceptionFormats.InvalidCacheableAndDisposeWithContainerCombination,
+                                    nameof(DisposeWithContainer),
+                                    Boolean.TrueString,
+                                    nameof(Cacheable),
+                                    Boolean.FalseString);
+        throw new InvalidRegistrationException(message);
+      }
     }
 
     /// <summary>

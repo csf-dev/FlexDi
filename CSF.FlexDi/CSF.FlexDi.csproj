@@ -130,12 +130,16 @@
     <Compile Include="Resolution\Proxies\OptionalResolutionResolverProxy.cs" />
     <Compile Include="Resolution\Proxies\OptionalResolutionResolverProxyFactory.cs" />
     <Compile Include="IProvidesResolutionInfo.cs" />
+    <Compile Include="Resources\ExceptionFormats.Designer.cs">
+      <DependentUpon>ExceptionFormats.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
     <Folder Include="Registration\" />
     <Folder Include="Resolution\" />
     <Folder Include="Resolution\Proxies\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CSF.FlexDi.nuspec" />
@@ -147,6 +151,13 @@
       <Link>NOTICE.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ExceptionFormats.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LogicalName>ExceptionFormats.resources</LogicalName>
+      <LastGenOutput>ExceptionFormats.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

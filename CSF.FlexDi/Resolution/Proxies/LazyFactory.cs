@@ -81,7 +81,8 @@ namespace CSF.FlexDi.Resolution.Proxies
         }
         catch(TargetInvocationException ex)
         {
-          throw new ResolutionException($"Lazy resolution failure: {typeof(T).Name} (see inner exception)", ex);
+          var message = String.Format(Resources.ExceptionFormats.LazyResolutionException, typeof(T).FullName);
+          throw new ResolutionException(message, ex);
         }
       });
     }

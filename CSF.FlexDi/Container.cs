@@ -98,7 +98,7 @@ namespace CSF.FlexDi
 
       object output;
       if(!TryResolve(typeof(T), name, out output))
-        throw new ResolutionException($"The service type `{typeof(T).FullName}' could not be resolved");
+        ThrowResolutionFailureException(typeof(T));
       return (T) output;
     }
 
@@ -178,7 +178,7 @@ namespace CSF.FlexDi
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
       if(serviceType.IsValueType)
-        throw new ArgumentException("The service type must be a nullable reference type.", nameof(serviceType));
+        throw new ArgumentException(Resources.ExceptionFormats.TypeToResolveMustBeNullableReferenceType, nameof(serviceType));
 
       object output;
       if(!TryResolve(serviceType, name, out output))
@@ -204,7 +204,7 @@ namespace CSF.FlexDi
 
       object output;
       if(!TryResolve(serviceType, name, out output))
-        throw new ResolutionException($"The service type `{serviceType.FullName}' could be resolved");
+        ThrowResolutionFailureException(serviceType);
       return output;
     }
 
@@ -266,7 +266,7 @@ namespace CSF.FlexDi
     {
       var result = TryResolve(request);
       if(!result.IsSuccess)
-        throw new ResolutionException($"The service type `{request.ServiceType.FullName}' could be resolved");
+        ThrowResolutionFailureException(request.ServiceType);
 
       return result.ResolvedObject;
     }
@@ -295,6 +295,12 @@ namespace CSF.FlexDi
       return GetRegistrations(serviceType)
         .Select(x => Resolve(x.ServiceType, x.Name))
         .ToArray();
+    }
+
+    void ThrowResolutionFailureException(Type componentType)
+    {
+      var message = String.Format(Resources.ExceptionFormats.CannotResolveComponentType, componentType.FullName);
+      throw new ResolutionException(message);
     }
 
     #endregion
@@ -441,7 +447,10 @@ namespace CSF.FlexDi
     {
       var key = ServiceRegistrationKey.ForRegistration(registration);
       if(cache.Has(key))
-        throw new ServiceReRegisteredAfterResolutionException($"Cannot re-register a service after it has already been resolved from the container and cached.{Environment.NewLine}Invalid registration: {registration.ToString()}");
+      {
+        var message = String.Format(Resources.ExceptionFormats.CannotReRegisterAfterResolution, registration); 
+        throw new ServiceReRegisteredAfterResolutionException(message);
+      }
     }
 
     #endregion
@@ -480,7 +489,7 @@ namespace CSF.FlexDi
     void AssertNotDisposed()
     {
       if(disposedValue)
-        throw new ContainerDisposedException("The requested action is not valid for a container which has been disposed.");
+        throw new ContainerDisposedException(Resources.ExceptionFormats.ContainerIsDisposed);
     }
 
     #endregion
@@ -552,8 +561,13 @@ namespace CSF.FlexDi
       var output = factory.CreateResolver(this);
 
       if(output == null)
-        throw new ArgumentException($"The implementation of {nameof(ICreatesResolvers)} must not return a null instance of {nameof(IResolver)}.", nameof(resolverFactory));
-      
+      {
+        var message = String.Format(Resources.ExceptionFormats.ResolverFactoryMustNotReturnNull,
+                                    nameof(ICreatesResolvers),
+                                    nameof(IResolver));
+        throw new ArgumentException(message, nameof(resolverFactory));
+      }
+
       return output;
     }
 

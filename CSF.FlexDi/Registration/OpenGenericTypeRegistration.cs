@@ -35,8 +35,14 @@ namespace CSF.FlexDi.Registration
     public override void AssertIsValid()
     {
       if(!IsAssignableToGenericType(ImplementationType, ServiceType))
-        throw new InvalidTypeRegistrationException($"Invalid {nameof(OpenGenericTypeRegistration)}; the implementation type: `{ImplementationType.FullName}' must derive from the service type: `{ServiceType.FullName}'.");
-      
+      {
+        var message = String.Format(Resources.ExceptionFormats.InvalidOpenGenericRegistration,
+                                    nameof(OpenGenericTypeRegistration),
+                                    ImplementationType.FullName,
+                                    ServiceType.FullName);
+        throw new InvalidTypeRegistrationException(message);
+      }
+
       AssertCachabilityAndDisposalAreValid();
     }
 
@@ -71,7 +77,10 @@ namespace CSF.FlexDi.Registration
         throw new ArgumentNullException(nameof(request));
 
       if(!request.ServiceType.IsGenericType)
-        throw new ArgumentException($"The request must be for a generic type; request type: {request.ServiceType.FullName}", nameof(request));
+      {
+        var message = String.Format(Resources.ExceptionFormats.RequestMustBeForGenericType, request.ServiceType.FullName);
+        throw new ArgumentException(message, nameof(request));
+      }
 
       var requestedGenericTypeArgs = request.ServiceType.GetGenericArguments();
       var implementationTypeWithGenericParams = ImplementationType.MakeGenericType(requestedGenericTypeArgs);

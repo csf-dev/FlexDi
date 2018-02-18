@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+	<data name="ResolutionInfoCacheMustNotBeNull">
+    <value>The cache provided by the resolution info must not be null.</value>
+	</data>
+  <data name="ResolutionInfoRegistryMustNotBeNull">
+    <value>The registry provided by the resolution info must not be null.</value>
+  </data>
+  <data name="ResolutionInfoOptionsMustNotBeNull">
+    <value>The optoins provided by the resolution info must not be null.</value>
+  </data>
+  <data name="CircularDependencyDetected">
+    <value>Circular dependency was detected whilst resolving a component; this is not supported.</value>
+  </data>
+  <data name="ImplementationTypeMustHaveAConstructor">
+    <value>The type `{0}' must have at least one constructor.
+Interfaces must be registered with a concrete implementation.</value>
+  </data>
+  <data name="AmbiguousConstructor">
+    <value>The type `{0}' has multiple constructors with {1}.
+If you wish to register this type, you must use a factory registration and manually choose the appropriate constructor.</value>
+  </data>
+  <data name="CannotResolveComponentType">
+    <value>The component type `{0}' could not be resolved.</value>
+  </data>
+  <data name="TypeToResolveMustBeNullableReferenceType">
+    <value>The component type must be a nullable reference type.</value>
+  </data>
+  <data name="CannotReRegisterAfterResolution">
+    <value>Cannot re-register a service after it has already been resolved from the container and cached.
+Invalid registration: {0}</value>
+  </data>
+  <data name="ContainerIsDisposed">
+    <value>The requested action is not valid for a container which has been disposed.</value>
+  </data>
+  <data name="ResolverFactoryMustNotReturnNull">
+    <value>The implementation of {0} must not return a null instance of {1}.</value>
+  </data>
+  <data name="FailedToResolveParameter">
+    <value>Failed to resolve parameter: {0} {1}</value>
+  </data>
+  <data name="InstanceRegistrationsAreAlwaysCacheable">
+    <value>{0} must always be cacheable.</value>
+  </data>
+  <data name="LateBoundResolverMayOnlyBeSetOnce">
+    <value>{0} may only be called once per instance of {1}.</value>
+  </data>
+  <data name="LazyResolutionException">
+    <value>An exception occurred attempting to resolve an instance of `{0}' lazily.
+Refer to the inner exception for further details.</value>
+  </data>
+  <data name="LazyResolutionFailure">
+    <value>The type `{0}' could not be lazily-resolved.</value>
+  </data>
+  <data name="MissingEnumerationContant">
+    <value>There must be a value in the enumeration `{0}' which matches the registration name '{1}'.</value>
+  </data>
+  <data name="InvalidOpenGenericRegistration">
+    <value>Invalid {0}; the implementation type: `{1}' must derive from the service type: `{2}'.</value>
+  </data>
+  <data name="RequestMustBeForGenericType">
+    <value>The request must be for a generic type; the actual request type was `{0}'.</value>
+  </data>
+  <data name="AsOwnTypeOnlyForTypedRegistrations">
+    <value>This operation is only suitable for registrations which derive from `{0}'.</value>
+  </data>
+	<data name="PrimitiveTypesCannotBeResolved">
+    <value>Primitive types or structs cannot be resolved.
+{0}</value>
+  </data>
+  <data name="InvalidCacheableAndDisposeWithContainerCombination">
+    <value>It is invalid for a registration to have both:
+{0} = {1}
+{2} = {3}</value>
+  </data>
+  <data name="GetAllWithNoParametersUnsupported">
+    <value>This type does not support use of {0} with no parameters.</value>
+  </data>
+  <data name="ImplementationTypeMustDeriveFromComponentType">
+    <value>Invalid {0}; the implementation type: `{1}' must derive from the component type: `{2}'.</value>
+  </data>
+
+	
+	
+	
+</root>

@@ -74,7 +74,9 @@ namespace CSF.FlexDi.Resolution
 
       if(!result.IsSuccess)
       {
-        var message = $"Failed to resolve parameter: {parameter.ParameterType.FullName} {parameter.Name}";
+        var message = String.Format(Resources.ExceptionFormats.FailedToResolveParameter,
+                                    parameter.ParameterType.FullName,
+                                    parameter.Name);
         throw new CannotResolveParameterException(message) {
           ResolutionPath = path,
         };
