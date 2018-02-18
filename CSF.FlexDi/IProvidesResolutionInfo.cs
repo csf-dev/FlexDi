@@ -24,16 +24,42 @@ using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi
 {
+  /// <summary>
+  /// Represents an object which provides sufficient information from which to perform component resolution.
+  /// </summary>
+  /// <remarks>
+  /// This is a 'framework' type and unless you are extending FlexDi, it is unlikely you will need to make use of this.
+  /// </remarks>
   public interface IProvidesResolutionInfo
   {
+    /// <summary>
+    /// Gets the cache of resolved services.
+    /// </summary>
+    /// <value>The cache.</value>
     ICachesResolvedServiceInstances Cache { get; }
 
+    /// <summary>
+    /// Gets the registry (the service registrations).
+    /// </summary>
+    /// <value>The registry.</value>
     IRegistersServices Registry { get; }
 
+    /// <summary>
+    /// Gets the options used to construct the current container instance.
+    /// </summary>
+    /// <value>The options.</value>
     ContainerOptions Options { get; }
 
+    /// <summary>
+    /// Gets a reference to the resolution information for the parent container (if one exists).
+    /// </summary>
+    /// <value>The parent resolution info.</value>
     IProvidesResolutionInfo Parent { get; }
 
+    /// <summary>
+    /// Gets a service which is used to select constructors for instantiating new objects.
+    /// </summary>
+    /// <value>The constructor selector.</value>
     ISelectsConstructor ConstructorSelector { get; }
   }
 }

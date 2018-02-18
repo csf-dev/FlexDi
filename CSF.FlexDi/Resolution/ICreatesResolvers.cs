@@ -20,8 +20,16 @@
 using System;
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A service which creates instances of <see cref="IResolver"/>.
+  /// </summary>
   public interface ICreatesResolvers
   {
+    /// <summary>
+    /// Creates a resolver from the given resolution information.
+    /// </summary>
+    /// <returns>The resolver.</returns>
+    /// <param name="resolutionInfo">Resolution info.</param>
     IResolver CreateResolver(IProvidesResolutionInfo resolutionInfo);
   }
 }

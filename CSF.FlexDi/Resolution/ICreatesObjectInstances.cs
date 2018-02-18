@@ -23,8 +23,18 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// A service which creates service/component instances.
+  /// </summary>
   public interface ICreatesObjectInstances
   {
+    /// <summary>
+    /// Creates a service/component instance from a factory adapter, resolution path and registration.s
+    /// </summary>
+    /// <returns>The created component instance.</returns>
+    /// <param name="factory">The factory adapter from which to create the instance.</param>
+    /// <param name="path">The current resolution path.</param>
+    /// <param name="registration">The registration for the component to be created.</param>
     object CreateFromFactory(IFactoryAdapter factory, ResolutionPath path, IServiceRegistration registration);
   }
 }

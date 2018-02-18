@@ -22,8 +22,17 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// Implementation of <see cref="ICreatesProxyingResolver"/> which creates instances of
+  /// <see cref="NamedInstanceDictionaryResolverProxy"/>.
+  /// </summary>
   public class NamedInstanceDictionaryResolverProxyFactory : ICreatesProxyingResolver
   {
+    /// <summary>
+    /// Creates a resolver which wraps/proxies an inner resolver.
+    /// </summary>
+    /// <param name="resolutionInfo">Resolution info.</param>
+    /// <param name="resolverToProxy">The resolver to proxy.</param>
     public IResolver Create(IProvidesResolutionInfo resolutionInfo, IResolver resolverToProxy)
     {
       if(!resolutionInfo.Options.SupportResolvingNamedInstanceDictionaries)

@@ -23,8 +23,16 @@ using System.Collections.Generic;
 
 namespace CSF.FlexDi.Registration
 {
+  /// <summary>
+  /// A factory service which creates instances of <see cref="StackOfRegistriesRegistrationProvider"/>.
+  /// </summary>
   public class RegistryStackFactory
   {
+    /// <summary>
+    /// Creates a registration provider for a given set of resolution information.
+    /// </summary>
+    /// <returns>The registration provider.</returns>
+    /// <param name="resolutionInfo">Resolution info.</param>
     public IServiceRegistrationProvider CreateRegistryStack(IProvidesResolutionInfo resolutionInfo)
     {
       if(resolutionInfo == null)

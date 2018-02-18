@@ -1,7 +1,7 @@
 ﻿//
-//    IResolver.cs
+//    IProvidesFlexDiContainer.cs
 //
-//    Copyright 2018  Craig Fowler et al
+//    Copyright 2018  Craig Fowler
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,23 +17,13 @@
 //
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
-
 using System;
-using CSF.FlexDi.Registration;
+using CSF.FlexDi;
 
-namespace CSF.FlexDi.Resolution
+namespace BoDi.Internal
 {
-  /// <summary>
-  /// A service which not only fulfils resolution requests but also provides access to the registration which
-  /// corresponds to those requests.
-  /// </summary>
-  public interface IResolver : IFulfilsResolutionRequests
+  interface IProvidesFlexDiContainer
   {
-    /// <summary>
-    /// Gets the registration which corresponds to a given resolution request.
-    /// </summary>
-    /// <returns>The registration.</returns>
-    /// <param name="request">Request.</param>
-    IServiceRegistration GetRegistration(ResolutionRequest request);
+    IContainer GetFlexDiContainer();
   }
 }

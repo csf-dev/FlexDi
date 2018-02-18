@@ -21,18 +21,22 @@
 using System;
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// An exception which is raised when - during resolution of either a factory or a constructor - a parameter
+  /// for that factory/constructor cannot be resolved.
+  /// </summary>
   [System.Serializable]
   public class CannotResolveParameterException : ResolutionException
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CannotResolveParameterException"/> class
+    /// Initializes a new instance of the <see cref="CannotResolveParameterException"/> class
     /// </summary>
     public CannotResolveParameterException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CannotResolveParameterException"/> class
+    /// Initializes a new instance of the <see cref="CannotResolveParameterException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public CannotResolveParameterException(string message) : base(message)
@@ -40,7 +44,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CannotResolveParameterException"/> class
+    /// Initializes a new instance of the <see cref="CannotResolveParameterException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -49,7 +53,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CannotResolveParameterException"/> class
+    /// Initializes a new instance of the <see cref="CannotResolveParameterException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>

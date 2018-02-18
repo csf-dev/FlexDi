@@ -22,8 +22,16 @@ using CSF.FlexDi;
 
 namespace BoDi.Internal
 {
+  /// <summary>
+  /// A factory service which creates a FlexDi <see cref="IContainer"/> with functionality which mimics that of
+  /// BoDi's.
+  /// </summary>
   public class BoDiFlexDiContainerFactory
   {
+    /// <summary>
+    /// Gets the container instance.
+    /// </summary>
+    /// <returns>The container.</returns>
     public IContainer GetContainer()
     {
       return Container

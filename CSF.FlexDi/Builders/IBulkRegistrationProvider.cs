@@ -24,8 +24,15 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Builders
 {
+  /// <summary>
+  /// A type which provides access to a collection of registrations.
+  /// </summary>
   public interface IBulkRegistrationProvider
   {
+    /// <summary>
+    /// Gets all of the registrations available to the current provider instance.
+    /// </summary>
+    /// <returns>The registrations.</returns>
     IReadOnlyCollection<IServiceRegistration> GetRegistrations();
   }
 }

@@ -23,13 +23,26 @@ using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi.Registration
 {
+  /// <summary>
+  /// Specialisation of <see cref="TypeRegistration"/> which registers open generic types, such as
+  /// <c>typeof(MyGenericClass&lt;&gt;)</c> without their generic type parameters specified.
+  /// </summary>
   public class OpenGenericTypeRegistration : TypeRegistration
   {
+    /// <summary>
+    /// Asserts that the current registration is valid (fulfils its invariants).  An exception is raised if it does not.
+    /// </summary>
     public override void AssertIsValid()
     {
       if(!IsAssignableToGenericType(ImplementationType, ServiceType))
-        throw new InvalidTypeRegistrationException($"Invalid {nameof(OpenGenericTypeRegistration)}; the implementation type: `{ImplementationType.FullName}' must derive from the service type: `{ServiceType.FullName}'.");
-      
+      {
+        var message = String.Format(Resources.ExceptionFormats.InvalidOpenGenericRegistration,
+                                    nameof(OpenGenericTypeRegistration),
+                                    ImplementationType.FullName,
+                                    ServiceType.FullName);
+        throw new InvalidTypeRegistrationException(message);
+      }
+
       AssertCachabilityAndDisposalAreValid();
     }
 
@@ -53,13 +66,21 @@ namespace CSF.FlexDi.Registration
       return IsAssignableToGenericType(baseType, genericType);
     }
 
+    /// <summary>
+    /// Gets a factory adapter instance, for the current registration, from a specified resolution request.
+    /// </summary>
+    /// <returns>The factory adapter.</returns>
+    /// <param name="request">A resolution request.</param>
     public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request)
     {
       if(request == null)
         throw new ArgumentNullException(nameof(request));
 
       if(!request.ServiceType.IsGenericType)
-        throw new ArgumentException($"The request must be for a generic type; request type: {request.ServiceType.FullName}", nameof(request));
+      {
+        var message = String.Format(Resources.ExceptionFormats.RequestMustBeForGenericType, request.ServiceType.FullName);
+        throw new ArgumentException(message, nameof(request));
+      }
 
       var requestedGenericTypeArgs = request.ServiceType.GetGenericArguments();
       var implementationTypeWithGenericParams = ImplementationType.MakeGenericType(requestedGenericTypeArgs);
@@ -67,6 +88,12 @@ namespace CSF.FlexDi.Registration
       return GetFactoryAdapter(implementationTypeWithGenericParams);
     }
 
+    /// <summary>
+    /// Gets a value that indicates whether or not the current registration matches the specified registration key or not.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if the current instance matches the specified key, <c>false</c> otherwise.</returns>
+    /// <param name="key">The registration key against which to test.</param>
     public override bool MatchesKey(ServiceRegistrationKey key)
     {
       if(key == null)
@@ -79,9 +106,18 @@ namespace CSF.FlexDi.Registration
       return openGenericKeyType == ServiceType;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpenGenericTypeRegistration"/> class.
+    /// </summary>
+    /// <param name="implementationType">Implementation type.</param>
     public OpenGenericTypeRegistration(Type implementationType)
       : this(implementationType, null) {}
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OpenGenericTypeRegistration"/> class.
+    /// </summary>
+    /// <param name="implementationType">Implementation type.</param>
+    /// <param name="constructorSelector">Constructor selector.</param>
     public OpenGenericTypeRegistration(Type implementationType, ISelectsConstructor constructorSelector)
       : base( implementationType, constructorSelector){}
   }

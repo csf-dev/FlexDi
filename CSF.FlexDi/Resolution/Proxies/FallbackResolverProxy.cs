@@ -21,12 +21,24 @@
 using System;
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A proxying resolver which is able to 'fall back' to use a different resolver, if the primary proxied
+  /// resolver is unable to fulfil the resolution request.
+  /// </summary>
   public class FallbackResolverProxy : ProxyingResolver
   {
     readonly IResolver fallbackResolver;
 
+    /// <summary>
+    /// Gets the fallback resolver.
+    /// </summary>
+    /// <value>The fallback resolver.</value>
     public IResolver FallbackResolver => fallbackResolver;
 
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       var output = ProxiedResolver.Resolve(request);
@@ -36,6 +48,11 @@ namespace CSF.FlexDi.Resolution.Proxies
       return fallbackResolver.Resolve(request);
     }
 
+    /// <summary>
+    /// Gets the registration which corresponds to a given resolution request.
+    /// </summary>
+    /// <returns>The registration.</returns>
+    /// <param name="request">Request.</param>
     public override Registration.IServiceRegistration GetRegistration(ResolutionRequest request)
     {
       return ProxiedResolver.GetRegistration(request) ?? fallbackResolver.GetRegistration(request);
@@ -46,6 +63,11 @@ namespace CSF.FlexDi.Resolution.Proxies
       InvokeServiceResolved(sender, args);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.FallbackResolverProxy"/> class.
+    /// </summary>
+    /// <param name="proxiedResolver">Proxied resolver.</param>
+    /// <param name="fallbackResolver">Fallback resolver.</param>
     public FallbackResolverProxy(IResolver proxiedResolver, IResolver fallbackResolver) : base(proxiedResolver)
     {
       if(fallbackResolver == null)

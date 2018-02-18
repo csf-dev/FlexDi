@@ -25,10 +25,20 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// Implementation of <see cref="ICreatesObjectInstances"/> which creates service/component instances.
+  /// </summary>
   public class InstanceCreator : ICreatesObjectInstances
   {
     readonly IFulfilsResolutionRequests resolver;
 
+    /// <summary>
+    /// Creates a service/component instance from a factory adapter, resolution path and registration.s
+    /// </summary>
+    /// <returns>The created component instance.</returns>
+    /// <param name="factory">The factory adapter from which to create the instance.</param>
+    /// <param name="path">The current resolution path.</param>
+    /// <param name="registration">The registration for the component to be created.</param>
     public virtual object CreateFromFactory(IFactoryAdapter factory,
                                             ResolutionPath path,
                                             IServiceRegistration registration)
@@ -48,6 +58,13 @@ namespace CSF.FlexDi.Resolution
       return factory.Execute(resolvedParameters);
     }
 
+    /// <summary>
+    /// Resolves a parameter for a <see cref="IFactoryAdapter"/>.
+    /// </summary>
+    /// <returns>The resolved parameter value.</returns>
+    /// <param name="parameter">The parameter.</param>
+    /// <param name="path">The resolution path.</param>
+    /// <param name="registration">The registration for the service currently being resolved.</param>
     protected virtual object ResolveParameter(ParameterInfo parameter,
                                               ResolutionPath path,
                                               IServiceRegistration registration)
@@ -57,7 +74,9 @@ namespace CSF.FlexDi.Resolution
 
       if(!result.IsSuccess)
       {
-        var message = $"Failed to resolve parameter: {parameter.ParameterType.FullName} {parameter.Name}";
+        var message = String.Format(Resources.ExceptionFormats.FailedToResolveParameter,
+                                    parameter.ParameterType.FullName,
+                                    parameter.Name);
         throw new CannotResolveParameterException(message) {
           ResolutionPath = path,
         };
@@ -77,6 +96,10 @@ namespace CSF.FlexDi.Resolution
       return new ResolutionRequest(parameter.ParameterType, parameter.Name, childPath);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.InstanceCreator"/> class.
+    /// </summary>
+    /// <param name="resolver">A service which fulfils resolution requests.</param>
     public InstanceCreator(IFulfilsResolutionRequests resolver)
     {
       if(resolver == null)

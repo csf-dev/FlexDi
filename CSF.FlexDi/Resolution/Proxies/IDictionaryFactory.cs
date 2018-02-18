@@ -22,13 +22,37 @@ using System.Collections;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A service which can create generic <c>IDictionary&lt;TKey,TValue&gt;</c> instances.
+  /// </summary>
   public interface IDictionaryFactory
   {
+    /// <summary>
+    /// Gets a value which indicates whether or not the specified type is a generic dictionary type.
+    /// </summary>
+    /// <returns><c>true</c>, if the specied type is an <c>IDictionary&lt;TKey,TValue&gt;</c>, <c>false</c> otherwise.</returns>
+    /// <param name="type">The type.</param>
     bool IsGenericDictionaryType(Type type);
 
+    /// <summary>
+    /// Gets the key type: 'TKey' for the given dictionary type.
+    /// </summary>
+    /// <returns>The key type.</returns>
+    /// <param name="genericDictionaryType">Generic dictionary type.</param>
     Type GetKeyType(Type genericDictionaryType);
+
+    /// <summary>
+    /// Gets the key type: 'TKey' for the given dictionary type.
+    /// </summary>
+    /// <returns>The value type.</returns>
+    /// <param name="genericDictionaryType">Generic dictionary type.</param>
     Type GetValueType(Type genericDictionaryType);
 
+    /// <summary>
+    /// Creates and returns an empty generic <c>IDictionary&lt;TKey,TValue&gt;</c> instance.
+    /// </summary>
+    /// <param name="keyType">Key type.</param>
+    /// <param name="valueType">Value type.</param>
     IDictionary Create(Type keyType, Type valueType);
   }
 }

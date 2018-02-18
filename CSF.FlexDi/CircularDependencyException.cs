@@ -23,19 +23,21 @@ using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi
 {
-  
+  /// <summary>
+  /// Exception raised when a circular dependency is detected whilst resolving a component.
+  /// </summary>
   [System.Serializable]
   public class CircularDependencyException : ResolutionException
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CircularDependencyException"/> class
+    /// Initializes a new instance of the <see cref="CircularDependencyException"/> class
     /// </summary>
     public CircularDependencyException()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="CircularDependencyException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     public CircularDependencyException(string message) : base(message)
@@ -43,7 +45,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="CircularDependencyException"/> class
     /// </summary>
     /// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
     /// <param name="inner">The exception that is the cause of the current exception. </param>
@@ -52,7 +54,7 @@ namespace CSF.FlexDi
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:MyException"/> class
+    /// Initializes a new instance of the <see cref="CircularDependencyException"/> class
     /// </summary>
     /// <param name="context">The contextual information about the source or destination.</param>
     /// <param name="info">The object that holds the serialized object data.</param>

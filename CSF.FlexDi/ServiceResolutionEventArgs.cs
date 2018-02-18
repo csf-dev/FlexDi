@@ -23,14 +23,31 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi
 {
+  /// <summary>
+  /// Event arguments which relate to the successful resolution of a component/service.
+  /// </summary>
   public class ServiceResolutionEventArgs : EventArgs
   {
     readonly object instance;
     readonly IServiceRegistration registration;
 
+    /// <summary>
+    /// Gets the component instance which was just resolved.
+    /// </summary>
+    /// <value>The instance.</value>
     public object Instance => instance;
+
+    /// <summary>
+    /// Gets a reference to the registration instance which was used to resolve the <see cref="Instance"/>.
+    /// </summary>
+    /// <value>The registration.</value>
     public IServiceRegistration Registration => registration;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceResolutionEventArgs"/> class.
+    /// </summary>
+    /// <param name="registration">Registration.</param>
+    /// <param name="instance">Instance.</param>
     public ServiceResolutionEventArgs(IServiceRegistration registration, object instance)
     {
       if(registration == null)

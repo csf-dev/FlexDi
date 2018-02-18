@@ -27,6 +27,9 @@ using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi
 {
+  /// <summary>
+  /// Default implementation of <see cref="IContainer"/> - this is the FlexDi container.
+  /// </summary>
   public class Container : IContainer, IProvidesResolutionInfo
   {
     #region fields
@@ -44,34 +47,79 @@ namespace CSF.FlexDi
 
     #region IProvidesResolutionInfo implementation
 
+    /// <summary>
+    /// Gets the cache of resolved services.
+    /// </summary>
+    /// <value>The cache.</value>
     public ICachesResolvedServiceInstances Cache => cache;
 
+    /// <summary>
+    /// Gets the registry (the service registrations).
+    /// </summary>
+    /// <value>The registry.</value>
     public IRegistersServices Registry => registry;
 
+    /// <summary>
+    /// Gets the options used to construct the current container instance.
+    /// </summary>
+    /// <value>The options.</value>
     public ContainerOptions Options => options;
 
+    /// <summary>
+    /// Gets a reference to the resolution information for the parent container (if one exists).
+    /// </summary>
+    /// <value>The parent resolution info.</value>
     public IProvidesResolutionInfo Parent => parentContainer as IProvidesResolutionInfo;
 
+    /// <summary>
+    /// Gets a service which is used to select constructors for instantiating new objects.
+    /// </summary>
+    /// <value>The constructor selector.</value>
     public ISelectsConstructor ConstructorSelector => constructorSelector;
 
     #endregion
 
     #region IResolvesServices implementation
 
+    /// <summary>
+    /// Resolves an instance of the specified type.
+    /// </summary>
+    /// <typeparam name="T">The component type to be resolved.</typeparam>
     public T Resolve<T>() => Resolve<T>(null);
 
+    /// <summary>
+    /// Resolves an instance of the specified type, using the given named registration.
+    /// </summary>
+    /// <param name="name">The registration name.</param>
+    /// <typeparam name="T">The component type to be resolved.</typeparam>
     public T Resolve<T>(string name)
     {
       AssertNotDisposed();
 
       object output;
       if(!TryResolve(typeof(T), name, out output))
-        throw new ResolutionException($"The service type `{typeof(T).FullName}' could not be resolved");
+        ThrowResolutionFailureException(typeof(T));
       return (T) output;
     }
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type, but does not raise an exception if resolution fails.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if resolution was successful, <c>false</c> otherwise.</returns>
+    /// <param name="output">The resolved component instance.</param>
+    /// <typeparam name="T">The component type to be resolved.</typeparam>
     public bool TryResolve<T>(out T output) => TryResolve(null, out output);
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type and using the given named registration, but
+    /// does not raise an exception if resolution fails.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if resolution was successful, <c>false</c> otherwise.</returns>
+    /// <param name="output">The resolved component instance.</param>
+    /// <param name="name">The registration name.</param>
+    /// <typeparam name="T">The component type to be resolved.</typeparam>
     public bool TryResolve<T>(string name, out T output)
     {
       AssertNotDisposed();
@@ -88,8 +136,20 @@ namespace CSF.FlexDi
       return true;
     }
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type, but returns a <c>null</c> reference if resolution fails.
+    /// </summary>
+    /// <returns>The resolved component instance, or a <c>null</c> reference if resolution fauls.</returns>
+    /// <typeparam name="T">The component type to be resolved.</typeparam>
     public T TryResolve<T>() where T : class => TryResolve<T>(null);
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type and using the given named registration, but
+    /// returns a <c>null</c> reference if resolution fails.
+    /// </summary>
+    /// <returns>The resolved component instance, or a <c>null</c> reference if resolution fauls.</returns>
+    /// <param name="name">The registration name.</param>
+    /// <typeparam name="T">The component type to be resolved.</typeparam>
     public T TryResolve<T>(string name) where T : class
     {
       T output;
@@ -99,14 +159,26 @@ namespace CSF.FlexDi
       return output;
     }
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type, but returns a <c>null</c> reference if resolution fails.
+    /// </summary>
+    /// <returns>The resolved component instance, or a <c>null</c> reference if resolution fauls.</returns>
+    /// <param name="serviceType">The component type to be resolved.</param>
     public object TryResolve(Type serviceType) => TryResolve(serviceType, null);
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type and using the given named registration, but
+    /// returns a <c>null</c> reference if resolution fails.
+    /// </summary>
+    /// <returns>The resolved component instance, or a <c>null</c> reference if resolution fauls.</returns>
+    /// <param name="name">The registration name.</param>
+    /// <param name="serviceType">The component type to be resolved.</param>
     public object TryResolve(Type serviceType, string name)
     {
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
       if(serviceType.IsValueType)
-        throw new ArgumentException("The service type must be a nullable reference type.", nameof(serviceType));
+        throw new ArgumentException(Resources.ExceptionFormats.TypeToResolveMustBeNullableReferenceType, nameof(serviceType));
 
       object output;
       if(!TryResolve(serviceType, name, out output))
@@ -115,20 +187,45 @@ namespace CSF.FlexDi
       return output;
     }
 
+    /// <summary>
+    /// Resolves an instance of the specified type.
+    /// </summary>
+    /// <param name="serviceType">The component type to be resolved.</param>
     public object Resolve(Type serviceType) => Resolve(serviceType, null);
 
+    /// <summary>
+    /// Resolves an instance of the specified type, using the given named registration.
+    /// </summary>
+    /// <param name="serviceType">The component type to be resolved.</param>
+    /// <param name="name">The registration name.</param>
     public object Resolve(Type serviceType, string name)
     {
       AssertNotDisposed();
 
       object output;
       if(!TryResolve(serviceType, name, out output))
-        throw new ResolutionException($"The service type `{serviceType.FullName}' could be resolved");
+        ThrowResolutionFailureException(serviceType);
       return output;
     }
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type, but does not raise an exception if resolution fails.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if resolution was successful, <c>false</c> otherwise.</returns>
+    /// <param name="output">The resolved component instance.</param>
+    /// <param name="serviceType">The component type to be resolved.</param>
     public bool TryResolve(Type serviceType, out object output) => TryResolve(serviceType, null, out output);
 
+    /// <summary>
+    /// Attempts to resolve an instance of the specified type and using the given named registration, but
+    /// does not raise an exception if resolution fails.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if resolution was successful, <c>false</c> otherwise.</returns>
+    /// <param name="output">The resolved component instance.</param>
+    /// <param name="name">The registration name.</param>
+    /// <param name="serviceType">The component type to be resolved.</param>
     public bool TryResolve(Type serviceType, string name, out object output)
     {
       AssertNotDisposed();
@@ -146,6 +243,13 @@ namespace CSF.FlexDi
       return true;
     }
 
+    /// <summary>
+    /// Attempts to resolve a component, as specified by a <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
+    /// The result indicates whether resolution was successful or not, and if it is, contains a reference to the resolved
+    /// component.
+    /// </summary>
+    /// <returns>A resolution result instance.</returns>
+    /// <param name="request">A resolution request specifying what is to be resolved.</param>
     public ResolutionResult TryResolve(ResolutionRequest request)
     {
       if(request == null)
@@ -154,15 +258,24 @@ namespace CSF.FlexDi
       return resolver.Resolve(request);
     }
 
+    /// <summary>
+    /// Resolves a component, as specified by a <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
+    /// </summary>
+    /// <param name="request">The resolved component instance.</param>
     public object Resolve(ResolutionRequest request)
     {
       var result = TryResolve(request);
       if(!result.IsSuccess)
-        throw new ResolutionException($"The service type `{request.ServiceType.FullName}' could be resolved");
+        ThrowResolutionFailureException(request.ServiceType);
 
       return result.ResolvedObject;
     }
 
+    /// <summary>
+    /// Creates a collection which contains resolved instances of all of the components registered for a given type.
+    /// </summary>
+    /// <returns>A collection of resolved components.</returns>
+    /// <typeparam name="T">The type of the components to be resolved.</typeparam>
     public IReadOnlyCollection<T> ResolveAll<T>()
     {
       AssertNotDisposed();
@@ -170,6 +283,11 @@ namespace CSF.FlexDi
       return ResolveAll(typeof(T)).Cast<T>().ToArray();
     }
 
+    /// <summary>
+    /// Creates a collection which contains resolved instances of all of the components registered for a given type.
+    /// </summary>
+    /// <returns>A collection of resolved components.</returns>
+    /// <param name="serviceType">The type of the components to be resolved.</param>
     public IReadOnlyCollection<object> ResolveAll(Type serviceType)
     {
       AssertNotDisposed();
@@ -179,15 +297,35 @@ namespace CSF.FlexDi
         .ToArray();
     }
 
+    void ThrowResolutionFailureException(Type componentType)
+    {
+      var message = String.Format(Resources.ExceptionFormats.CannotResolveComponentType, componentType.FullName);
+      throw new ResolutionException(message);
+    }
+
     #endregion
 
     #region IContainer implementation
 
+    /// <summary>
+    /// Gets a value indicating whether or not the container has a registration for the specified component type.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if the container has a registration for the component type, <c>false</c> otherwise.</returns>
+    /// <param name="name">An optional registration name.</param>
+    /// <typeparam name="T">The component type for which to check.</typeparam>
     public bool HasRegistration<T>(string name = null)
     {
       return HasRegistration(typeof(T), name);
     }
 
+    /// <summary>
+    /// Gets a value indicating whether or not the container has a registration for the specified component type.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c>, if the container has a registration for the component type, <c>false</c> otherwise.</returns>
+    /// <param name="name">An optional registration name.</param>
+    /// <param name="serviceType">The component type for which to check.</param>
     public bool HasRegistration(Type serviceType, string name = null)
     {
       AssertNotDisposed();
@@ -196,6 +334,10 @@ namespace CSF.FlexDi
       return registryStack.CanFulfilRequest(request);
     }
 
+    /// <summary>
+    /// Gets a collection of all of the registrations held within the current container instance.
+    /// </summary>
+    /// <returns>The registrations.</returns>
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations()
     {
       AssertNotDisposed();
@@ -203,6 +345,12 @@ namespace CSF.FlexDi
       return registryStack.GetAll();
     }
 
+    /// <summary>
+    /// Gets a collection of all of the registrations, matching a specified component type, held within
+    /// the current container instance.
+    /// </summary>
+    /// <returns>The registrations.</returns>
+    /// <param name="serviceType">The component type for which to get the registrations.</param>
     public IReadOnlyCollection<IServiceRegistration> GetRegistrations(Type serviceType)
     {
       AssertNotDisposed();
@@ -210,11 +358,43 @@ namespace CSF.FlexDi
       return registryStack.GetAll(serviceType);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="T:CSF.FlexDi.IContainer" /> which is a child of the current container.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Child container instances 'inherit' all of the registrations from their parent container instance.  That is - if
+    /// a parent has IFoo registered and its child resolves IFoo, the resolution will be fulfilled by the parent.
+    /// </para>
+    /// <para>
+    /// Child containers may also add new registrations and may even override the registrations upon their parent, by
+    /// re-registering the same component type (and registration name if applicable).  When any component is resolved, it
+    /// is always resolved from the container at which it was registered.  When a container is diposed, it will only
+    /// dispose resolved instances which that container itself had created (thus it will only dispose instances which were
+    /// registered with that container).
+    /// </para>
+    /// <para>
+    /// Leveraging these behaviours, it is suitable to use child containers to control the lifetime of components which
+    /// should have a shorter life-span (between creation and disposal) than others.
+    /// </para>
+    /// <para>
+    /// For example, in a testing scenario, a single container instance may be used as the ultimate "parent" for the test
+    /// run.  However each test scenario may use this method to create a child container which has a lifetime of only
+    /// that test scenario.  The child container may be used to resolve all of the components registered with its parent,
+    /// and when the child container is diposed those components from the parent container will 'live on' without being
+    /// disposed.  However, any new registrations added to the child container will result in components which are (by
+    /// default) disposed when the child container is disposed; IE: At the end of the test scenario.
+    /// </para>
+    /// </remarks>
+    /// <returns>The child container.</returns>
     public IContainer CreateChildContainer()
     {
       return new Container(options: Options, parentContainer: this);
     }
 
+    /// <summary>
+    /// Event which occurs when a service is resolved.
+    /// </summary>
     public event EventHandler<ServiceResolutionEventArgs> ServiceResolved;
 
     void InvokeServiceResolved(object sender, ServiceResolutionEventArgs args)
@@ -226,6 +406,12 @@ namespace CSF.FlexDi
 
     #region IReceivesRegistrations implementation
 
+    /// <summary>
+    /// Adds new component registrations by use of a helper type.  Registrations are added within a callback which
+    /// uses functionality from the helper.
+    /// </summary>
+    /// <seealso cref="T:CSF.FlexDi.Builders.IRegistrationHelper" />
+    /// <param name="registrationActions">A callback which may use the functionality of the helper type.</param>
     public void AddRegistrations(Action<IRegistrationHelper> registrationActions)
     {
       if(registrationActions == null)
@@ -239,6 +425,10 @@ namespace CSF.FlexDi
       AddRegistrations(helper.GetRegistrations());
     }
 
+    /// <summary>
+    /// Adds a collection of registration instances directly.
+    /// </summary>
+    /// <param name="registrations">A collection of registrations.</param>
     public void AddRegistrations(IEnumerable<IServiceRegistration> registrations)
     {
       if(registrations == null)
@@ -257,7 +447,10 @@ namespace CSF.FlexDi
     {
       var key = ServiceRegistrationKey.ForRegistration(registration);
       if(cache.Has(key))
-        throw new ServiceReRegisteredAfterResolutionException($"Cannot re-register a service after it has already been resolved from the container and cached.{Environment.NewLine}Invalid registration: {registration.ToString()}");
+      {
+        var message = String.Format(Resources.ExceptionFormats.CannotReRegisterAfterResolution, registration); 
+        throw new ServiceReRegisteredAfterResolutionException(message);
+      }
     }
 
     #endregion
@@ -266,6 +459,10 @@ namespace CSF.FlexDi
 
     bool disposedValue;
 
+    /// <summary>
+    /// Releases all resource used by the <see cref="T:CSF.FlexDi.Container"/> object.
+    /// </summary>
+    /// <param name="disposing">If set to <c>true</c> then this method call represents an explicit disposal.</param>
     protected virtual void Dispose(bool disposing)
     {
       if(!disposedValue)
@@ -277,6 +474,13 @@ namespace CSF.FlexDi
       }
     }
 
+    /// <summary>
+    /// Releases all resource used by the <see cref="T:CSF.FlexDi.Container"/> object.
+    /// </summary>
+    /// <remarks>Call <see cref="Dispose()"/> when you are finished using the <see cref="T:CSF.FlexDi.Container"/>. The
+    /// <see cref="Dispose()"/> method leaves the <see cref="T:CSF.FlexDi.Container"/> in an unusable state. After calling
+    /// <see cref="Dispose()"/>, you must release all references to the <see cref="T:CSF.FlexDi.Container"/> so the
+    /// garbage collector can reclaim the memory that the <see cref="T:CSF.FlexDi.Container"/> was occupying.</remarks>
     public void Dispose()
     {
       Dispose(true);
@@ -285,13 +489,33 @@ namespace CSF.FlexDi
     void AssertNotDisposed()
     {
       if(disposedValue)
-        throw new ContainerDisposedException("The requested action is not valid for a container which has been disposed.");
+        throw new ContainerDisposedException(Resources.ExceptionFormats.ContainerIsDisposed);
     }
 
     #endregion
 
     #region constructors
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Container"/> class.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// All of the parameters to this method are optional.  Any which are not provided will be fulfilled using
+    /// default implementations.
+    /// </para>
+    /// <para>
+    /// Of the parameters which might be used, the most useful is likely to be <paramref name="options"/> and
+    /// <paramref name="parentContainer"/>.
+    /// </para>
+    /// </remarks>
+    /// <param name="registry">An optional service registry instance.</param>
+    /// <param name="cache">An optional service cache instance.</param>
+    /// <param name="resolver">An optional resolver instance.</param>
+    /// <param name="disposer">An optional service disposer instance.</param>
+    /// <param name="options">A set of container options.</param>
+    /// <param name="parentContainer">An optional parent container - indicating that this container is the child of another.</param>
+    /// <param name="resolverFactory">An optional resolver factory instance.</param>
     public Container(IRegistersServices registry = null,
                      ICachesResolvedServiceInstances cache = null,
                      IFulfilsResolutionRequests resolver = null,
@@ -337,8 +561,13 @@ namespace CSF.FlexDi
       var output = factory.CreateResolver(this);
 
       if(output == null)
-        throw new ArgumentException($"The implementation of {nameof(ICreatesResolvers)} must not return a null instance of {nameof(IResolver)}.", nameof(resolverFactory));
-      
+      {
+        var message = String.Format(Resources.ExceptionFormats.ResolverFactoryMustNotReturnNull,
+                                    nameof(ICreatesResolvers),
+                                    nameof(IResolver));
+        throw new ArgumentException(message, nameof(resolverFactory));
+      }
+
       return output;
     }
 
@@ -379,6 +608,11 @@ namespace CSF.FlexDi
 
     #region static methods
 
+    /// <summary>
+    /// Convenience method which creates and returns an instance of <see cref="ContainerBuilder"/> with which to
+    /// customise and then create a container.
+    /// </summary>
+    /// <returns>The container builder.</returns>
     public static ContainerBuilder CreateBuilder() => new ContainerBuilder();
 
     #endregion

@@ -25,10 +25,20 @@ using System.Reflection;
 
 namespace CSF.FlexDi.Resolution
 {
+  /// <summary>
+  /// Implementation of <see cref="ISelectsConstructor"/> which will choose the single constructor of a type which
+  /// has the most parameters.  If multiple constructors are tied for the most parameters then an exception will
+  /// be raised.
+  /// </summary>
   public class ConstructorWithMostParametersSelector : ISelectsConstructor
   {
     readonly bool includeNonPublicConstructors;
 
+    /// <summary>
+    /// Selects and returns a constructor from the given type.
+    /// </summary>
+    /// <returns>The selected constructor.</returns>
+    /// <param name="type">The type for which to select a constructor.</param>
     public ConstructorInfo SelectConstructor(Type type)
     {
       if(type == null)
@@ -61,7 +71,10 @@ namespace CSF.FlexDi.Resolution
     void AssertAConstructorIsFound(Type type, ConstructorInfo ctor)
     {
       if(ctor == null)
-        throw new CannotInstantiateTypeWithoutAnyConstructorsException($"The type {type.FullName} must have at least one constructor.{Environment.NewLine}Interfaces must be registered with a concrete implementation.");
+      {
+        var message = String.Format(Resources.ExceptionFormats.ImplementationTypeMustHaveAConstructor, type.FullName); 
+        throw new CannotInstantiateTypeWithoutAnyConstructorsException(message);
+      }
     }
 
     void AssertConstructorIsNotAmbiguous(Type type,
@@ -72,13 +85,20 @@ namespace CSF.FlexDi.Resolution
       if(allConstructors.Count(x => x.GetParameters().Count() == paramCount) > 1)
       {
         var parametersText = (paramCount == 1)? "1 parameter" : $"{paramCount} parameters";
-        throw new AmbiguousConstructorException($"The type {type.FullName} has multiple constructors with {parametersText}.{Environment.NewLine}" +
-                                                "If you wish to register this type, you must use a factory registration and manually choose the appropriate constructor.");
+        var message = String.Format(Resources.ExceptionFormats.AmbiguousConstructor, type.FullName, parametersText);
+        throw new AmbiguousConstructorException(message);
       }
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ConstructorWithMostParametersSelector"/> class.
+    /// </summary>
     public ConstructorWithMostParametersSelector() : this(false) {}
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ConstructorWithMostParametersSelector"/> class.
+    /// </summary>
+    /// <param name="includeNonPublicConstructors">If set to <c>true</c> then non-public constructors will be considered, otherwise they will not.</param>
     public ConstructorWithMostParametersSelector(bool includeNonPublicConstructors)
     {
       this.includeNonPublicConstructors = includeNonPublicConstructors;

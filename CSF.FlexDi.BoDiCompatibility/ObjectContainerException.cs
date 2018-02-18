@@ -23,6 +23,9 @@ using System.Linq;
 
 namespace BoDi
 {
+  /// <summary>
+  /// Base exception type raised by the <see cref="IObjectContainer"/> type.
+  /// </summary>
 #if !BODI_LIMITEDRUNTIME
   [Serializable]
 #endif
@@ -30,12 +33,28 @@ namespace BoDi
   {
     #region constructors
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:BoDi.ObjectContainerException"/> class.
+    /// </summary>
+    /// <param name="message">Message.</param>
+    /// <param name="resolutionPath">Resolution path.</param>
     public ObjectContainerException(string message, Type[] resolutionPath)
       : base(GetMessage(message, resolutionPath)) {}
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:BoDi.ObjectContainerException"/> class.
+    /// </summary>
+    /// <param name="message">Message.</param>
+    /// <param name="resolutionPath">Resolution path.</param>
+    /// <param name="inner">Inner.</param>
     public ObjectContainerException(string message, Type[] resolutionPath, Exception inner)
       : base(GetMessage(message, resolutionPath), inner) {}
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:BoDi.ObjectContainerException"/> class.
+    /// </summary>
+    /// <param name="info">Info.</param>
+    /// <param name="context">Context.</param>
 #if !BODI_LIMITEDRUNTIME
     protected ObjectContainerException(System.Runtime.Serialization.SerializationInfo info,
                                        System.Runtime.Serialization.StreamingContext context) : base(info, context) {}

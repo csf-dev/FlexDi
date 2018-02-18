@@ -24,11 +24,19 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
+  /// <summary>
+  /// A proxying resolver which can create named instance dictionaries.
+  /// </summary>
+  /// <seealso cref="ContainerOptions.SupportResolvingNamedInstanceDictionaries"/>
   public class NamedInstanceDictionaryResolverProxy : ProxyingResolver
   {
     readonly IServiceRegistrationProvider registrationAccessor;
     readonly IDictionaryFactory dictionaryFactory;
 
+    /// <summary>
+    /// Resolves the given resolution request and returns the result.
+    /// </summary>
+    /// <param name="request">Request.</param>
     public override ResolutionResult Resolve(ResolutionRequest request)
     {
       if(request == null)
@@ -92,7 +100,9 @@ namespace CSF.FlexDi.Resolution.Proxies
       }
       catch(ArgumentException ex)
       {
-        var message = $"There must be a value in the enumeration `{nameType.FullName}' which matches the name '{registeredName}'.";
+        var message = String.Format(Resources.ExceptionFormats.MissingEnumerationContant,
+                                    nameType.FullName,
+                                    registeredName);
         throw new NoMatchingEnumerationConstantException(message, ex);
       }
     }
@@ -100,6 +110,13 @@ namespace CSF.FlexDi.Resolution.Proxies
     IServiceRegistration CreateNamedInstanceDictionaryRegistration(Type serviceType, IDictionary dictionary)
       => new InstanceRegistration(dictionary) { ServiceType = serviceType };
 
+    /// <summary>
+    /// Initializes a new instance of the
+    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.NamedInstanceDictionaryResolverProxy"/> class.
+    /// </summary>
+    /// <param name="proxiedResolver">Proxied resolver.</param>
+    /// <param name="registrationAccessor">Registration accessor.</param>
+    /// <param name="dictionaryFactory">Dictionary factory.</param>
     public NamedInstanceDictionaryResolverProxy(IResolver proxiedResolver,
                                                 IServiceRegistrationProvider registrationAccessor,
                                                 IDictionaryFactory dictionaryFactory) : base(proxiedResolver)
