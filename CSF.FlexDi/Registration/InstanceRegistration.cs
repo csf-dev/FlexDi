@@ -57,8 +57,12 @@ namespace CSF.FlexDi.Registration
       }
       set {
         if(!value)
-          throw new ArgumentException($"{nameof(InstanceRegistration)} must always be cacheable.");
-        
+        {
+          var message = String.Format(Resources.ExceptionFormats.InstanceRegistrationsAreAlwaysCacheable,
+                                      nameof(InstanceRegistration));
+          throw new ArgumentException(message, nameof(value));
+        }
+
         base.Cacheable = value;
       }
     }

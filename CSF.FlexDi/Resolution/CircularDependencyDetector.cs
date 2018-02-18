@@ -58,7 +58,7 @@ namespace CSF.FlexDi.Resolution
     {
       if(HasCircularDependency(registration, resolutionPath))
       {
-        throw new CircularDependencyException("Circular dependency detected; this is not supported.")
+        throw new CircularDependencyException(Resources.ExceptionFormats.CircularDependencyDetected)
         { ResolutionPath = resolutionPath };
       }
     }

@@ -64,7 +64,12 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(proxiedResolver == null)
         throw new ArgumentNullException(nameof(proxiedResolver));
       if(this.proxiedResolver != null)
-        throw new InvalidOperationException("The proxied resolver must be set only once.");
+      {
+        var message = String.Format(Resources.ExceptionFormats.LateBoundResolverMayOnlyBeSetOnce,
+                                    nameof(SetProxiedResolver),
+                                    nameof(LateBoundResolverProxy));
+        throw new InvalidOperationException(message);
+      }
 
       this.proxiedResolver = proxiedResolver;
       proxiedResolver.ServiceResolved += OnServiceResolved;

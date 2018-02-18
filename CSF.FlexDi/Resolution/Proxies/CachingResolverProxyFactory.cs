@@ -36,7 +36,7 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(!resolutionInfo.Options.UseInstanceCache)
         return null;
       if(resolutionInfo.Cache == null)
-        throw new ArgumentException("The cache provided by the resolution info must not be null.", nameof(resolutionInfo));
+        throw new ArgumentException(Resources.ExceptionFormats.ResolutionInfoCacheMustNotBeNull, nameof(resolutionInfo));
 
       return new CachingResolverProxy(resolverToProxy, resolutionInfo.Cache);
     }
