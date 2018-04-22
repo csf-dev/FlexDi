@@ -32,6 +32,7 @@ namespace CSF.FlexDi.Resolution.Proxies
     readonly IServiceRegistrationProvider unregisteredRegistrationProvider;
     readonly IResolvesRegistrations registrationResolver;
     readonly ICachesResolvedServiceInstances cache;
+    readonly IRegistersServices registry;
 
     /// <summary>
     /// Resolves the given resolution request and returns the result.
@@ -43,17 +44,9 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(output.IsSuccess)
         return output;
 
-      if(cache != null)
-      {
-        object instance;
-        if(cache.TryGet(request.ServiceType, request.Name, out instance))
-          return ResolutionResult.Success(request.ResolutionPath, instance);
-      }
-
-      var registration = unregisteredRegistrationProvider.Get(request);
+      var registration = GetUnregisteredServiceRegistration(request);
       output = registrationResolver.Resolve(request, registration);
-      if(output.IsSuccess && cache != null)
-        cache.Add(registration, output.ResolvedObject);
+      MakeRegistrationAndResultAvailableToSubsequentResolutions(registration, output);
 
       return output;
     }
@@ -69,7 +62,21 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(registration != null)
         return registration;
 
-      return unregisteredRegistrationProvider.Get(request);
+      return GetUnregisteredServiceRegistration(request);
+    }
+
+    IServiceRegistration GetUnregisteredServiceRegistration(ResolutionRequest request)
+      => unregisteredRegistrationProvider.Get(request);
+
+    void MakeRegistrationAndResultAvailableToSubsequentResolutions(IServiceRegistration registration,
+                                                                   ResolutionResult result)
+    {
+      if(result == null || !result.IsSuccess) return;
+
+      registry.Add(registration);
+
+      if(cache != null)
+        cache.Add(registration, result.ResolvedObject);
     }
 
     /// <summary>
@@ -78,13 +85,17 @@ namespace CSF.FlexDi.Resolution.Proxies
     /// <param name="proxiedResolver">Proxied resolver.</param>
     /// <param name="registrationResolver">Registration resolver.</param>
     /// <param name="unregisteredRegistrationProvider">Unregistered registration provider.</param>
-    /// <param name="cache">Cache.</param>
+    /// <param name="cache">The service cache.</param>
+    /// <param name="registry">The service registry</param>
     public UnregisteredServiceResolverProxy(IResolver proxiedResolver,
                                             IResolvesRegistrations registrationResolver,
                                             IServiceRegistrationProvider unregisteredRegistrationProvider,
-                                            ICachesResolvedServiceInstances cache)
+                                            ICachesResolvedServiceInstances cache,
+                                            IRegistersServices registry)
       : base(proxiedResolver)
     {
+      if(registry == null)
+        throw new ArgumentNullException(nameof(registry));
       if(unregisteredRegistrationProvider == null)
         throw new ArgumentNullException(nameof(unregisteredRegistrationProvider));
       if(registrationResolver == null)
@@ -93,6 +104,7 @@ namespace CSF.FlexDi.Resolution.Proxies
       this.cache = cache;
       this.registrationResolver = registrationResolver;
       this.unregisteredRegistrationProvider = unregisteredRegistrationProvider;
+      this.registry = registry;
     }
   }
 }
