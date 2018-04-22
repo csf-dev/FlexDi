@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>CSF.FlexDi.BoDiCompatibility</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>FlexDi BoDi compatibility</title>
     <authors>CSF Software Ltd</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
@@ -11,7 +11,7 @@
     <description>A compatible drop-in replacement for the BoDi dependency injection/IoC container (v1.3.0) using FlexDi.</description>
     <copyright>Copyright 2018</copyright>
     <dependencies>
-      <dependency id="CSF.FlexDi" version="1.0.0" />
+      <dependency id="CSF.FlexDi" version="1.0.1" />
     </dependencies>
   </metadata>
   <files>
