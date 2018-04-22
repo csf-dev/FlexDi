@@ -43,11 +43,13 @@ namespace CSF.FlexDi.Resolution.Proxies
 
       var provider = GetUnregisteredServiceRegistrationProvider(resolutionInfo);
       var cache = resolutionInfo.Options.UseInstanceCache? resolutionInfo.Cache : null;
+      var registry = resolutionInfo.Registry;
 
       return new UnregisteredServiceResolverProxy(resolverToProxy,
                                                   registrationResolver,
                                                   provider,
-                                                  cache);
+                                                  cache,
+                                                  registry);
     }
 
     IServiceRegistrationProvider GetUnregisteredServiceRegistrationProvider(IProvidesResolutionInfo resolutionInfo)
