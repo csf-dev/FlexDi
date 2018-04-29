@@ -7,6 +7,9 @@ then
   exit 1
 fi
 
+sn -R CSF.FlexDi/bin/Release/CSF.FlexDi.dll CSF-Software-OSS.snk
+sn -R CSF.FlexDi.BoDiCompatibility/bin/Release/BoDi.dll CSF-Software-OSS.snk
+
 find . \
   -type f \
   -name "*.nuspec" \
