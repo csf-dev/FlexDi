@@ -25,8 +25,10 @@ namespace CSF.FlexDi
   /// Base class for all expected exceptions which stem from a container, or resolution.  This does not
   /// include the very simple things, such as ArgumentNullException.
   /// </summary>
-  [System.Serializable]
-  public class ContainerException : Exception
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class ContainerException : Exception
   {
     /// <summary>
     /// Gets or sets the resolution path which lead to this exception.
@@ -58,6 +60,7 @@ namespace CSF.FlexDi
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="ContainerException"/> class
     /// </summary>
@@ -66,5 +69,6 @@ namespace CSF.FlexDi
     protected ContainerException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

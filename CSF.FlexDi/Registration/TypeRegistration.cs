@@ -19,6 +19,7 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using System.Reflection;
 using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi.Registration
@@ -75,7 +76,7 @@ namespace CSF.FlexDi.Registration
     /// </summary>
     public override void AssertIsValid()
     {
-      if(!ServiceType.IsAssignableFrom(ImplementationType))
+      if(!ServiceType.GetTypeInfo().IsAssignableFrom(ImplementationType.GetTypeInfo()))
       {
         var message = String.Format(Resources.ExceptionFormats.ImplementationTypeMustDeriveFromComponentType,
                                     nameof(TypeRegistration),

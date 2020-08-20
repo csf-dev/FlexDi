@@ -38,8 +38,10 @@ namespace CSF.FlexDi
   /// (because the existing instance in the cache was created from the registration which is now being overridden).
   /// </para>
   /// </remarks>
-  [System.Serializable]
-  public class ServiceReRegisteredAfterResolutionException : InvalidRegistrationException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class ServiceReRegisteredAfterResolutionException : InvalidRegistrationException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceReRegisteredAfterResolutionException"/> class
@@ -65,6 +67,7 @@ namespace CSF.FlexDi
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceReRegisteredAfterResolutionException"/> class
     /// </summary>
@@ -73,5 +76,6 @@ namespace CSF.FlexDi
     protected ServiceReRegisteredAfterResolutionException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{F6B9BC94
 		tools\build.sh = tools\build.sh
 		tools\install.sh = tools\install.sh
 		tools\run-tests.sh = tools\run-tests.sh
+		.appveyor.yml = .appveyor.yml
+		.travis.yml = .travis.yml
 	EndProjectSection
 EndProject
 Global

@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CSF.FlexDi.Registration;
 using CSF.FlexDi.Resolution;
+using System.Reflection;
 
 namespace CSF.FlexDi.Builders
 {
@@ -261,7 +262,7 @@ namespace CSF.FlexDi.Builders
 
       ServiceRegistration registration;
 
-      if(concreteType.IsGenericTypeDefinition)
+      if(concreteType.GetTypeInfo().IsGenericTypeDefinition)
       {
         registration = new OpenGenericTypeRegistration(concreteType, constructorSelector)
         { ServiceType = concreteType };

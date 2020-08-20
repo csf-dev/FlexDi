@@ -18,6 +18,8 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
+using System.Reflection;
+
 namespace CSF.FlexDi.Resolution.Proxies
 {
   /// <summary>
@@ -42,7 +44,7 @@ namespace CSF.FlexDi.Resolution.Proxies
     }
 
     object GetDefaultForType(Type serviceType)
-      => serviceType.IsValueType ? Activator.CreateInstance(serviceType) : null;
+      => serviceType.GetTypeInfo().IsValueType ? Activator.CreateInstance(serviceType) : null;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.OptionalResolutionResolverProxy"/> class.

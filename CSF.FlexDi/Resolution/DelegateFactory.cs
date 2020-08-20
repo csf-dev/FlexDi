@@ -91,7 +91,7 @@ namespace CSF.FlexDi.Resolution
     /// <returns>The required parameters.</returns>
     public IReadOnlyList<ParameterInfo> GetParameters()
     {
-      return factory.Method.GetParameters();
+      return factory.GetMethodInfo().GetParameters();
     }
 
     /// <summary>

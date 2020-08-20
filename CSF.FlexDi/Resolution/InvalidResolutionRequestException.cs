@@ -24,8 +24,10 @@ namespace CSF.FlexDi.Resolution
   /// <summary>
   /// An exception which is raised when a <see cref="ResolutionRequest"/> is invalid.
   /// </summary>
-  [System.Serializable]
-  public class InvalidResolutionRequestException : ResolutionException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class InvalidResolutionRequestException : ResolutionException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidResolutionRequestException"/> class
@@ -51,6 +53,7 @@ namespace CSF.FlexDi.Resolution
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidResolutionRequestException"/> class
     /// </summary>
@@ -59,5 +62,6 @@ namespace CSF.FlexDi.Resolution
     protected InvalidResolutionRequestException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

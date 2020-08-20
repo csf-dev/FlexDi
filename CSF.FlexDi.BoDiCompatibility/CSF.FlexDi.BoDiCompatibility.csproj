@@ -1,87 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5E23B329-5C3A-41D2-8156-CC5F04986454}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>BoDi</RootNamespace>
-    <AssemblyName>BoDi</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <Authors>craigfowler</Authors>
+    <PackageId>CSF.FlexDi.BoDiCompatibility</PackageId>
+    <Title>FlexDi BoDi compatibility</Title>
+    <Description>A compatible drop-in replacement for the BoDi dependency injection/IoC container using FlexDi.</Description>
     <ReleaseVersion>1.0.2</ReleaseVersion>
+    <Version>$(ReleaseVersion)</Version>
+    <PackageVersion>$(ReleaseVersion)</PackageVersion>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Copyright>Copyright 2018-2020 - CSF Software Limited</Copyright>
+    <PackageProjectUrl>https://github.com/csf-dev/FlexDi</PackageProjectUrl>
+    <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\CSF-Software-OSS.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>BoDi</RootNamespace>
+    <AssemblyName>BoDi</AssemblyName>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\BoDi.xml</DocumentationFile>
-    <ConsolePause>false</ConsolePause>
+    <DocumentationFile>bin\Debug\$(TargetFramework)\BoDi.xml</DocumentationFile>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\BoDi.xml</DocumentationFile>
-    <ConsolePause>false</ConsolePause>
+    <DocumentationFile>bin\Release\$(TargetFramework)\BoDi.xml</DocumentationFile>
+    <DebugType></DebugType>
   </PropertyGroup>
+    
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
+    <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="Resources\ExceptionFormats.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionFormats.Designer.cs</LastGenOutput>
+      <LogicalName>ExceptionFormats.resx.resources</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ObjectContainerException.cs" />
-    <Compile Include="IObjectContainer.cs" />
-    <Compile Include="ObjectContainer.cs" />
-    <Compile Include="RegistrationFormatter.cs" />
-    <Compile Include="BoDiConfigurationSection.cs" />
-    <Compile Include="ContainerRegistrationCollection.cs" />
-    <Compile Include="ContainerRegistrationConfigElement.cs" />
-    <Compile Include="Internal\ExceptionTransformer.cs" />
-    <Compile Include="Internal\BoDiResolverFactory.cs" />
-    <Compile Include="Internal\DynamicResolutionObjectContainerProxy.cs" />
-    <Compile Include="Internal\DynamicRecursionResolverProxy.cs" />
-    <Compile Include="Internal\BoDiFlexDiContainerFactory.cs" />
-    <Compile Include="Internal\DynamicRecursionResolverProxyFactory.cs" />
-    <Compile Include="Internal\IProvidesFlexDiContainer.cs" />
-    <Compile Include="Resources\ExceptionFormats.Designer.cs">
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Resources\ExceptionFormats.Designer.cs">
       <DependentUpon>ExceptionFormats.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+    
   <ItemGroup>
-    <ProjectReference Include="..\CSF.FlexDi\CSF.FlexDi.csproj">
-      <Project>{F7CE689A-C595-4EE0-A6BD-AF46D2D9F99C}</Project>
-      <Name>CSF.FlexDi</Name>
-    </ProjectReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" Condition="'$(TargetFramework)' == 'net45'" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" Condition="'$(TargetFramework)' != 'net45'" />
+    <Reference Include="System.Configuration" Condition="'$(TargetFramework)' == 'net45'" />
   </ItemGroup>
+
   <ItemGroup>
-    <Folder Include="Internal\" />
-    <Folder Include="Resources\" />
+    <ProjectReference Include="..\CSF.FlexDi\CSF.FlexDi.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="CSF.FlexDi.BoDiCompatibility.nuspec" />
-    <None Include="..\LICENSE.txt">
-      <Link>LICENSE.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\NOTICE.txt">
-      <Link>NOTICE.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\ExceptionFormats.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionFormats.Designer.cs</LastGenOutput>
-      <LogicalName>ExceptionFormats.resources</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

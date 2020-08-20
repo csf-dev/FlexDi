@@ -23,8 +23,8 @@ using System.Reflection;
 using CSF.FlexDi.Registration;
 using CSF.FlexDi.Tests.Stubs;
 using Moq;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.NUnit3;
+using AutoFixture;
+using AutoFixture.NUnit3;
 
 namespace CSF.FlexDi.Tests.Autofixture
 {

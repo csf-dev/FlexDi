@@ -24,7 +24,9 @@ namespace CSF.FlexDi.Resolution
   /// <summary>
   /// An exception which occurs whilst resolving a component instance.
   /// </summary>
-  [System.Serializable]
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
   public class ResolutionException : ContainerException
   {
     /// <summary>
@@ -51,6 +53,7 @@ namespace CSF.FlexDi.Resolution
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="ResolutionException"/> class
     /// </summary>
@@ -59,5 +62,6 @@ namespace CSF.FlexDi.Resolution
     protected ResolutionException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

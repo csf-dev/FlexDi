@@ -18,6 +18,7 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace CSF.FlexDi.Resolution.Proxies
@@ -46,10 +47,10 @@ namespace CSF.FlexDi.Resolution.Proxies
     public Type GetInnerLazyType(Type type)
     {
       if(type == null) return null;
-      if(!type.IsGenericType) return null;
-      var genericTypeDef = type.GetGenericTypeDefinition();
+      if(!type.GetTypeInfo().IsGenericType) return null;
+      var genericTypeDef = type.GetTypeInfo().GetGenericTypeDefinition();
       if(genericTypeDef != LazyOpenGenericType) return null;
-      return type.GetGenericArguments()[0];
+      return type.GetTypeInfo().GenericTypeArguments[0];
     }
 
     /// <summary>
@@ -93,9 +94,9 @@ namespace CSF.FlexDi.Resolution.Proxies
     static LazyFactory()
     {
       var thisType = typeof(LazyFactory);
-      var flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-      CreateLazyObjectMethod = thisType.GetMethod(nameof(CreateLazyObject), flags);
+      CreateLazyObjectMethod = thisType.GetTypeInfo().DeclaredMethods
+        .FirstOrDefault(x => x.Name == nameof(CreateLazyObject));
     }
   }
 }

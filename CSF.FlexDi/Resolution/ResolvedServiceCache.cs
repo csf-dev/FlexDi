@@ -22,6 +22,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
@@ -138,7 +139,7 @@ namespace CSF.FlexDi.Resolution
           if(registrationKey.Name == null)
           {
             var otherMatchingKeys = instances.Keys
-              .Where(x => cacheKey.ImplementationType.IsAssignableFrom(x.ImplementationType));
+              .Where(x => cacheKey.ImplementationType.GetTypeInfo().IsAssignableFrom(x.ImplementationType.GetTypeInfo()));
             output.AddRange(otherMatchingKeys);
           }
         }
