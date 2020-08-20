@@ -4,7 +4,7 @@ solution: CSF.FlexDi.sln
 jobs:
     include:
         -   dotnet: 2.2.207
-            mono: none
+            mono: latest
 
 script:
     -   dotnet build
