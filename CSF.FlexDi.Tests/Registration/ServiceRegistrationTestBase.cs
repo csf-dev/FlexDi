@@ -47,13 +47,22 @@ namespace CSF.FlexDi.Tests.Registration
       Assert.That(() => sut.AssertIsValid(), Throws.InstanceOf<InvalidRegistrationException>());
     }
 
-    [Theory]
-    public void AssertIsValid_does_not_throw_exception_if_registration_is_not_to_be_disposed_or_is_cacheable(bool dispose,
-                                                                                                             bool cacheable)
-    {
-      Assume.That(!dispose || cacheable,
-                  $"Not applicable when {nameof(dispose)} is {Boolean.TrueString} but {nameof(cacheable)} is {Boolean.FalseString}.");
+    [Test]
+    public void AssertIsValid_does_not_throw_exception_if_registration_is_not_to_be_disposed()
+        => AssertIsValid_does_not_throw_exception_if_registration_is_not_to_be_disposed_or_is_cacheable(false, true);
 
+    [Test]
+    public void AssertIsValid_does_not_throw_exception_if_registration_is_to_be_disposed_but_is_not_cacheable()
+        => AssertIsValid_does_not_throw_exception_if_registration_is_not_to_be_disposed_or_is_cacheable(false, false);
+
+    [Test]
+    public void AssertIsValid_does_not_throw_exception_if_registration_is_to_be_disposed_and_is_cacheable()
+        => AssertIsValid_does_not_throw_exception_if_registration_is_not_to_be_disposed_or_is_cacheable(true, true);
+
+
+    void AssertIsValid_does_not_throw_exception_if_registration_is_not_to_be_disposed_or_is_cacheable(bool dispose,
+                                                                                                      bool cacheable)
+    {
       // Arrange
       var sut = GetValidServiceRegistration();
       try
