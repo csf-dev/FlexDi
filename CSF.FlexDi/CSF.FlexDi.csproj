@@ -38,7 +38,11 @@
       <DependentUpon>ExceptionFormats.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-    
+  <ItemGroup>
+    <None Include="..\NOTICE.txt" Pack="true" PackagePath="NOTICE.txt" />
+    <None Include="..\LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" Condition="'$(TargetFramework)' == 'net45'" />
   </ItemGroup>
