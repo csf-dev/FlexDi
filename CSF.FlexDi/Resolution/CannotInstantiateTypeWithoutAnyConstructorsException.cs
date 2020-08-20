@@ -25,7 +25,9 @@ namespace CSF.FlexDi.Resolution
   /// An exception which is raised when attempting to instantiate an instance of a type, but where no accessible
   /// constructors can be found upon that type.
   /// </summary>
-  [System.Serializable]
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
   public class CannotInstantiateTypeWithoutAnyConstructorsException : ResolutionException
   {
     /// <summary>
@@ -52,6 +54,7 @@ namespace CSF.FlexDi.Resolution
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="CannotInstantiateTypeWithoutAnyConstructorsException"/> class
     /// </summary>
@@ -60,5 +63,6 @@ namespace CSF.FlexDi.Resolution
     protected CannotInstantiateTypeWithoutAnyConstructorsException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

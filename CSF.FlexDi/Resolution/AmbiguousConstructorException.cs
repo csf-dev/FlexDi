@@ -25,8 +25,10 @@ namespace CSF.FlexDi.Resolution
   /// An exception raised when an implementation of <see cref="ISelectsConstructor"/> finds more than one constructor
   /// which is eligible to execute.
   /// </summary>
-  [System.Serializable]
-  public class AmbiguousConstructorException : ResolutionException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class AmbiguousConstructorException : ResolutionException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="AmbiguousConstructorException"/> class
@@ -52,6 +54,7 @@ namespace CSF.FlexDi.Resolution
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="AmbiguousConstructorException"/> class
     /// </summary>
@@ -60,5 +63,6 @@ namespace CSF.FlexDi.Resolution
     protected AmbiguousConstructorException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

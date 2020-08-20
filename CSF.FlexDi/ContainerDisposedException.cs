@@ -24,8 +24,10 @@ namespace CSF.FlexDi
   /// <summary>
   /// Exception raised when an attempt is made to use an <see cref="IContainer"/> instance which has been disposed.
   /// </summary>
-  [System.Serializable]
-  public class ContainerDisposedException : ContainerException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class ContainerDisposedException : ContainerException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="ContainerDisposedException"/> class
@@ -51,6 +53,7 @@ namespace CSF.FlexDi
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="ContainerDisposedException"/> class
     /// </summary>
@@ -59,5 +62,6 @@ namespace CSF.FlexDi
     protected ContainerDisposedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

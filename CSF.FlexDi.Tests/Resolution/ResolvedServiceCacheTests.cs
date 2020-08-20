@@ -24,7 +24,7 @@ using CSF.FlexDi.Tests.Autofixture;
 using CSF.FlexDi.Tests.Stubs;
 using Moq;
 using NUnit.Framework;
-using Ploeh.AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 
 namespace CSF.FlexDi.Tests.Resolution
 {

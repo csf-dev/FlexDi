@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CSF.FlexDi.Builders;
 using CSF.FlexDi.Registration;
 using CSF.FlexDi.Resolution;
@@ -177,7 +178,7 @@ namespace CSF.FlexDi
     {
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
-      if(serviceType.IsValueType)
+      if(serviceType.GetTypeInfo().IsValueType)
         throw new ArgumentException(Resources.ExceptionFormats.TypeToResolveMustBeNullableReferenceType, nameof(serviceType));
 
       object output;
@@ -411,16 +412,16 @@ namespace CSF.FlexDi
     /// uses functionality from the helper.
     /// </summary>
     /// <seealso cref="T:CSF.FlexDi.Builders.IRegistrationHelper" />
-    /// <param name="registrationActions">A callback which may use the functionality of the helper type.</param>
-    public void AddRegistrations(Action<IRegistrationHelper> registrationActions)
+    /// <param name="registrations">A callback which may use the functionality of the helper type.</param>
+    public void AddRegistrations(Action<IRegistrationHelper> registrations)
     {
-      if(registrationActions == null)
-        throw new ArgumentNullException(nameof(registrationActions));
+      if(registrations == null)
+        throw new ArgumentNullException(nameof(registrations));
 
       AssertNotDisposed();
 
       var helper = new RegistrationHelper(constructorSelector);
-      registrationActions(helper);
+      registrations(helper);
 
       AddRegistrations(helper.GetRegistrations());
     }

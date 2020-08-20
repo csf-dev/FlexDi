@@ -23,7 +23,7 @@ using CSF.FlexDi.Resolution.Proxies;
 using CSF.FlexDi.Tests.Stubs;
 using CSF.FlexDi.Tests.Autofixture;
 using CSF.FlexDi.Resolution;
-using Ploeh.AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 using Moq;
 using CSF.FlexDi.Registration;
 

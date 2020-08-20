@@ -24,7 +24,9 @@ namespace CSF.FlexDi.Registration
   /// <summary>
   /// An exception which is raised when a <see cref="TypeRegistration"/> is invalid.
   /// </summary>
+#if !NETSTANDARD1_1
   [System.Serializable]
+#endif
   public class InvalidTypeRegistrationException : InvalidRegistrationException
   {
     /// <summary>
@@ -51,6 +53,7 @@ namespace CSF.FlexDi.Registration
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidTypeRegistrationException"/> class
     /// </summary>
@@ -59,5 +62,6 @@ namespace CSF.FlexDi.Registration
     protected InvalidTypeRegistrationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

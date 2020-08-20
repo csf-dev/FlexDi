@@ -25,8 +25,10 @@ namespace CSF.FlexDi.Resolution
   /// An exception which is raised when - during resolution of either a factory or a constructor - a parameter
   /// for that factory/constructor cannot be resolved.
   /// </summary>
-  [System.Serializable]
-  public class CannotResolveParameterException : ResolutionException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class CannotResolveParameterException : ResolutionException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="CannotResolveParameterException"/> class
@@ -52,6 +54,7 @@ namespace CSF.FlexDi.Resolution
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="CannotResolveParameterException"/> class
     /// </summary>
@@ -60,5 +63,6 @@ namespace CSF.FlexDi.Resolution
     protected CannotResolveParameterException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

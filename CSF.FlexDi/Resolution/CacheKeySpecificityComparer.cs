@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace CSF.FlexDi.Resolution
 {
@@ -55,7 +56,7 @@ namespace CSF.FlexDi.Resolution
         throw new ArgumentNullException(nameof(y));
 
       if(x.ImplementationType == y.ImplementationType) return 0;
-      if(x.ImplementationType.IsAssignableFrom(y.ImplementationType)) return -1;
+      if(x.ImplementationType.GetTypeInfo().IsAssignableFrom(y.ImplementationType.GetTypeInfo())) return -1;
       return 1;
     }
   }

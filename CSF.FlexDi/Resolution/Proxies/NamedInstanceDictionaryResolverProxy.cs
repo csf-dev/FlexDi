@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using System.Reflection;
 using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution.Proxies
@@ -54,7 +55,7 @@ namespace CSF.FlexDi.Resolution.Proxies
         return false;
 
       var keyType = dictionaryFactory.GetKeyType(request.ServiceType);
-      return (keyType == typeof(string) || keyType.IsEnum);
+      return (keyType == typeof(string) || keyType.GetTypeInfo().IsEnum);
     }
 
     ResolutionResult ResolveNamedInstanceDictionary(ResolutionRequest request)

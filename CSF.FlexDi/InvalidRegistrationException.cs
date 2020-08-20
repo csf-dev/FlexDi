@@ -24,8 +24,10 @@ namespace CSF.FlexDi
   /// <summary>
   /// An exception which is raised when an attempt is made to add an invalid component registration.
   /// </summary>
-  [System.Serializable]
-  public class InvalidRegistrationException : ContainerException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class InvalidRegistrationException : ContainerException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidRegistrationException"/> class
@@ -51,6 +53,7 @@ namespace CSF.FlexDi
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidRegistrationException"/> class
     /// </summary>
@@ -59,5 +62,6 @@ namespace CSF.FlexDi
     protected InvalidRegistrationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

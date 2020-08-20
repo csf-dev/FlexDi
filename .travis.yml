@@ -1,9 +1,11 @@
 language: csharp
 solution: CSF.FlexDi.sln
 
-install:
-  - tools/install.sh
+jobs:
+    include:
+        -   dotnet: 2.2.207
+            mono: latest
 
 script:
-  - msbuild /p:Configuration=Debug CSF.FlexDi.sln
-  - tools/run-tests.sh
+    -   dotnet build
+    -   dotnet test

@@ -26,8 +26,10 @@ namespace CSF.FlexDi
   /// <summary>
   /// Exception raised when a circular dependency is detected whilst resolving a component.
   /// </summary>
-  [System.Serializable]
-  public class CircularDependencyException : ResolutionException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class CircularDependencyException : ResolutionException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="CircularDependencyException"/> class
@@ -53,6 +55,7 @@ namespace CSF.FlexDi
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="CircularDependencyException"/> class
     /// </summary>
@@ -61,5 +64,6 @@ namespace CSF.FlexDi
     protected CircularDependencyException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }
