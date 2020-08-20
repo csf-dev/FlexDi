@@ -34,17 +34,17 @@ namespace CSF.FlexDi.Resolution
     /// Coordinates the disposal of all disposable service/component instances within the given cache.
     /// </summary>
     /// <param name="registrationProvider">Registration provider.</param>
-    /// <param name="instanceCache">A cache which provides access to the component instances.</param>
+    /// <param name="instances">A cache which provides access to the component instances.</param>
     public void DisposeInstances(IServiceRegistrationProvider registrationProvider,
-                                 ICachesResolvedServiceInstances instanceCache)
+                                 ICachesResolvedServiceInstances instances)
     {
       if(registrationProvider == null)
         throw new ArgumentNullException(nameof(registrationProvider));
-      if(instanceCache == null)
-        throw new ArgumentNullException(nameof(instanceCache));
+      if(instances == null)
+        throw new ArgumentNullException(nameof(instances));
 
       var registrationsToDispose = GetRegistrationsToDispose(registrationProvider);
-      Dispose(registrationsToDispose, instanceCache);
+      DisposeRegistrations(registrationsToDispose, instances);
     }
 
     /// <summary>
@@ -68,8 +68,8 @@ namespace CSF.FlexDi.Resolution
     /// </summary>
     /// <param name="registrations">Registrations.</param>
     /// <param name="instanceCache">Instance cache.</param>
-    protected virtual void Dispose(IReadOnlyCollection<IServiceRegistration> registrations,
-                                   ICachesResolvedServiceInstances instanceCache)
+    protected virtual void DisposeRegistrations(IReadOnlyCollection<IServiceRegistration> registrations,
+                                                ICachesResolvedServiceInstances instanceCache)
     {
       if(instanceCache == null)
         throw new ArgumentNullException(nameof(instanceCache));
@@ -77,7 +77,7 @@ namespace CSF.FlexDi.Resolution
         throw new ArgumentNullException(nameof(registrations));
 
       foreach(var reg in registrations)
-        Dispose(reg, instanceCache);
+        DisposeRegistration(reg, instanceCache);
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ namespace CSF.FlexDi.Resolution
     /// </summary>
     /// <param name="registration">Registration.</param>
     /// <param name="instanceCache">Instance cache.</param>
-    protected virtual void Dispose(IServiceRegistration registration, ICachesResolvedServiceInstances instanceCache)
+    protected virtual void DisposeRegistration(IServiceRegistration registration, ICachesResolvedServiceInstances instanceCache)
     {
       if(registration == null)
         throw new ArgumentNullException(nameof(registration));

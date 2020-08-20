@@ -412,16 +412,16 @@ namespace CSF.FlexDi
     /// uses functionality from the helper.
     /// </summary>
     /// <seealso cref="T:CSF.FlexDi.Builders.IRegistrationHelper" />
-    /// <param name="registrationActions">A callback which may use the functionality of the helper type.</param>
-    public void AddRegistrations(Action<IRegistrationHelper> registrationActions)
+    /// <param name="registrations">A callback which may use the functionality of the helper type.</param>
+    public void AddRegistrations(Action<IRegistrationHelper> registrations)
     {
-      if(registrationActions == null)
-        throw new ArgumentNullException(nameof(registrationActions));
+      if(registrations == null)
+        throw new ArgumentNullException(nameof(registrations));
 
       AssertNotDisposed();
 
       var helper = new RegistrationHelper(constructorSelector);
-      registrationActions(helper);
+      registrations(helper);
 
       AddRegistrations(helper.GetRegistrations());
     }
