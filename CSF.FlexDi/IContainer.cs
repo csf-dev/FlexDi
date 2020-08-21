@@ -35,8 +35,8 @@ namespace CSF.FlexDi
   /// <see cref="IReceivesRegistrations"/>.
   /// </para>
   /// </remarks>
-  public interface IContainer : IResolvesServices, IReceivesRegistrations, IDisposable
-  {
+  public interface IContainer : IResolvesServices, IReceivesRegistrations, IDisposable, IInspectsServiceCache
+    {
     /// <summary>
     /// Gets a value indicating whether or not the container has a registration for the specified component type.
     /// </summary>
