@@ -19,8 +19,8 @@
 //    list, please refer to the file NOTICE.txt
 using System;
 using System.Reflection;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.NUnit3;
+using AutoFixture;
+using AutoFixture.NUnit3;
 
 namespace CSF.FlexDi.Tests.Autofixture
 {

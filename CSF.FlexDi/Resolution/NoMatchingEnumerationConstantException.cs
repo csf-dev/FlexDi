@@ -26,8 +26,10 @@ namespace CSF.FlexDi.Resolution
   /// an enumeration-based named instance dictionary, and a service was found with a registration name which
   /// does not match any constant which is defined within the enumeration.
   /// </summary>
-  [System.Serializable]
-  public class NoMatchingEnumerationConstantException : ResolutionException
+#if !NETSTANDARD1_1
+    [System.Serializable]
+#endif
+    public class NoMatchingEnumerationConstantException : ResolutionException
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="NoMatchingEnumerationConstantException"/> class
@@ -53,6 +55,7 @@ namespace CSF.FlexDi.Resolution
     {
     }
 
+#if !NETSTANDARD1_1
     /// <summary>
     /// Initializes a new instance of the <see cref="NoMatchingEnumerationConstantException"/> class
     /// </summary>
@@ -61,5 +64,6 @@ namespace CSF.FlexDi.Resolution
     protected NoMatchingEnumerationConstantException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
     }
+#endif
   }
 }

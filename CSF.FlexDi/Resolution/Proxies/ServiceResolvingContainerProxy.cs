@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
@@ -235,7 +236,7 @@ namespace CSF.FlexDi.Resolution.Proxies
     {
       if(serviceType == null)
         throw new ArgumentNullException(nameof(serviceType));
-      if(serviceType.IsValueType)
+      if(serviceType.GetTypeInfo().IsValueType)
         throw new ArgumentException(Resources.ExceptionFormats.TypeToResolveMustBeNullableReferenceType, nameof(serviceType));
 
       object output;

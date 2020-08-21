@@ -24,7 +24,7 @@ using CSF.FlexDi.Resolution.Proxies;
 using CSF.FlexDi.Tests.Autofixture;
 using Moq;
 using NUnit.Framework;
-using Ploeh.AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 
 namespace CSF.FlexDi.Tests.Resolution.Proxies
 {

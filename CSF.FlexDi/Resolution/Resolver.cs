@@ -19,6 +19,7 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using System.Reflection;
 using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
@@ -96,7 +97,7 @@ namespace CSF.FlexDi.Resolution
     protected virtual void AssertIsValidRequest(ResolutionRequest request)
     {
       var serviceType = request.ServiceType;
-      if(serviceType.IsPrimitive || serviceType.IsValueType || serviceType == typeof(string))
+      if(serviceType.GetTypeInfo().IsPrimitive || serviceType.GetTypeInfo().IsValueType || serviceType == typeof(string))
       {
         var message = String.Format(Resources.ExceptionFormats.PrimitiveTypesCannotBeResolved, request);
         throw new InvalidResolutionRequestException(message) {

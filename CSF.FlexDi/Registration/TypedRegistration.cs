@@ -19,6 +19,8 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using System.Reflection;
+
 namespace CSF.FlexDi.Registration
 {
   /// <summary>
@@ -63,7 +65,7 @@ namespace CSF.FlexDi.Registration
       if(key == null)
         return false;
 
-      return key.ServiceType.IsAssignableFrom(ImplementationType) && Name == key.Name;
+      return key.ServiceType.GetTypeInfo().IsAssignableFrom(ImplementationType.GetTypeInfo()) && Name == key.Name;
     }
   }
 }

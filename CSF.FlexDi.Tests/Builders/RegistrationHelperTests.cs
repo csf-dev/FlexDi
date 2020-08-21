@@ -25,7 +25,7 @@ using CSF.FlexDi.Tests.Stubs;
 using System.Linq;
 using CSF.FlexDi.Registration;
 using CSF.FlexDi.Resolution;
-using Ploeh.AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 using Moq;
 
 namespace CSF.FlexDi.Tests.Builders

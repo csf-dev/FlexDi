@@ -20,6 +20,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
@@ -59,7 +60,7 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(!IsGenericDictionaryType(genericDictionaryType))
         return null;
 
-      return genericDictionaryType.GetGenericArguments()[0];
+      return genericDictionaryType.GetTypeInfo().GenericTypeArguments[0];
     }
 
     /// <summary>
@@ -72,7 +73,7 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(!IsGenericDictionaryType(genericDictionaryType))
         return null;
 
-      return genericDictionaryType.GetGenericArguments()[1];
+      return genericDictionaryType.GetTypeInfo().GenericTypeArguments[1];
     }
 
     /// <summary>
@@ -86,7 +87,7 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(type == null)
         return false;
       
-      if(!type.IsGenericType)
+      if(!type.GetTypeInfo().IsGenericType)
         return false;
 
       var requestGenericTypeDefinition = type.GetGenericTypeDefinition();
