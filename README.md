@@ -49,3 +49,7 @@ FlexDi is the copyright of [various authors]. It is released under the terms of 
 CI builds are configured via AppVeyor for both Linux & Windows.
 
 [![AppVeyor status](https://ci.appveyor.com/api/projects/status/u9u4f99p45jyhd6u?svg=true)](https://ci.appveyor.com/project/craigfowler/flexdi)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CSF.FlexDi&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CSF.FlexDi)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CSF.FlexDi&metric=coverage)](https://sonarcloud.io/summary/new_code?id=CSF.FlexDi)
