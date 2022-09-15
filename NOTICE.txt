@@ -10,7 +10,7 @@ file bug reports or feature requests.
 FlexDi is based upon (and retains some source code from)
 another project named BoDi:
 
-  https://github.com/gasparnagy/BoDi
+  https://github.com/SpecFlowOSS/BoDi
 
 Copyright and licensing
 =======================
@@ -33,6 +33,8 @@ BoDi authors/contributors
 * "Rami" - https://github.com/icnocop
 * "slawomir-brzezinski-at-interxion" - https://github.com/slawomir-brzezinski-at-interxion
 * Darren Cauthon - https://github.com/darrencauthon
+
+This list is correct as of the time at which FlexDi was forked from BoDi.
 
 FlexDi authors/contributors
 ----------------------------
