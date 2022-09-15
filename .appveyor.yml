@@ -38,8 +38,23 @@ build_script:
     - dotnet build
 
 test_script:
-    - >
+    - cmd: >
         dotnet test
+        /p:CollectCoverage=true
+        /p:CoverletOutputFormat=\"json,opencover\"
+        /p:CoverletOutput=\"TestResults/\"
+        --test-adapter-path:.
+        --logger:\"nunit\"
+    # Linux can't run CSF.FlexDi.BoDiCompatibility.IntegrationTests because they are .NET Framework 4.7.2
+    - sh: >
+        dotnet test CSF.FlexDi.Tests
+        /p:CollectCoverage=true
+        /p:CoverletOutputFormat=\"json,opencover\"
+        /p:CoverletOutput=\"TestResults/\"
+        --test-adapter-path:.
+        --logger:\"nunit\"
+    - sh: >
+        dotnet test CSF.FlexDi.BoDiCompatibility.Tests
         /p:CollectCoverage=true
         /p:CoverletOutputFormat=\"json,opencover\"
         /p:CoverletOutput=\"TestResults/\"
