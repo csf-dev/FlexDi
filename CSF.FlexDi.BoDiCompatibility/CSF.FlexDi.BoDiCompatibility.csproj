@@ -7,8 +7,7 @@
     <Title>FlexDi BoDi compatibility</Title>
     <Description>A compatible drop-in replacement for the BoDi dependency injection/IoC container using FlexDi.</Description>
     <ReleaseVersion>1.1.0</ReleaseVersion>
-    <Version>$(ReleaseVersion)</Version>
-    <PackageVersion>$(ReleaseVersion)</PackageVersion>
+    <VersionPrefix>$(ReleaseVersion)</VersionPrefix>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Copyright>Copyright 2018-2020 - CSF Software Limited</Copyright>
     <PackageProjectUrl>https://github.com/csf-dev/FlexDi</PackageProjectUrl>
@@ -17,14 +16,13 @@
     <AssemblyOriginatorKeyFile>..\CSF-Software-OSS.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>BoDi</RootNamespace>
     <AssemblyName>BoDi</AssemblyName>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\BoDi.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>bin\Debug\$(TargetFramework)\BoDi.xml</DocumentationFile>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DocumentationFile>bin\Release\$(TargetFramework)\BoDi.xml</DocumentationFile>
     <DebugType></DebugType>
   </PropertyGroup>
     

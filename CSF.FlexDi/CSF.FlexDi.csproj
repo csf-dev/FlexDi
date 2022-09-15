@@ -7,22 +7,20 @@
     <Title>FlexDi - lightweight &amp; extensible DI container</Title>
     <Description>A small and extensible dependency injection/IoC container based on BoDi.</Description>
     <ReleaseVersion>1.1.0</ReleaseVersion>
-    <Version>$(ReleaseVersion)</Version>
-    <PackageVersion>$(ReleaseVersion)</PackageVersion>
+    <VersionPrefix>$(ReleaseVersion)</VersionPrefix>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Copyright>Copyright 2018-2020 - CSF Software Limited</Copyright>
     <PackageProjectUrl>https://github.com/csf-dev/FlexDi</PackageProjectUrl>
     <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\CSF-Software-OSS.snk</AssemblyOriginatorKeyFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\CSF.FlexDi.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>bin\Debug\$(TargetFramework)\CSF.FlexDi.xml</DocumentationFile>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DocumentationFile>bin\Release\$(TargetFramework)\CSF.FlexDi.xml</DocumentationFile>
     <DebugType></DebugType>
   </PropertyGroup>
     
