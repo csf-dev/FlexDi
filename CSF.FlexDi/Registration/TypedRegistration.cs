@@ -23,49 +23,85 @@ using System.Reflection;
 
 namespace CSF.FlexDi.Registration
 {
-  /// <summary>
-  /// Base type for registrations in which the implementation type of the component is known in advance.
-  /// </summary>
-  public abstract class TypedRegistration : ServiceRegistration
-  {
     /// <summary>
-    /// Gets the type of the concrete component implementation.  This should be either the same as the
-    /// <see cref="ServiceType"/> or a derived type.
+    /// Base type for registrations in which the implementation type of the component is known in advance.
     /// </summary>
-    /// <value>The implementation type.</value>
-    public abstract Type ImplementationType { get; }
-
-    /// <summary>
-    /// Gets the <c>System.Type</c> which will be fulfilled by this registration.
-    /// </summary>
-    /// <value>The service/component type.</value>
-    public override Type ServiceType
+    public abstract class TypedRegistration : ServiceRegistration
     {
-      get {
-        var explicitType = base.ServiceType;
-        if(explicitType != null) return explicitType;
-        return ImplementationType;
-      }
-      set {
-        base.ServiceType = value;
-      }
-    }
+        /// <summary>
+        /// Gets the type of the concrete component implementation.  This should be either the same as the
+        /// <see cref="ServiceType"/> or a derived type.
+        /// </summary>
+        /// <value>The implementation type.</value>
+        public virtual Type ImplementationType { get; }
 
-    /// <summary>
-    /// Gets a value that indicates whether or not the current registration matches the specified registration key or not.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c>, if the current instance matches the specified key, <c>false</c> otherwise.</returns>
-    /// <param name="key">The registration key against which to test.</param>
-    public override bool MatchesKey(ServiceRegistrationKey key)
-    {
-      if(base.MatchesKey(key))
-        return true;
-      
-      if(key == null)
-        return false;
+        /// <summary>
+        /// Gets the <c>System.Type</c> which will be fulfilled by this registration.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// In this implementation of <see cref="ServiceRegistration"/>, if this property has not been set then
+        /// it will return <see cref="ImplementationType"/> instead, as a fallback value.
+        /// </para>
+        /// </remarks>
+        /// <value>The service/component type.</value>
+        public override Type ServiceType
+        {
+            get => base.ServiceType ?? ImplementationType;
+            set => base.ServiceType = value;
+        }
 
-      return key.ServiceType.GetTypeInfo().IsAssignableFrom(ImplementationType.GetTypeInfo()) && Name == key.Name;
+        /// <inheritdoc/>
+        public override bool MatchesKey(ServiceRegistrationKey key)
+        {
+            if(base.MatchesKey(key)) return true;
+            if(key == null) return false;
+
+            return key.ServiceType.GetTypeInfo().IsAssignableFrom(ImplementationType.GetTypeInfo()) && Name == key.Name;
+        }
+
+        /// <inheritdoc/>
+        public override void AssertIsValid()
+        {
+            base.AssertIsValid();
+            AssertImplementationTypeIsAssignableToServiceType();
+        }
+
+        /// <summary>
+        /// Asserts that the <see cref="ServiceType"/> and <see cref="ImplementationType"/> are compatible.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method will raise an exception if the implementation type is neither equal to nor
+        /// derives from the service type.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidTypeRegistrationException">If the service type and implementation
+        /// type have an invalid combination of values.</exception>
+        protected void AssertImplementationTypeIsAssignableToServiceType()
+        {
+            if(ServiceType.GetTypeInfo().IsAssignableFrom(ImplementationType.GetTypeInfo())) return;
+
+            var message = String.Format(Resources.ExceptionFormats.ImplementationTypeMustDeriveFromComponentType,
+                                        GetType().Name,
+                                        ImplementationType.FullName,
+                                        ServiceType.FullName);
+            throw new InvalidTypeRegistrationException(message);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypedRegistration"/> class.
+        /// </summary>
+        /// <param name="implementationType"></param>
+        /// <param name="priority"></param>
+        /// <param name="cacheable"></param>
+        /// <param name="disposeWithContainer"></param>
+        protected TypedRegistration(Type implementationType,
+                                    int priority = 1,
+                                    bool cacheable = true,
+                                    bool disposeWithContainer = true) : base(priority, cacheable, disposeWithContainer)
+        {
+            ImplementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
+        }
     }
-  }
 }

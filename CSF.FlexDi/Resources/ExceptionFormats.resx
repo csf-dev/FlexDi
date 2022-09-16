@@ -1,5 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -12,87 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ResolutionInfoCacheMustNotBeNull">
+  <data name="ResolutionInfoCacheMustNotBeNull" xml:space="preserve">
     <value>The cache provided by the resolution info must not be null.</value>
+    <comment/>
   </data>
-  <data name="ResolutionInfoRegistryMustNotBeNull">
+  <data name="ResolutionInfoRegistryMustNotBeNull" xml:space="preserve">
     <value>The registry provided by the resolution info must not be null.</value>
+    <comment/>
   </data>
-  <data name="ResolutionInfoOptionsMustNotBeNull">
+  <data name="ResolutionInfoOptionsMustNotBeNull" xml:space="preserve">
     <value>The optoins provided by the resolution info must not be null.</value>
+    <comment/>
   </data>
-  <data name="CircularDependencyDetected">
+  <data name="CircularDependencyDetected" xml:space="preserve">
     <value>Circular dependency was detected whilst resolving a component; this is not supported.</value>
+    <comment/>
   </data>
-  <data name="ImplementationTypeMustHaveAConstructor">
-    <value>The type `{0}' must have at least one constructor.
-Interfaces must be registered with a concrete implementation.</value>
+  <data name="ImplementationTypeMustHaveAConstructor" xml:space="preserve">
+    <value>The type `{0}' must have at least one constructor.Interfaces must be registered with a concrete implementation.</value>
+    <comment/>
   </data>
-  <data name="AmbiguousConstructor">
-    <value>The type `{0}' has multiple constructors with {1}.
-If you wish to register this type, you must use a factory registration and manually choose the appropriate constructor.</value>
+  <data name="AmbiguousConstructor" xml:space="preserve">
+    <value>The type `{0}' has multiple constructors with {1}.If you wish to register this type, you must use a factory registration and manually choose the appropriate constructor.</value>
+    <comment/>
   </data>
-  <data name="CannotResolveComponentType">
+  <data name="CannotResolveComponentType" xml:space="preserve">
     <value>The component type `{0}' could not be resolved.</value>
+    <comment/>
   </data>
-  <data name="TypeToResolveMustBeNullableReferenceType">
+  <data name="TypeToResolveMustBeNullableReferenceType" xml:space="preserve">
     <value>The component type must be a nullable reference type.</value>
+    <comment/>
   </data>
-  <data name="CannotReRegisterAfterResolution">
-    <value>Cannot re-register a service after it has already been resolved from the container and cached.
-Invalid registration: {0}</value>
+  <data name="CannotReRegisterAfterResolution" xml:space="preserve">
+    <value>Cannot re-register a service after it has already been resolved from the container and cached.Invalid registration: {0}</value>
+    <comment/>
   </data>
-  <data name="ContainerIsDisposed">
+  <data name="ContainerIsDisposed" xml:space="preserve">
     <value>The requested action is not valid for a container which has been disposed.</value>
+    <comment/>
   </data>
-  <data name="ResolverFactoryMustNotReturnNull">
+  <data name="ResolverFactoryMustNotReturnNull" xml:space="preserve">
     <value>The implementation of {0} must not return a null instance of {1}.</value>
+    <comment/>
   </data>
-  <data name="FailedToResolveParameter">
+  <data name="FailedToResolveParameter" xml:space="preserve">
     <value>Failed to resolve parameter: {0} {1}</value>
+    <comment/>
   </data>
-  <data name="InstanceRegistrationsAreAlwaysCacheable">
+  <data name="InstanceRegistrationsAreAlwaysCacheable" xml:space="preserve">
     <value>{0} must always be cacheable.</value>
+    <comment/>
   </data>
-  <data name="LateBoundResolverMayOnlyBeSetOnce">
+  <data name="LateBoundResolverMayOnlyBeSetOnce" xml:space="preserve">
     <value>{0} may only be called once per instance of {1}.</value>
+    <comment/>
   </data>
-  <data name="LazyResolutionException">
-    <value>An exception occurred attempting to resolve an instance of `{0}' lazily.
-Refer to the inner exception for further details.</value>
+  <data name="LazyResolutionException" xml:space="preserve">
+    <value>An exception occurred attempting to resolve an instance of `{0}' lazily.Refer to the inner exception for further details.</value>
+    <comment/>
   </data>
-  <data name="LazyResolutionFailure">
+  <data name="LazyResolutionFailure" xml:space="preserve">
     <value>The type `{0}' could not be lazily-resolved.</value>
+    <comment/>
   </data>
-  <data name="MissingEnumerationContant">
+  <data name="MissingEnumerationContant" xml:space="preserve">
     <value>There must be a value in the enumeration `{0}' which matches the registration name '{1}'.</value>
+    <comment/>
   </data>
-  <data name="InvalidOpenGenericRegistration">
+  <data name="InvalidOpenGenericRegistration" xml:space="preserve">
     <value>Invalid {0}; the implementation type: `{1}' must derive from the service type: `{2}'.</value>
+    <comment/>
   </data>
-  <data name="RequestMustBeForGenericType">
+  <data name="RequestMustBeForGenericType" xml:space="preserve">
     <value>The request must be for a generic type; the actual request type was `{0}'.</value>
+    <comment/>
   </data>
-  <data name="AsOwnTypeOnlyForTypedRegistrations">
+  <data name="AsOwnTypeOnlyForTypedRegistrations" xml:space="preserve">
     <value>This operation is only suitable for registrations which derive from `{0}'.</value>
+    <comment/>
   </data>
-	<data name="PrimitiveTypesCannotBeResolved">
-    <value>Primitive types or structs cannot be resolved.
-{0}</value>
+  <data name="PrimitiveTypesCannotBeResolved" xml:space="preserve">
+    <value>Primitive types or structs cannot be resolved.{0}</value>
+    <comment/>
   </data>
-  <data name="InvalidCacheableAndDisposeWithContainerCombination">
-    <value>It is invalid for a registration to have both:
-{0} = {1}
-{2} = {3}</value>
+  <data name="InvalidCacheableAndDisposeWithContainerCombination" xml:space="preserve">
+    <value>It is invalid for a registration to have both:{0} = {1}{2} = {3}</value>
+    <comment/>
   </data>
-  <data name="GetAllWithNoParametersUnsupported">
+  <data name="GetAllWithNoParametersUnsupported" xml:space="preserve">
     <value>This type does not support use of {0} with no parameters.</value>
+    <comment/>
   </data>
-  <data name="ImplementationTypeMustDeriveFromComponentType">
+  <data name="ImplementationTypeMustDeriveFromComponentType" xml:space="preserve">
     <value>Invalid {0}; the implementation type: `{1}' must derive from the component type: `{2}'.</value>
+    <comment/>
   </data>
-
-	
-	
-	
+  <data name="TypeMustBeOpenGeneric" xml:space="preserve">
+    <value>{0} must be an open generic type.</value>
+    <comment/>
+  </data>
 </root>

@@ -63,21 +63,12 @@ namespace CSF.FlexDi.Tests.Registration
     void AssertIsValid_does_not_throw_exception_if_registration_is_not_to_be_disposed_or_is_cacheable(bool dispose,
                                                                                                       bool cacheable)
     {
-      // Arrange
       var sut = GetValidServiceRegistration();
-      try
-      {
-        sut.Cacheable = cacheable;
-      }
-      catch(ArgumentException)
-      {
-        if(cacheable) throw;
-        Assert.Pass($"Registration type {sut.GetType()} does not allow cacheable to be set to false, so this test scenario is irrelevant");
-      }
+      if(!cacheable && sut is InstanceRegistration) Assert.Inconclusive($"{nameof(InstanceRegistration)} is never cacheable.");
 
+      sut.Cacheable = cacheable;
       sut.DisposeWithContainer = dispose;
 
-      // Act & assert
       Assert.That(() => sut.AssertIsValid(), Throws.Nothing);
     }
 

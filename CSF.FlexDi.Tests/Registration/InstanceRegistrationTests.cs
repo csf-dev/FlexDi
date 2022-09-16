@@ -23,19 +23,27 @@ using NUnit.Framework;
 
 namespace CSF.FlexDi.Tests.Registration
 {
-  [TestFixture,Parallelizable(ParallelScope.All)]
-  public class InstanceRegistrationTests : ServiceRegistrationTestBase
-  {
-    [Test]
-    public void Cacheable_throws_an_exception_if_set_to_false()
+    [TestFixture,Parallelizable(ParallelScope.All)]
+    public class InstanceRegistrationTests : ServiceRegistrationTestBase
     {
-      // Arrange
-      var sut = GetValidServiceRegistration();
+        [Test]
+        public void AssertIsValid_should_throw_if_Cacheable_is_set_to_false()
+        {
+            var sut = GetValidServiceRegistration();
+            sut.Cacheable = false;
 
-      // Act & assert
-      Assert.That(() => sut.Cacheable = false, Throws.InstanceOf<ArgumentException>());
+            Assert.That(() => sut.AssertIsValid(), Throws.InstanceOf<InvalidRegistrationException>());
+        }
+        
+        [Test]
+        public void AssertIsValid_should_not_throw_if_Cacheable_is_set_to_true()
+        {
+            var sut = GetValidServiceRegistration();
+            sut.Cacheable = true;
+
+            Assert.That(() => sut.AssertIsValid(), Throws.Nothing);
+        }
+
+        protected override ServiceRegistration GetValidServiceRegistration() => new InstanceRegistration(new object());
     }
-
-    protected override ServiceRegistration GetValidServiceRegistration() => new InstanceRegistration(new object());
-  }
 }

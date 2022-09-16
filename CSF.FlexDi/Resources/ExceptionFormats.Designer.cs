@@ -190,5 +190,11 @@ namespace CSF.FlexDi.Resources {
                 return ResourceManager.GetString("ImplementationTypeMustDeriveFromComponentType", resourceCulture);
             }
         }
+        
+        internal static string TypeMustBeOpenGeneric {
+            get {
+                return ResourceManager.GetString("TypeMustBeOpenGeneric", resourceCulture);
+            }
+        }
     }
 }

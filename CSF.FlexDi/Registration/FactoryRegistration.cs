@@ -43,7 +43,7 @@ namespace CSF.FlexDi.Registration
     /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="FactoryRegistration"/>.</returns>
     public override string ToString()
     {
-      return $"[Factory registration for `{ServiceType.FullName}']";
+      return $"[{nameof(FactoryRegistration)} for `{ServiceType.FullName}']";
     }
 
     /// <summary>
