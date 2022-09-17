@@ -74,7 +74,7 @@ namespace BoDi.Internal
             if(ex.ResolutionPath != null)
                 return ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
 
-            return Array.Empty<Type>();
+            return new Type[0];
         }
     }
 }
