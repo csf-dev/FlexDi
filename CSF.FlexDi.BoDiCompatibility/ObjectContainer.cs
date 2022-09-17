@@ -385,6 +385,7 @@ namespace BoDi
 
                 container.Dispose();
                 isDisposed = true;
+                GC.SuppressFinalize(this);
             }
         }
 

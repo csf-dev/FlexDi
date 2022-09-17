@@ -26,9 +26,9 @@ using CSF.FlexDi.Registration;
 namespace BoDi
 {
     /// <summary>
-    /// A service which formats the names of <see cref="IServiceRegistration"/> instances into human-readable strings.
+    /// A class which formats the names of <see cref="IServiceRegistration"/> instances into human-readable strings.
     /// </summary>
-    public class RegistrationFormatter
+    public static class RegistrationFormatter
     {
         /// <summary>
         /// Gets a collection of the formatted strings representing the specified registrations.

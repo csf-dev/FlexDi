@@ -497,7 +497,10 @@ namespace CSF.FlexDi
             if (!disposedValue)
             {
                 if (disposing)
+                {
                     disposer.DisposeInstances(registry, cache);
+                    GC.SuppressFinalize(this);
+                }
 
                 disposedValue = true;
             }

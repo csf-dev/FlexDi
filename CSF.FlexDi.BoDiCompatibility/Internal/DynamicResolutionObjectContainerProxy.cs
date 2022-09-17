@@ -230,8 +230,11 @@ namespace BoDi.Internal
         /// <param name="disposing">Indicates whether or not explicit disposal is occurring.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
+            {
                 proxiedContainer.Dispose();
+                GC.SuppressFinalize(this);
+            }
         }
 
         #endregion
