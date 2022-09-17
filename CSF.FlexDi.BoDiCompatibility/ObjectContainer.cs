@@ -357,8 +357,7 @@ namespace BoDi
         /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:BoDi.ObjectContainer"/>.</returns>
         public override string ToString()
         {
-            var formatter = new RegistrationFormatter();
-            return string.Join(Environment.NewLine, formatter.Format(container.GetRegistrations()));
+            return string.Join(Environment.NewLine, RegistrationFormatter.Format(container.GetRegistrations()));
         }
 
         /// <summary>

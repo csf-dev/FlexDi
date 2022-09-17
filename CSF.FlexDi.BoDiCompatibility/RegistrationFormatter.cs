@@ -34,7 +34,7 @@ namespace BoDi
         /// Gets a collection of the formatted strings representing the specified registrations.
         /// </summary>
         /// <param name="registrations">The registrations to format.</param>
-        public IEnumerable<string> Format(IEnumerable<IServiceRegistration> registrations)
+        public static IEnumerable<string> Format(IEnumerable<IServiceRegistration> registrations)
         {
             if(registrations == null)
                 throw new ArgumentNullException(nameof(registrations));
@@ -46,7 +46,7 @@ namespace BoDi
         /// Gets a formatted string representing the specified registration.
         /// </summary>
         /// <param name="registration">The registration to format.</param>
-        public string Format(IServiceRegistration registration)
+        static string Format(IServiceRegistration registration)
         {
             if(registration == null)
                 throw new ArgumentNullException(nameof(registration));
