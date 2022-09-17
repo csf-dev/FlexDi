@@ -216,6 +216,7 @@ namespace BoDi.Internal
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -233,7 +234,6 @@ namespace BoDi.Internal
             if (disposing)
             {
                 proxiedContainer.Dispose();
-                GC.SuppressFinalize(this);
             }
         }
 

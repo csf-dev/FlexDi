@@ -367,7 +367,11 @@ namespace BoDi
         /// <see cref="Dispose()"/> method leaves the <see cref="T:BoDi.ObjectContainer"/> in an unusable state. After calling
         /// <see cref="Dispose()"/>, you must release all references to the <see cref="T:BoDi.ObjectContainer"/> so the
         /// garbage collector can reclaim the memory that the <see cref="T:BoDi.ObjectContainer"/> was occupying.</remarks>
-        public void Dispose() => Dispose(true);
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Releases all resource used by the <see cref="T:BoDi.ObjectContainer"/> object.
@@ -385,7 +389,6 @@ namespace BoDi
 
                 container.Dispose();
                 isDisposed = true;
-                GC.SuppressFinalize(this);
             }
         }
 

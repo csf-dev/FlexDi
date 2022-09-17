@@ -499,7 +499,6 @@ namespace CSF.FlexDi
                 if (disposing)
                 {
                     disposer.DisposeInstances(registry, cache);
-                    GC.SuppressFinalize(this);
                 }
 
                 disposedValue = true;
@@ -516,6 +515,7 @@ namespace CSF.FlexDi
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         void AssertNotDisposed()
