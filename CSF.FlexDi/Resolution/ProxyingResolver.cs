@@ -23,44 +23,44 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
-  /// <summary>
-  /// Convenience base type for an <see cref="IResolver"/> which also implements the
-  /// <see cref="IProxiesToAnotherResolver"/> interface.
-  /// </summary>
-  public abstract class ProxyingResolver : ResolverBase, IProxiesToAnotherResolver
-  {
-    readonly IResolver proxiedResolver;
-
     /// <summary>
-    /// Gets the wrapped/proxied resolver instance.
+    /// Convenience base type for an <see cref="IResolver"/> which also implements the
+    /// <see cref="IProxiesToAnotherResolver"/> interface.
     /// </summary>
-    /// <value>The proxied resolver.</value>
-    public IResolver ProxiedResolver => proxiedResolver;
-
-    /// <summary>
-    /// Gets the registration which corresponds to a given resolution request.
-    /// </summary>
-    /// <returns>The registration.</returns>
-    /// <param name="request">Request.</param>
-    public override IServiceRegistration GetRegistration(ResolutionRequest request)
-      => ProxiedResolver.GetRegistration(request);
-
-    void OnServiceResolved(object sender, ServiceResolutionEventArgs args)
+    public abstract class ProxyingResolver : ResolverBase, IProxiesToAnotherResolver
     {
-      InvokeServiceResolved(sender, args);
-    }
+        readonly IResolver proxiedResolver;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ProxyingResolver"/> class.
-    /// </summary>
-    /// <param name="proxiedResolver">Proxied resolver.</param>
-    public ProxyingResolver(IResolver proxiedResolver)
-    {
-      if(proxiedResolver == null)
-        throw new ArgumentNullException(nameof(proxiedResolver));
+        /// <summary>
+        /// Gets the wrapped/proxied resolver instance.
+        /// </summary>
+        /// <value>The proxied resolver.</value>
+        public IResolver ProxiedResolver => proxiedResolver;
 
-      this.proxiedResolver = proxiedResolver;
-      proxiedResolver.ServiceResolved += OnServiceResolved;
+        /// <summary>
+        /// Gets the registration which corresponds to a given resolution request.
+        /// </summary>
+        /// <returns>The registration.</returns>
+        /// <param name="request">Request.</param>
+        public override IServiceRegistration GetRegistration(ResolutionRequest request)
+            => ProxiedResolver.GetRegistration(request);
+
+        void OnServiceResolved(object sender, ServiceResolutionEventArgs args)
+        {
+            InvokeServiceResolved(sender, args);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ProxyingResolver"/> class.
+        /// </summary>
+        /// <param name="proxiedResolver">Proxied resolver.</param>
+        protected ProxyingResolver(IResolver proxiedResolver)
+        {
+            if(proxiedResolver == null)
+                throw new ArgumentNullException(nameof(proxiedResolver));
+
+            this.proxiedResolver = proxiedResolver;
+            proxiedResolver.ServiceResolved += OnServiceResolved;
+        }
     }
-  }
 }

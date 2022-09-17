@@ -47,7 +47,7 @@ namespace CSF.FlexDi.Resolution
         /// </summary>
         /// <returns>The registrations to dispose.</returns>
         /// <param name="registrationProvider">Registration provider.</param>
-        IReadOnlyCollection<IServiceRegistration> GetRegistrationsToDispose(IServiceRegistrationProvider registrationProvider)
+        static IReadOnlyCollection<IServiceRegistration> GetRegistrationsToDispose(IServiceRegistrationProvider registrationProvider)
         {
             if(registrationProvider == null)
                 throw new ArgumentNullException(nameof(registrationProvider));
@@ -63,7 +63,7 @@ namespace CSF.FlexDi.Resolution
         /// </summary>
         /// <param name="registrations">Registrations.</param>
         /// <param name="instanceCache">Instance cache.</param>
-        void DisposeRegistrations(IReadOnlyCollection<IServiceRegistration> registrations,
+        static void DisposeRegistrations(IReadOnlyCollection<IServiceRegistration> registrations,
                                                     ICachesResolvedServiceInstances instanceCache)
         {
             foreach(var reg in registrations)
@@ -75,7 +75,7 @@ namespace CSF.FlexDi.Resolution
         /// </summary>
         /// <param name="registration">Registration.</param>
         /// <param name="instanceCache">Instance cache.</param>
-        void DisposeRegistration(IServiceRegistration registration, ICachesResolvedServiceInstances instanceCache)
+        static void DisposeRegistration(IServiceRegistration registration, ICachesResolvedServiceInstances instanceCache)
         {
             if(registration == null)
                 throw new ArgumentNullException(nameof(registration));
