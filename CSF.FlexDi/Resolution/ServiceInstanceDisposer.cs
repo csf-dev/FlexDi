@@ -25,82 +25,68 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
-  /// <summary>
-  /// Default implementation of <see cref="IDisposesOfResolvedInstances"/>.
-  /// </summary>
-  public class ServiceInstanceDisposer : IDisposesOfResolvedInstances
-  {
     /// <summary>
-    /// Coordinates the disposal of all disposable service/component instances within the given cache.
+    /// Default implementation of <see cref="IDisposesOfResolvedInstances"/>.
     /// </summary>
-    /// <param name="registrationProvider">Registration provider.</param>
-    /// <param name="instanceCache">A cache which provides access to the component instances.</param>
-    public void DisposeInstances(IServiceRegistrationProvider registrationProvider,
-                                 ICachesResolvedServiceInstances instanceCache)
+    public class ServiceInstanceDisposer : IDisposesOfResolvedInstances
     {
-      if(registrationProvider == null)
-        throw new ArgumentNullException(nameof(registrationProvider));
-      if(instanceCache == null)
-        throw new ArgumentNullException(nameof(instanceCache));
+        /// <summary>
+        /// Coordinates the disposal of all disposable service/component instances within the given cache.
+        /// </summary>
+        /// <param name="registrationProvider">Registration provider.</param>
+        /// <param name="instances">A cache which provides access to the component instances.</param>
+        public void DisposeInstances(IServiceRegistrationProvider registrationProvider,
+                                     ICachesResolvedServiceInstances instances)
+        {
+            var registrationsToDispose = GetRegistrationsToDispose(registrationProvider);
+            DisposeRegistrations(registrationsToDispose, instances);
+        }
 
-      var registrationsToDispose = GetRegistrationsToDispose(registrationProvider);
-      Dispose(registrationsToDispose, instanceCache);
+        /// <summary>
+        /// Gets a collection of the service/component registrations which are eligible for disposal.
+        /// </summary>
+        /// <returns>The registrations to dispose.</returns>
+        /// <param name="registrationProvider">Registration provider.</param>
+        IReadOnlyCollection<IServiceRegistration> GetRegistrationsToDispose(IServiceRegistrationProvider registrationProvider)
+        {
+            if(registrationProvider == null)
+                throw new ArgumentNullException(nameof(registrationProvider));
+
+            return registrationProvider
+                .GetAll()
+                .Where(x => x.Cacheable && x.DisposeWithContainer)
+                .ToArray();
+        }
+
+        /// <summary>
+        /// Disposes of any instances contained within the cache, which are eligible for disposal.
+        /// </summary>
+        /// <param name="registrations">Registrations.</param>
+        /// <param name="instanceCache">Instance cache.</param>
+        void DisposeRegistrations(IReadOnlyCollection<IServiceRegistration> registrations,
+                                                    ICachesResolvedServiceInstances instanceCache)
+        {
+            foreach(var reg in registrations)
+                DisposeRegistration(reg, instanceCache);
+        }
+
+        /// <summary>
+        /// Disposes of a single component instance, matching a given registration.
+        /// </summary>
+        /// <param name="registration">Registration.</param>
+        /// <param name="instanceCache">Instance cache.</param>
+        void DisposeRegistration(IServiceRegistration registration, ICachesResolvedServiceInstances instanceCache)
+        {
+            if(registration == null)
+                throw new ArgumentNullException(nameof(registration));
+            if(instanceCache == null)
+                throw new ArgumentNullException(nameof(instanceCache));
+
+            if(!instanceCache.TryGet(registration, out var instance))
+                return;
+
+            if(instance is IDisposable disposable)
+                disposable.Dispose();
+        }
     }
-
-    /// <summary>
-    /// Gets a collection of the service/component registrations which are eligible for disposal.
-    /// </summary>
-    /// <returns>The registrations to dispose.</returns>
-    /// <param name="registrationProvider">Registration provider.</param>
-    protected virtual IReadOnlyCollection<IServiceRegistration> GetRegistrationsToDispose(IServiceRegistrationProvider registrationProvider)
-    {
-      if(registrationProvider == null)
-        throw new ArgumentNullException(nameof(registrationProvider));
-      
-      return registrationProvider
-        .GetAll()
-        .Where(x => x.Cacheable && x.DisposeWithContainer)
-        .ToArray();
-    }
-
-    /// <summary>
-    /// Disposes of any instances contained within the cache, which are eligible for disposal.
-    /// </summary>
-    /// <param name="registrations">Registrations.</param>
-    /// <param name="instanceCache">Instance cache.</param>
-    protected virtual void Dispose(IReadOnlyCollection<IServiceRegistration> registrations,
-                                   ICachesResolvedServiceInstances instanceCache)
-    {
-      if(instanceCache == null)
-        throw new ArgumentNullException(nameof(instanceCache));
-      if(registrations == null)
-        throw new ArgumentNullException(nameof(registrations));
-
-      foreach(var reg in registrations)
-        Dispose(reg, instanceCache);
-    }
-
-    /// <summary>
-    /// Disposes of a single component instance, matching a given registration.
-    /// </summary>
-    /// <param name="registration">Registration.</param>
-    /// <param name="instanceCache">Instance cache.</param>
-    protected virtual void Dispose(IServiceRegistration registration, ICachesResolvedServiceInstances instanceCache)
-    {
-      if(registration == null)
-        throw new ArgumentNullException(nameof(registration));
-      if(instanceCache == null)
-        throw new ArgumentNullException(nameof(instanceCache));
-
-      object instance;
-
-      if(!instanceCache.TryGet(registration, out instance))
-        return;
-
-      if(!(instance is IDisposable))
-        return;
-
-      ((IDisposable) instance).Dispose();
-    }
-  }
 }

@@ -35,8 +35,8 @@ namespace CSF.FlexDi
     /// uses functionality from the helper.
     /// </summary>
     /// <seealso cref="IRegistrationHelper"/>
-    /// <param name="registrations">A callback which may use the functionality of the helper type.</param>
-    void AddRegistrations(Action<IRegistrationHelper> registrations);
+    /// <param name="registrationActions">A callback which may use the functionality of the helper type.</param>
+    void AddRegistrations(Action<IRegistrationHelper> registrationActions);
 
     /// <summary>
     /// Adds a collection of registration instances directly.
