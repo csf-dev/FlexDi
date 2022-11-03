@@ -197,8 +197,8 @@ namespace CSF.FlexDi.Tests.Registration
                                                                                               [Registration(Name = "Same")] IServiceRegistration overridingRegistration)
     {
       // Arrange
-      Mock.Get(providers[2]).Setup(x => x.GetAll()).Returns(new [] { overriddenRegistration });
-      Mock.Get(providers[0]).Setup(x => x.GetAll()).Returns(new [] { overridingRegistration });
+      Mock.Get(providers[2]).Setup(x => x.GetAll(null)).Returns(new [] { overriddenRegistration });
+      Mock.Get(providers[0]).Setup(x => x.GetAll(null)).Returns(new [] { overridingRegistration });
 
       var sut = new StackOfRegistriesRegistrationProvider(providers);
 
@@ -216,8 +216,8 @@ namespace CSF.FlexDi.Tests.Registration
                                                                                        [Registration(Name = "Two")] IServiceRegistration registration2)
     {
       // Arrange
-      Mock.Get(providers[2]).Setup(x => x.GetAll()).Returns(new [] { registration1 });
-      Mock.Get(providers[0]).Setup(x => x.GetAll()).Returns(new [] { registration2 });
+      Mock.Get(providers[2]).Setup(x => x.GetAll(null)).Returns(new [] { registration1 });
+      Mock.Get(providers[0]).Setup(x => x.GetAll(null)).Returns(new [] { registration2 });
 
       var sut = new StackOfRegistriesRegistrationProvider(providers);
 

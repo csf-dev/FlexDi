@@ -37,13 +37,5 @@ namespace CSF.FlexDi.Resolution
     /// <param name="registration">The registration to find.</param>
     /// <param name="resolutionPath">A resolution path.</param>
     bool HasCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath);
-
-    /// <summary>
-    /// Performs the same check as <see cref="HasCircularDependency"/> but raises an exception if a circular dependency
-    /// is found.
-    /// </summary>
-    /// <param name="registration">The registration to find.</param>
-    /// <param name="resolutionPath">A resolution path.</param>
-    void ThrowOnCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath);
   }
 }

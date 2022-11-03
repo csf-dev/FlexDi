@@ -70,7 +70,7 @@ namespace CSF.FlexDi.Tests.Registration
       sut.Add(registration);
 
       // Act
-      var result = sut.Contains(ServiceRegistrationKey.ForRegistration(registration));
+      var result = sut.HasRegistration(ServiceRegistrationKey.FromRegistration(registration));
 
       // Assert
       Assert.That(result, Is.True);
@@ -81,7 +81,7 @@ namespace CSF.FlexDi.Tests.Registration
                                                                               [Registration] IServiceRegistration registration)
     {
       // Act
-      var result = sut.Contains(ServiceRegistrationKey.ForRegistration(registration));
+      var result = sut.HasRegistration(ServiceRegistrationKey.FromRegistration(registration));
 
       // Assert
       Assert.That(result, Is.False);
@@ -95,7 +95,7 @@ namespace CSF.FlexDi.Tests.Registration
       sut.Add(registration);
 
       // Act
-      var result = sut.Get(ServiceRegistrationKey.ForRegistration(registration));
+      var result = sut.Get(ServiceRegistrationKey.FromRegistration(registration));
 
       // Assert
       Assert.That(result, Is.SameAs(registration));
@@ -107,7 +107,7 @@ namespace CSF.FlexDi.Tests.Registration
 
     {
       // Act
-      var result = sut.Get(ServiceRegistrationKey.ForRegistration(registration));
+      var result = sut.Get(ServiceRegistrationKey.FromRegistration(registration));
 
       // Assert
       Assert.That(result, Is.Null);

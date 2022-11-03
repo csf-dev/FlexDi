@@ -32,13 +32,13 @@ namespace CSF.FlexDi.Registration
         /// Gets the service type, that is the type which is depended-upon (or which would be resolved).
         /// </summary>
         /// <value>The type of the service.</value>
-        public Type ServiceType { get; private set; }
+        public Type ServiceType { get; }
 
         /// <summary>
         /// Gets an optional name for the registration.
         /// </summary>
         /// <value>The name.</value>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Determines whether the specified <see cref="object"/> is equal to the current <see cref="ServiceRegistrationKey"/>.
@@ -46,10 +46,7 @@ namespace CSF.FlexDi.Registration
         /// <param name="obj">The <see cref="object"/> to compare with the current <see cref="ServiceRegistrationKey"/>.</param>
         /// <returns><c>true</c> if the specified <see cref="object"/> is equal to the current
         /// <see cref="ServiceRegistrationKey"/>; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ServiceRegistrationKey);
-        }
+        public override bool Equals(object obj) => Equals(obj as ServiceRegistrationKey);
 
         /// <summary>
         /// Determines whether the specified <see cref="CSF.FlexDi.Registration.ServiceRegistrationKey"/> is equal to the
@@ -65,8 +62,7 @@ namespace CSF.FlexDi.Registration
             if(ReferenceEquals(other, this))
                 return true;
 
-            return (other.ServiceType == ServiceType
-                            && other.Name == Name);
+            return (other.ServiceType == ServiceType && other.Name == Name);
         }
 
         /// <summary>
@@ -96,11 +92,21 @@ namespace CSF.FlexDi.Registration
         }
 
         /// <summary>
+        /// Implicitly converts an instance of <see cref="ResolutionRequest"/> to a <see cref="ServiceRegistrationKey"/>.
+        /// </summary>
+        /// <param name="request">The resolution request.</param>
+        public static implicit operator ServiceRegistrationKey(ResolutionRequest request)
+        {
+            if(request is null) return null;
+            return new ServiceRegistrationKey(request.ServiceType, request.Name);
+        }
+
+        /// <summary>
         /// Creates a service registration key based on a given registration instance.
         /// </summary>
         /// <returns>The registration key.</returns>
         /// <param name="registration">Registration.</param>
-        public static ServiceRegistrationKey ForRegistration(IServiceRegistration registration)
+        public static ServiceRegistrationKey FromRegistration(IServiceRegistration registration)
         {
             if(registration == null)
                 throw new ArgumentNullException(nameof(registration));
