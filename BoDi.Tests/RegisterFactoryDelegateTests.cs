@@ -84,9 +84,9 @@ namespace BoDi.Tests
             Assert.AreSame(dependency, ((ClassWithSimpleDependency)obj).Dependency);
         }
 
-        [Test, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)]
+        [Test/*, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)*/]
         [Ignore("dynamic circles not detected yet, this leads to stack overflow")]
-        public void ShouldThrowExceptionForDynamicCircuarDepenencies()
+        public void ShouldThrowExceptionForDynamicCircularDependencies()
         {
             // given
 
@@ -94,12 +94,11 @@ namespace BoDi.Tests
             container.RegisterFactoryAs<ClassWithCircularDependency1>(c => new ClassWithCircularDependency1(c.Resolve<ClassWithCircularDependency2>()));
 
             // when 
-
-            container.Resolve<ClassWithCircularDependency1>();
+            Assert.Throws<ObjectContainerException>(() => container.Resolve<ClassWithCircularDependency1>(), "Circular dependency");
         }
 
-        [Test, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)]
-        public void ShouldThrowExceptionForStaticCircuarDepenencies()
+        [Test/*, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)*/]
+        public void ShouldThrowExceptionForStaticCircularDependencies()
         {
             // given
 
@@ -107,12 +106,12 @@ namespace BoDi.Tests
             container.RegisterFactoryAs<ClassWithCircularDependency1>(new Func<ClassWithCircularDependency2, ClassWithCircularDependency1>(dep1 => new ClassWithCircularDependency1(dep1)));
 
             // when 
-
-            container.Resolve<ClassWithCircularDependency1>();
+            Assert.Throws<ObjectContainerException>(() => container.Resolve<ClassWithCircularDependency1>(), "Circular dependency");
+            
         }
 
-        [Test, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)]
-        public void ShouldThrowExceptionForStaticCircuarDepenenciesWithMultipleFactoriesInPath()
+        [Test/*, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)*/]
+        public void ShouldThrowExceptionForStaticCircularDependenciesWithMultipleFactoriesInPath()
         {
             // given
 
@@ -121,8 +120,43 @@ namespace BoDi.Tests
             container.RegisterFactoryAs<ClassWithCircularDependency2>(new Func<ClassWithCircularDependency1, ClassWithCircularDependency2>(dep1 => new ClassWithCircularDependency2(dep1)));
 
             // when 
+            Assert.Throws<ObjectContainerException>(() => container.Resolve<ClassWithCircularDependency1>(), "Circular dependency");
+        }
 
-            container.Resolve<ClassWithCircularDependency1>();
+        [Test]
+        public void ShouldAlwaysCreateInstanceOnPerRequestStrategy()
+        {
+            // given
+
+            var container = new ObjectContainer();
+
+            // when 
+
+            container.RegisterFactoryAs<IInterface1>(() => new SimpleClassWithDefaultCtor()).InstancePerDependency();
+
+            // then
+
+            var obj1 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            var obj2 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            Assert.AreNotSame(obj1, obj2);
+        }
+
+        [Test]
+        public void ShouldAlwaysCreateSameObjectOnPerContextStrategy()
+        {
+            // given
+
+            var container = new ObjectContainer();
+
+            // when 
+
+            container.RegisterFactoryAs<IInterface1>(() => new SimpleClassWithDefaultCtor()).InstancePerContext();
+
+            // then
+
+            var obj1 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            var obj2 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            Assert.AreSame(obj1, obj2);
         }
     }
 }
