@@ -15,6 +15,11 @@
  * 
  * Change history
  * 
+ * v1.4
+ *   - Provide .NET Standard 2.0 and .NET 4.5 library package (#14 by SabotageAndi)
+ *   - Fix: Collection was modified issue (#7)
+ *   - Exposing BaseContainer to the public interface (#17 by jessicabuttigieg)
+ *
  * v1.3
  *   - Fix: When an object resolved without registration using the concrete type it cannot be resolved from sub context
  *   - Added IsRegistered methods to check if an interface or type is already registered (#6)
@@ -403,7 +408,6 @@ namespace BoDi
 
             public object Resolve(ObjectContainer container, RegistrationKey keyToResolve, ResolutionList resolutionPath)
             {
-                //TODO: store result object in pool?
                 var obj = container.InvokeFactoryDelegate(factoryDelegate, resolutionPath, keyToResolve);
                 return obj;
             }
@@ -460,6 +464,7 @@ namespace BoDi
         private readonly Dictionary<RegistrationKey, object> objectPool = new Dictionary<RegistrationKey, object>();
 
         public event Action<object> ObjectCreated;
+        public IObjectContainer BaseContainer => baseContainer;
 
         public ObjectContainer(IObjectContainer baseContainer = null) 
         {
