@@ -23,44 +23,19 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
-  /// <summary>
-  /// Implementation of <see cref="IDetectsCircularDependencies"/> which detects circular dependencies within
-  /// a <see cref="ResolutionPath"/>.
-  /// </summary>
-  public class CircularDependencyDetector : IDetectsCircularDependencies
-  {
     /// <summary>
-    /// Gets a value which indicates whether the given resolution path contains the given registration.  This would
-    /// indicate a circular dependency, because it means that in order to resolve the given registration, that
-    /// same registration has been traversed again.
+    /// Implementation of <see cref="IDetectsCircularDependencies"/> which detects circular dependencies within
+    /// a <see cref="ResolutionPath"/>.
     /// </summary>
-    /// <returns>
-    /// <c>true</c>, if a circular dependency was detected, <c>false</c> otherwise.</returns>
-    /// <param name="registration">The registration to find.</param>
-    /// <param name="resolutionPath">A resolution path.</param>
-    public bool HasCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath)
+    public class CircularDependencyDetector : IDetectsCircularDependencies
     {
-      if(resolutionPath == null)
-        throw new ArgumentNullException(nameof(resolutionPath));
-      if(registration == null)
-        throw new ArgumentNullException(nameof(registration));
+        /// <inheritdoc/>
+        public bool HasCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath)
+        {
+            if(resolutionPath == null)
+                throw new ArgumentNullException(nameof(resolutionPath));
 
-      return resolutionPath.Contains(registration);
+            return resolutionPath.Contains(registration);
+        }
     }
-
-    /// <summary>
-    /// Performs the same check as <see cref="M:CSF.FlexDi.Resolution.IDetectsCircularDependencies.HasCircularDependency(CSF.FlexDi.Registration.IServiceRegistration,CSF.FlexDi.Resolution.ResolutionPath)" /> but raises an exception if a circular dependency
-    /// is found.
-    /// </summary>
-    /// <param name="registration">The registration to find.</param>
-    /// <param name="resolutionPath">A resolution path.</param>
-    public void ThrowOnCircularDependency(IServiceRegistration registration, ResolutionPath resolutionPath)
-    {
-      if(HasCircularDependency(registration, resolutionPath))
-      {
-        throw new CircularDependencyException(Resources.ExceptionFormats.CircularDependencyDetected)
-        { ResolutionPath = resolutionPath };
-      }
-    }
-  }
 }

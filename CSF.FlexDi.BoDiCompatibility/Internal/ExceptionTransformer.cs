@@ -25,56 +25,56 @@ using CSF.FlexDi.Registration;
 
 namespace BoDi.Internal
 {
-  /// <summary>
-  /// This class catches FlexDi exceptions and transforms them to the same exception type that BoDi would have raised
-  /// under the same circumstances.
-  /// </summary>
-  class ExceptionTransformer
-  {
-    internal void TransformExceptions(Action action)
+    /// <summary>
+    /// This class catches FlexDi exceptions and transforms them to the same exception type that BoDi would have raised
+    /// under the same circumstances.
+    /// </summary>
+    class ExceptionTransformer
     {
-      if(action == null)
-        throw new ArgumentNullException(nameof(action));
+        internal void TransformExceptions(Action action)
+        {
+            if(action == null)
+                throw new ArgumentNullException(nameof(action));
 
-      try
-      {
-        action();
-      }
-      catch(InvalidTypeRegistrationException ex)
-      {
-        throw new InvalidOperationException(ex.Message, ex);
-      }
-      catch(ContainerException ex)
-      {
-        throw new ObjectContainerException(ex.Message, GetResolutionPath(ex), ex);
-      }
+            try
+            {
+                action();
+            }
+            catch(InvalidTypeRegistrationException ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
+            }
+            catch(ContainerException ex)
+            {
+                throw new ObjectContainerException(ex.Message, GetResolutionPath(ex), ex);
+            }
+        }
+
+        internal T TransformExceptions<T>(Func<T> action)
+        {
+            if(action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            try
+            {
+                return action();
+            }
+            catch(InvalidTypeRegistrationException ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
+            }
+            catch(ContainerException ex)
+            {
+                throw new ObjectContainerException(ex.Message, GetResolutionPath(ex), ex);
+            }
+        }
+
+        Type[] GetResolutionPath(ContainerException ex)
+        {
+            if(ex.ResolutionPath != null)
+                return ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
+
+            return new Type[0];
+        }
     }
-
-    internal T TransformExceptions<T>(Func<T> action)
-    {
-      if(action == null)
-        throw new ArgumentNullException(nameof(action));
-
-      try
-      {
-        return action();
-      }
-      catch(InvalidTypeRegistrationException ex)
-      {
-        throw new InvalidOperationException(ex.Message, ex);
-      }
-      catch(ContainerException ex)
-      {
-        throw new ObjectContainerException(ex.Message, GetResolutionPath(ex), ex);
-      }
-    }
-
-    Type[] GetResolutionPath(ContainerException ex)
-    {
-      if(ex.ResolutionPath != null)
-        return ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
-
-      return null;
-    }
-  }
 }

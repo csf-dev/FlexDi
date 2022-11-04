@@ -212,7 +212,7 @@ namespace CSF.FlexDi
     /// </summary>
     /// <remarks>
     /// <para>
-    /// By default, unless an overload of <see cref="IResolvesServices.TryResolve()"/> is used, resolution is mandatory.
+    /// By default, unless an overload of <see cref="ContainerResolutionExtensions.TryResolve(IResolvesServices)"/> is used, resolution is mandatory.
     /// That is, either an object instance will be resolved successfully, or <see cref="Resolution.ResolutionException"/>
     /// will be raised.  There are no 'silent failures' to resolve a component.
     /// </para>

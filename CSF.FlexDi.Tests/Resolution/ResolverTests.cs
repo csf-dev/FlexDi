@@ -40,7 +40,7 @@ namespace CSF.FlexDi.Tests.Resolution
       // Arrange
       var sut = GetSut(provider);
       var instance = new SampleServiceImplementationOne();
-      Mock.Get(provider).Setup(x => x.CanFulfilRequest(request)).Returns(true);
+      Mock.Get(provider).Setup(x => x.HasRegistration(request)).Returns(true);
       Mock.Get(provider).Setup(x => x.Get(request)).Returns(registration);
       Mock.Get(registration)
         .Setup(x => x.GetFactoryAdapter(request))
@@ -62,13 +62,13 @@ namespace CSF.FlexDi.Tests.Resolution
       var sut = GetSut(provider);
       var instance = new SampleServiceImplementationOne();
       Mock.Get(provider)
-          .Setup(x => x.CanFulfilRequest(request))
+          .Setup(x => x.HasRegistration(request))
           .Returns(false);
       Mock.Get(provider)
           .Setup(x => x.Get(request))
           .Returns((IServiceRegistration) null);
       Mock.Get(provider)
-          .Setup(x => x.CanFulfilRequest(It.Is<ResolutionRequest>(r => r.ServiceType == request.ServiceType && r.Name == null)))
+          .Setup(x => x.HasRegistration(It.Is<ServiceRegistrationKey>(r => r.ServiceType == request.ServiceType && r.Name == null)))
           .Returns(true);
       Mock.Get(provider)
           .Setup(x => x.Get(It.Is<ResolutionRequest>(r => r.ServiceType == request.ServiceType && r.Name == null)))

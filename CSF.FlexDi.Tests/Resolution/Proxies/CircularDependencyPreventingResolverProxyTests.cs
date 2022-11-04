@@ -28,25 +28,20 @@ using NUnit.Framework;
 
 namespace CSF.FlexDi.Tests.Resolution.Proxies
 {
-  [TestFixture,Parallelizable(ParallelScope.All)]
-  public class CircularDependencyPreventingResolverProxyTests
-  {
-    [Test,AutoMoqData]
-    public void Resolve_calls_throw_on_circular_dependency_from_detector_service(IDetectsCircularDependencies detector,
-                                                                                 [ResolvesToFailure] IResolver proxiedResolver,
-                                                                                 ResolutionPath path,
-                                                                                 [Registration] IServiceRegistration registration)
+    [TestFixture,Parallelizable(ParallelScope.All)]
+    public class CircularDependencyPreventingResolverProxyTests
     {
-      // Arrange
-      var request = new ResolutionRequest(typeof(ISampleService), path);
-      Mock.Get(proxiedResolver).Setup(x => x.GetRegistration(request)).Returns(registration);
-      var sut = new CircularDependencyPreventingResolverProxy(proxiedResolver, detector);
+        [Test,AutoMoqData]
+        public void Resolve_calls_throw_on_circular_dependency_from_detector_service(IDetectsCircularDependencies detector,
+                                                                                     [ResolvesToFailure] IResolver proxiedResolver,
+                                                                                     ResolutionRequest request,
+                                                                                     [Registration] IServiceRegistration registration)
+        {
+            Mock.Get(proxiedResolver).Setup(x => x.GetRegistration(request)).Returns(registration);
+            Mock.Get(detector).Setup(x => x.HasCircularDependency(registration, request.ResolutionPath)).Returns(true);
+            var sut = new CircularDependencyPreventingResolverProxy(proxiedResolver, detector);
 
-      // Act
-      sut.Resolve(request);
-
-      // Assert
-      Mock.Get(detector).Verify(x => x.ThrowOnCircularDependency(registration, path), Times.Once);
+            Assert.That(() => sut.Resolve(request), Throws.InstanceOf<CircularDependencyException>());
+        }
     }
-  }
 }

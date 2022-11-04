@@ -31,14 +31,6 @@ namespace CSF.FlexDi
   public interface IReceivesRegistrations
   {
     /// <summary>
-    /// Adds new component registrations by use of a helper type.  Registrations are added within a callback which
-    /// uses functionality from the helper.
-    /// </summary>
-    /// <seealso cref="IRegistrationHelper"/>
-    /// <param name="registrations">A callback which may use the functionality of the helper type.</param>
-    void AddRegistrations(Action<IRegistrationHelper> registrations);
-
-    /// <summary>
     /// Adds a collection of registration instances directly.
     /// </summary>
     /// <param name="registrations">A collection of registrations.</param>

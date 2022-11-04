@@ -26,58 +26,45 @@ namespace CSF.FlexDi.Registration
 {
     /// <summary>
     /// Specialisation of <see cref="TypeRegistration"/> which registers open generic types, such as
-    /// <c>typeof(MyGenericClass&lt;&gt;)</c> without their generic type parameters specified.
+    /// <c>MyGenericClass&lt;&gt;</c> without their generic type parameters specified.
     /// </summary>
     public class OpenGenericTypeRegistration : TypeRegistration
     {
-        /// <summary>
-        /// Asserts that the current registration is valid (fulfils its invariants).  An exception is raised if it does not.
-        /// </summary>
+        /// <inheritdoc/>
         public override void AssertIsValid()
         {
-            if (!IsAssignableToGenericType(ImplementationType, ServiceType))
-            {
-                var message = String.Format(Resources.ExceptionFormats.InvalidOpenGenericRegistration,
-                                            nameof(OpenGenericTypeRegistration),
-                                            ImplementationType.FullName,
-                                            ServiceType.FullName);
-                throw new InvalidTypeRegistrationException(message);
-            }
-
             AssertCachabilityAndDisposalAreValid();
-        }
-
-        // From https://stackoverflow.com/questions/74616/how-to-detect-if-type-is-another-generic-type/1075059#1075059
-        bool IsAssignableToGenericType(Type givenType, Type genericType)
-        {
-            var interfaceTypes = givenType.GetTypeInfo().ImplementedInterfaces;
-
-            foreach (var it in interfaceTypes)
-            {
-                var iti = it.GetTypeInfo();
-                if (iti.IsGenericType && iti.GetGenericTypeDefinition() == genericType)
-                    return true;
-            }
-
-            if (givenType.GetTypeInfo().IsGenericType && givenType.GetTypeInfo().GetGenericTypeDefinition() == genericType)
-                return true;
-
-            Type baseType = givenType.GetTypeInfo().BaseType;
-            if (baseType == null) return false;
-
-            return IsAssignableToGenericType(baseType, genericType);
+            AssertImplementationTypeIsAssignableToServiceTypeGeneric();
         }
 
         /// <summary>
-        /// Gets a factory adapter instance, for the current registration, from a specified resolution request.
+        /// Similar to <see cref="TypedRegistration.AssertImplementationTypeIsAssignableToServiceType"/>, asserts that the
+        /// <see cref="ServiceRegistration.ServiceType"/> and <see cref="TypedRegistration.ImplementationType"/> are compatible,
+        /// but in an open generic manner.
         /// </summary>
-        /// <returns>The factory adapter.</returns>
-        /// <param name="request">A resolution request.</param>
+        /// <remarks>
+        /// <para>
+        /// This method will raise an exception if the open generic form of the implementation type is neither equal to nor
+        /// derives from the open generic form of the service type.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidTypeRegistrationException">If the service type and implementation
+        /// type have an invalid combination of values.</exception>
+        protected void AssertImplementationTypeIsAssignableToServiceTypeGeneric()
+        {
+            if (ImplementationType.IsAssignableToOpenGeneric(ServiceType)) return;
+            var message = String.Format(Resources.ExceptionFormats.InvalidOpenGenericRegistration,
+                                        nameof(OpenGenericTypeRegistration),
+                                        ImplementationType.FullName,
+                                        ServiceType.FullName);
+            throw new InvalidTypeRegistrationException(message);
+        }
+
+        /// <inheritdoc/>
         public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
-
             if (!request.ServiceType.GetTypeInfo().IsGenericType)
             {
                 var message = String.Format(Resources.ExceptionFormats.RequestMustBeForGenericType, request.ServiceType.FullName);
@@ -90,37 +77,20 @@ namespace CSF.FlexDi.Registration
             return GetFactoryAdapter(implementationTypeWithGenericParams);
         }
 
-        /// <summary>
-        /// Gets a value that indicates whether or not the current registration matches the specified registration key or not.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c>, if the current instance matches the specified key, <c>false</c> otherwise.</returns>
-        /// <param name="key">The registration key against which to test.</param>
+        /// <inheritdoc/>
         public override bool MatchesKey(ServiceRegistrationKey key)
         {
-            if (key == null)
-                return false;
+            if (key == null) return false;
+            if (!key.ServiceType.GetTypeInfo().IsGenericType) return false;
 
-            if (!key.ServiceType.GetTypeInfo().IsGenericType)
-                return false;
-
-            var openGenericKeyType = key.ServiceType.GetGenericTypeDefinition();
-            return openGenericKeyType == ServiceType;
+            return key.ServiceType.GetGenericTypeDefinition() == ServiceType;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenGenericTypeRegistration"/> class.
         /// </summary>
         /// <param name="implementationType">Implementation type.</param>
-        public OpenGenericTypeRegistration(Type implementationType)
-          : this(implementationType, null) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OpenGenericTypeRegistration"/> class.
-        /// </summary>
-        /// <param name="implementationType">Implementation type.</param>
         /// <param name="constructorSelector">Constructor selector.</param>
-        public OpenGenericTypeRegistration(Type implementationType, ISelectsConstructor constructorSelector)
-          : base(implementationType, constructorSelector) { }
+        public OpenGenericTypeRegistration(Type implementationType, ISelectsConstructor constructorSelector) : base(implementationType, constructorSelector) { }
     }
 }

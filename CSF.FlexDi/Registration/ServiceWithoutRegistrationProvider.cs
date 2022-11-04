@@ -63,28 +63,17 @@ namespace CSF.FlexDi.Registration
       };
     }
 
-    /// <summary>
-    /// Gets all of the registrations which can fulfil a given service/component type.
-    /// </summary>
-    /// <returns>All of the matching registrations.</returns>
-    /// <param name="serviceType">A service type.</param>
-    public virtual IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType)
+    /// <inheritdoc />
+    public virtual IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType = null)
     {
       if(serviceType == null)
-        throw new ArgumentNullException(nameof(serviceType));
+      {
+        var message = String.Format(Resources.ExceptionFormats.GetAllWithNoParametersUnsupported,
+                                    nameof(GetAll));
+        throw new NotSupportedException(message);
+      }
 
       return new [] { Get(new ResolutionRequest(serviceType, null)) };
-    }
-
-    /// <summary>
-    /// Gets all of the registrations available to the current provider
-    /// </summary>
-    /// <returns>All of the registrations.</returns>
-    public virtual IReadOnlyCollection<IServiceRegistration> GetAll()
-    {
-      var message = String.Format(Resources.ExceptionFormats.GetAllWithNoParametersUnsupported,
-                                  nameof(GetAll));
-      throw new NotSupportedException(message);
     }
 
     bool IServiceRegistrationProvider.HasRegistration(ServiceRegistrationKey key)
@@ -92,14 +81,6 @@ namespace CSF.FlexDi.Registration
       if(key == null)
         throw new ArgumentNullException(nameof(key));
       
-      return true;
-    }
-
-    bool IServiceRegistrationProvider.HasRegistration(IServiceRegistration registration)
-    {
-      if(registration == null)
-        throw new ArgumentNullException(nameof(registration));
-
       return true;
     }
 

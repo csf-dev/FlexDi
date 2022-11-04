@@ -45,7 +45,7 @@ namespace CSF.FlexDi.Registration
       if(request == null)
         throw new ArgumentNullException(nameof(request));
 
-      return providers.Any(x => x.CanFulfilRequest(request));
+      return providers.Any(x => x.HasRegistration(request));
     }
 
     /// <summary>
@@ -62,19 +62,6 @@ namespace CSF.FlexDi.Registration
     }
 
     /// <summary>
-    /// Gets a value which indicates whether or not the current provider has a specified registrations.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c>, if the registration is contained within this provider, <c>false</c> otherwise.</returns>
-    /// <param name="registration">A registration.</param>
-    public bool HasRegistration(IServiceRegistration registration)
-    {
-      if(registration == null)
-        throw new ArgumentNullException(nameof(registration));
-      return providers.Any(x => x.HasRegistration(registration));
-    }
-
-    /// <summary>
     /// Gets a registration.
     /// </summary>
     /// <param name="request">A resolution request.</param>
@@ -83,25 +70,13 @@ namespace CSF.FlexDi.Registration
       if(request == null)
         throw new ArgumentNullException(nameof(request));
 
-      var provider = providers.FirstOrDefault(x => x.CanFulfilRequest(request));
-      if(provider == null)
-        return null;
-      
-      return provider.Get(request);
+      return providers
+        .FirstOrDefault(x => x.HasRegistration(request))
+        ?.Get(request);
     }
 
-    /// <summary>
-    /// Gets all of the registrations available to the current provider
-    /// </summary>
-    /// <returns>All of the registrations.</returns>
-    public IReadOnlyCollection<IServiceRegistration> GetAll() => GetAll(null);
-
-    /// <summary>
-    /// Gets all of the registrations which can fulfil a given service/component type.
-    /// </summary>
-    /// <returns>All of the matching registrations.</returns>
-    /// <param name="serviceType">A service type.</param>
-    public IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType)
+    /// <inheritdoc />
+    public IReadOnlyCollection<IServiceRegistration> GetAll(Type serviceType = null)
     {
       var registrationsFound = new Dictionary<ServiceRegistrationKey,IServiceRegistration>();
 
@@ -131,7 +106,7 @@ namespace CSF.FlexDi.Registration
         candidates = new IServiceRegistration[0];
 
       return (from registration in candidates
-              let key = ServiceRegistrationKey.ForRegistration(registration)
+              let key = ServiceRegistrationKey.FromRegistration(registration)
               where !alreadyFound.Contains(key)
               select new { Registration = registration, Key = key })
         .ToDictionary(k => k.Key, v => v.Registration);

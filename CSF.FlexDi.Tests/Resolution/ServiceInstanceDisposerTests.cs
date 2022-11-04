@@ -40,7 +40,7 @@ namespace CSF.FlexDi.Tests.Resolution
       // Arrange
       Mock.Get(registration).SetupGet(x => x.DisposeWithContainer).Returns(true);
       Mock.Get(registration).SetupGet(x => x.Cacheable).Returns(false);
-      Mock.Get(registrations).Setup(x => x.GetAll()).Returns(new [] { registration });
+      Mock.Get(registrations).Setup(x => x.GetAll(null)).Returns(new [] { registration });
       object obj = disposable;
       Mock.Get(cache)
           .Setup(x => x.TryGet(registration, out obj))
@@ -64,7 +64,7 @@ namespace CSF.FlexDi.Tests.Resolution
       // Arrange
       Mock.Get(registration).SetupGet(x => x.DisposeWithContainer).Returns(false);
       Mock.Get(registration).SetupGet(x => x.Cacheable).Returns(true);
-      Mock.Get(registrations).Setup(x => x.GetAll()).Returns(new [] { registration });
+      Mock.Get(registrations).Setup(x => x.GetAll(null)).Returns(new [] { registration });
       object obj = disposable;
       Mock.Get(cache)
           .Setup(x => x.TryGet(registration, out obj))
@@ -88,7 +88,7 @@ namespace CSF.FlexDi.Tests.Resolution
       // Arrange
       Mock.Get(registration).SetupGet(x => x.DisposeWithContainer).Returns(true);
       Mock.Get(registration).SetupGet(x => x.Cacheable).Returns(true);
-      Mock.Get(registrations).Setup(x => x.GetAll()).Returns(new [] { registration });
+      Mock.Get(registrations).Setup(x => x.GetAll(null)).Returns(new [] { registration });
       object obj = disposable;
       Mock.Get(cache)
           .Setup(x => x.TryGet(registration, out obj))
@@ -111,7 +111,7 @@ namespace CSF.FlexDi.Tests.Resolution
       // Arrange
       Mock.Get(registration).SetupGet(x => x.DisposeWithContainer).Returns(false);
       Mock.Get(registration).SetupGet(x => x.Cacheable).Returns(true);
-      Mock.Get(registrations).Setup(x => x.GetAll()).Returns(new [] { registration });
+      Mock.Get(registrations).Setup(x => x.GetAll(null)).Returns(new [] { registration });
       object obj = nonDisposable;
       Mock.Get(cache)
           .Setup(x => x.TryGet(registration, out obj))
@@ -132,7 +132,7 @@ namespace CSF.FlexDi.Tests.Resolution
       // Arrange
       Mock.Get(registration).SetupGet(x => x.DisposeWithContainer).Returns(true);
       Mock.Get(registration).SetupGet(x => x.Cacheable).Returns(true);
-      Mock.Get(registrations).Setup(x => x.GetAll()).Returns(new [] { registration });
+      Mock.Get(registrations).Setup(x => x.GetAll(null)).Returns(new [] { registration });
       object obj = disposable;
       Mock.Get(cache)
           .Setup(x => x.TryGet(registration, out obj))

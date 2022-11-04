@@ -54,11 +54,11 @@ namespace CSF.FlexDi.Resolution
       if(request == null)
         throw new ArgumentNullException(nameof(request));
 
-      if(registrationProvider.CanFulfilRequest(request))
+      if(registrationProvider.HasRegistration(request))
         return registrationProvider.Get(request);
 
       var requestWithoutName = request.GetCopyWithoutName();
-      if(registrationProvider.CanFulfilRequest(requestWithoutName))
+      if(registrationProvider.HasRegistration(requestWithoutName))
         return registrationProvider.Get(requestWithoutName);
 
       return null;
