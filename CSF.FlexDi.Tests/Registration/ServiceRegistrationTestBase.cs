@@ -64,7 +64,7 @@ namespace CSF.FlexDi.Tests.Registration
                                                                                                       bool cacheable)
     {
       var sut = GetValidServiceRegistration();
-      if(!cacheable && sut is InstanceRegistration) Assert.Inconclusive($"{nameof(InstanceRegistration)} is never cacheable.");
+      if(!cacheable && sut is InstanceRegistration) Assert.Pass($"{nameof(InstanceRegistration)} is never cacheable.");
 
       sut.Cacheable = cacheable;
       sut.DisposeWithContainer = dispose;
