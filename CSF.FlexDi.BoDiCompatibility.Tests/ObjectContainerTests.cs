@@ -18,37 +18,29 @@
 //    For further copyright info, including a complete author/contributor
 //    list, please refer to the file NOTICE.txt
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using BoDi;
 using CSF.FlexDi.BoDiCompatibility.Tests.Autofixture;
 using CSF.FlexDi.Builders;
+using CSF.FlexDi.Registration;
 using Moq;
 using NUnit.Framework;
 
 namespace CSF.FlexDi.BoDiCompatibility.Tests
 {
-  [TestFixture,Parallelizable(ParallelScope.All)]
-  public class ObjectContainerTests
-  {
-    [Test,AutoMoqData]
-    [Description("BoDi (NuGet v1.3.0) caches objects resolved from factory registrations. To provide compatibility we must mimic that behaviour. See https://github.com/csf-dev/FlexDi/issues/18")]
-    public void RegisterFactoryAs_marks_the_registration_as_cacheable(IContainer innerContainer,
-                                                                      RegistrationHelper registrationHelper)
+    [TestFixture,Parallelizable(ParallelScope.All)]
+    public class ObjectContainerTests
     {
-      // Arrange
-      var sut = new ObjectContainerWithInnerContainerReplacementSupport();
-      sut.ReplaceInnerContainer(innerContainer);
+        [Test,AutoMoqData]
+        [Description("BoDi (NuGet v1.3.0) caches objects resolved from factory registrations. To provide compatibility we must mimic that behaviour. See https://github.com/csf-dev/FlexDi/issues/18")]
+        public void RegisterFactoryAs_marks_the_registration_as_cacheable(IContainer innerContainer)
+        {
+            var sut = new ObjectContainerWithInnerContainerReplacementSupport();
+            sut.ReplaceInnerContainer(innerContainer);
 
-      Mock.Get(innerContainer)
-          .Setup(x => x.AddRegistrations(It.IsAny<Action<IRegistrationHelper>>()))
-          .Callback((Action<IRegistrationHelper> action) => action(registrationHelper));
+            sut.RegisterFactoryAs<ISampleService>(() => new SampleServiceImplementationOne());
 
-      // Act
-      sut.RegisterFactoryAs<ISampleService>(() => new SampleServiceImplementationOne());
-
-      // Assert
-      var registration = registrationHelper.GetRegistrations().Single();
-      Assert.That(registration.Cacheable, Is.True);
+            Mock.Get(innerContainer).Verify(x => x.AddRegistrations(It.Is<IEnumerable<IServiceRegistration>>(r => r.Count() == 1 && r.Single().Cacheable)), Times.Once);
+        }
     }
-  }
 }
