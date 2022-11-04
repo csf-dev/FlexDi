@@ -86,7 +86,7 @@ namespace BoDi.Tests
 
         [Test/*, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)*/]
         [Ignore("dynamic circles not detected yet, this leads to stack overflow")]
-        public void ShouldThrowExceptionForDynamicCircuarDepenencies()
+        public void ShouldThrowExceptionForDynamicCircularDependencies()
         {
             // given
 
@@ -98,7 +98,7 @@ namespace BoDi.Tests
         }
 
         [Test/*, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)*/]
-        public void ShouldThrowExceptionForStaticCircuarDepenencies()
+        public void ShouldThrowExceptionForStaticCircularDependencies()
         {
             // given
 
@@ -111,7 +111,7 @@ namespace BoDi.Tests
         }
 
         [Test/*, ExpectedException(typeof(ObjectContainerException), ExpectedMessage = "Circular dependency", MatchType = MessageMatch.Contains)*/]
-        public void ShouldThrowExceptionForStaticCircuarDepenenciesWithMultipleFactoriesInPath()
+        public void ShouldThrowExceptionForStaticCircularDependenciesWithMultipleFactoriesInPath()
         {
             // given
 
@@ -121,6 +121,42 @@ namespace BoDi.Tests
 
             // when 
             Assert.Throws<ObjectContainerException>(() => container.Resolve<ClassWithCircularDependency1>(), "Circular dependency");
+        }
+
+        [Test]
+        public void ShouldAlwaysCreateInstanceOnPerRequestStrategy()
+        {
+            // given
+
+            var container = new ObjectContainer();
+
+            // when 
+
+            container.RegisterFactoryAs<IInterface1>(() => new SimpleClassWithDefaultCtor()).InstancePerDependency();
+
+            // then
+
+            var obj1 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            var obj2 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            Assert.AreNotSame(obj1, obj2);
+        }
+
+        [Test]
+        public void ShouldAlwaysCreateSameObjectOnPerContextStrategy()
+        {
+            // given
+
+            var container = new ObjectContainer();
+
+            // when 
+
+            container.RegisterFactoryAs<IInterface1>(() => new SimpleClassWithDefaultCtor()).InstancePerContext();
+
+            // then
+
+            var obj1 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            var obj2 = (SimpleClassWithDefaultCtor)container.Resolve<IInterface1>();
+            Assert.AreSame(obj1, obj2);
         }
     }
 }
