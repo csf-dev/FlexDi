@@ -19,6 +19,7 @@
 //    list, please refer to the file NOTICE.txt
 
 using System;
+using CSF.FlexDi.Registration;
 using CSF.FlexDi.Resolution;
 
 namespace CSF.FlexDi.Builders
@@ -28,28 +29,15 @@ namespace CSF.FlexDi.Builders
     /// </summary>
     public class ContainerBuilder
     {
-        bool
-            useNonPublicConstructors,
-            resolveUnregisteredTypes,
-            useInstanceCache,
-            throwOnCircularDependencies,
-            supportResolvingNamedInstanceDictionaries,
-            selfRegisterAResolver,
-            selfRegisterTheRegistry,
-            supportResolvingLazyInstances,
-            makeAllResolutionOptional;
-        ICreatesResolvers resolverFactory;
+        bool created;
+        ContainerOptions options = new ContainerOptions();
 
         /// <summary>
         /// Indicates that the created container should not use non-public constructors.
         /// </summary>
         /// <seealso cref="ContainerOptions.UseNonPublicConstructors"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotUseNonPublicConstructors()
-        {
-            useNonPublicConstructors = false;
-            return this;
-        }
+        public ContainerBuilder DoNotUseNonPublicConstructors() => UseNonPublicConstructors(false);
 
         /// <summary>
         /// Indicates that the created container should use non-public constructors.
@@ -59,7 +47,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="useNonPublicConstructors">Indicates the value which will be used for <see cref="ContainerOptions.UseNonPublicConstructors"/>.</param>
         public ContainerBuilder UseNonPublicConstructors(bool useNonPublicConstructors = true)
         {
-            this.useNonPublicConstructors = useNonPublicConstructors;
+            AssertNotCreated();
+            options.UseNonPublicConstructors = useNonPublicConstructors;
             return this;
         }
 
@@ -68,11 +57,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.ResolveUnregisteredTypes"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotResolveUnregisteredTypes()
-        {
-            resolveUnregisteredTypes = false;
-            return this;
-        }
+        public ContainerBuilder DoNotResolveUnregisteredTypes() => ResolveUnregisteredTypes(false);
 
         /// <summary>
         /// Indicates that the created container should resolve unregistered types.
@@ -82,7 +67,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="resolveUnregisteredTypes">Indicates the value which will be used for <see cref="ContainerOptions.ResolveUnregisteredTypes"/>.</param>
         public ContainerBuilder ResolveUnregisteredTypes(bool resolveUnregisteredTypes = true)
         {
-            this.resolveUnregisteredTypes = resolveUnregisteredTypes;
+            AssertNotCreated();
+            options.ResolveUnregisteredTypes = resolveUnregisteredTypes;
             return this;
         }
 
@@ -91,11 +77,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.UseInstanceCache"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotUseInstanceCache()
-        {
-            useInstanceCache = false;
-            return this;
-        }
+        public ContainerBuilder DoNotUseInstanceCache() => UseInstanceCache(false);
 
         /// <summary>
         /// Indicates that the created container should use an instance cache.
@@ -105,7 +87,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="useInstanceCache">Indicates the value which will be used for <see cref="ContainerOptions.UseInstanceCache"/>.</param>
         public ContainerBuilder UseInstanceCache(bool useInstanceCache = true)
         {
-            this.useInstanceCache = useInstanceCache;
+            AssertNotCreated();
+            options.UseInstanceCache = useInstanceCache;
             return this;
         }
 
@@ -114,10 +97,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.SelfRegisterAResolver"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotSelfRegisterAResolver()
-        {
-            return SelfRegisterAResolver(false);
-        }
+        public ContainerBuilder DoNotSelfRegisterAResolver() => SelfRegisterAResolver(false);
 
         /// <summary>
         /// Indicates that the created container should self-register itself as a resolver.
@@ -127,7 +107,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="selfRegisterAResolver">Indicates the value which will be used for <see cref="ContainerOptions.SelfRegisterAResolver"/>.</param>
         public ContainerBuilder SelfRegisterAResolver(bool selfRegisterAResolver = true)
         {
-            this.selfRegisterAResolver = selfRegisterAResolver;
+            AssertNotCreated();
+            options.SelfRegisterAResolver = selfRegisterAResolver;
             return this;
         }
 
@@ -136,10 +117,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.SelfRegisterTheRegistry"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotSelfRegisterTheRegistry()
-        {
-            return SelfRegisterTheRegistry(false);
-        }
+        public ContainerBuilder DoNotSelfRegisterTheRegistry() => SelfRegisterTheRegistry(false);
 
         /// <summary>
         /// Indicates that the created container should self-register itself as a registry
@@ -149,7 +127,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="selfRegisterTheRegistry">Indicates the value which will be used for <see cref="ContainerOptions.SelfRegisterTheRegistry"/>.</param>
         public ContainerBuilder SelfRegisterTheRegistry(bool selfRegisterTheRegistry = true)
         {
-            this.selfRegisterTheRegistry = selfRegisterTheRegistry;
+            AssertNotCreated();
+            options.SelfRegisterTheRegistry = selfRegisterTheRegistry;
             return this;
         }
 
@@ -158,11 +137,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.ThrowOnCircularDependencies"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotThrowOnCircularDependencies()
-        {
-            throwOnCircularDependencies = false;
-            return this;
-        }
+        public ContainerBuilder DoNotThrowOnCircularDependencies() => ThrowOnCircularDependencies(false);
 
         /// <summary>
         /// Indicates that the created container should throw exceptions on circular dependencies.
@@ -172,7 +147,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="throwOnCircularDependencies">Indicates the value which will be used for <see cref="ContainerOptions.ThrowOnCircularDependencies"/>.</param>
         public ContainerBuilder ThrowOnCircularDependencies(bool throwOnCircularDependencies = true)
         {
-            this.throwOnCircularDependencies = throwOnCircularDependencies;
+            AssertNotCreated();
+            options.ThrowOnCircularDependencies = throwOnCircularDependencies;
             return this;
         }
 
@@ -181,11 +157,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.SupportResolvingNamedInstanceDictionaries"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotSupportResolvingNamedInstanceDictionaries()
-        {
-            supportResolvingNamedInstanceDictionaries = false;
-            return this;
-        }
+        public ContainerBuilder DoNotSupportResolvingNamedInstanceDictionaries() => SupportResolvingNamedInstanceDictionaries(false);
 
         /// <summary>
         /// Indicates that the created container should support the resolution of named instance dictionaries.
@@ -195,7 +167,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="supportResolvingNamedInstanceDictionaries">Indicates the value which will be used for <see cref="ContainerOptions.SupportResolvingNamedInstanceDictionaries"/>.</param>
         public ContainerBuilder SupportResolvingNamedInstanceDictionaries(bool supportResolvingNamedInstanceDictionaries = true)
         {
-            this.supportResolvingNamedInstanceDictionaries = supportResolvingNamedInstanceDictionaries;
+            AssertNotCreated();
+            options.SupportResolvingNamedInstanceDictionaries = supportResolvingNamedInstanceDictionaries;
             return this;
         }
 
@@ -204,11 +177,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.SupportResolvingLazyInstances"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotSupportResolvingLazyInstances()
-        {
-            supportResolvingLazyInstances = false;
-            return this;
-        }
+        public ContainerBuilder DoNotSupportResolvingLazyInstances() => SupportResolvingLazyInstances(false);
 
         /// <summary>
         /// Indicates that the created container should support the lazy resolution of components.
@@ -218,7 +187,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="supportResolvingLazyInstances">Indicates the value which will be used for <see cref="ContainerOptions.SupportResolvingLazyInstances"/>.</param>
         public ContainerBuilder SupportResolvingLazyInstances(bool supportResolvingLazyInstances = true)
         {
-            this.supportResolvingLazyInstances = supportResolvingLazyInstances;
+            AssertNotCreated();
+            options.SupportResolvingLazyInstances = supportResolvingLazyInstances;
             return this;
         }
 
@@ -227,11 +197,7 @@ namespace CSF.FlexDi.Builders
         /// </summary>
         /// <seealso cref="ContainerOptions.MakeAllResolutionOptional"/>
         /// <returns>The builder instance.</returns>
-        public ContainerBuilder DoNotMakeAllResolutionOptional()
-        {
-            makeAllResolutionOptional = false;
-            return this;
-        }
+        public ContainerBuilder DoNotMakeAllResolutionOptional() => MakeAllResolutionOptional(false);
 
         /// <summary>
         /// Indicates that the created container should make all resolution optional.
@@ -241,7 +207,8 @@ namespace CSF.FlexDi.Builders
         /// <param name="makeAllResolutionOptional">Indicates the value which will be used for <see cref="ContainerOptions.MakeAllResolutionOptional"/>.</param>
         public ContainerBuilder MakeAllResolutionOptional(bool makeAllResolutionOptional = true)
         {
-            this.makeAllResolutionOptional = makeAllResolutionOptional;
+            AssertNotCreated();
+            options.MakeAllResolutionOptional = makeAllResolutionOptional;
             return this;
         }
 
@@ -268,49 +235,117 @@ namespace CSF.FlexDi.Builders
         /// <param name="resolverFactory">A custom resolver factory implementation.</param>
         public ContainerBuilder UseCustomResolverFactory(ICreatesResolvers resolverFactory)
         {
-            if(resolverFactory == null)
-                throw new ArgumentNullException(nameof(resolverFactory));
-      
-            this.resolverFactory = resolverFactory;
+            AssertNotCreated();
+            options.ResolverFactory = resolverFactory;
             return this;
+        }
+
+        /// <summary>
+        /// Indicates that the container should be created using a custom implementation of <see cref="ICreatesRegistry"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The container defaults to an instance of <see cref="Registration.RegistryFactory"/>, but it may be substituted with an
+        /// alternative implementation if desired.
+        /// </para>
+        /// </remarks>
+        public ContainerBuilder UseCustomRegistryFactory(ICreatesRegistry registryFactory)
+        {
+            AssertNotCreated();
+            options.RegistryFactory = registryFactory;
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates that the container should be created using a custom implementation of <see cref="ICreatesInstanceCache"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The container defaults to an instance of <see cref="InstanceCacheFactory"/>, but it may be substituted with an
+        /// alternative implementation if desired.
+        /// </para>
+        /// </remarks>
+        public ContainerBuilder UseCustomCacheFactory(ICreatesInstanceCache cache)
+        {
+            AssertNotCreated();
+            options.CacheFactory = cache;
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates that the container should be created using a custom implementation of <see cref="IFulfilsResolutionRequests"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The container defaults to <see langword="null" />, which indicates that the <see cref="ContainerOptions.ResolverFactory"/>
+        /// will be used to create an instance of a resolver.  If this is set to any non-null value then the
+        /// resolver factory will not be used and this instance will be used instead.
+        /// </para>
+        /// </remarks>
+        public ContainerBuilder UseCustomResolver(IFulfilsResolutionRequests resolver)
+        {
+            AssertNotCreated();
+            options.Resolver = resolver;
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates that the container should be created using a custom implementation of <see cref="IDisposesOfResolvedInstances"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The container defaults to an instance of <see cref="ServiceInstanceDisposer"/>, but it may be substituted with an
+        /// alternative implementation if desired.
+        /// </para>
+        /// </remarks>
+        public ContainerBuilder UseCustomDisposer(IDisposesOfResolvedInstances disposer)
+        {
+            AssertNotCreated();
+            options.Disposer = disposer;
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates that the container should be created using a custom implementation of <see cref="ISelectsConstructor"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The container defaults to <see langword="null" />, which indicates that an instance of <see cref="ConstructorWithMostParametersSelector"/>
+        /// should be used, respecting the option <see cref="ContainerOptions.UseNonPublicConstructors"/>.
+        /// If this is set to any other value, then that implementation will be used, and the <see cref="ContainerOptions.UseNonPublicConstructors"/>
+        /// setting will not be honoured.
+        /// </para>
+        /// </remarks>
+        public ContainerBuilder UseCustomConstructorSelector(ISelectsConstructor constructorSelector)
+        {
+            AssertNotCreated();
+            options.ConstructorSelector = constructorSelector;
+            return this;
+        }
+
+        /// <summary>
+        /// Builds and returns an instance of <see cref="ContainerOptions"/> from the current state of this builder instance.
+        /// </summary>
+        /// <returns>The container options.</returns>
+        public ContainerOptions BuildOptions()
+        {
+            AssertNotCreated();
+            created = true;
+            return options;
         }
 
         /// <summary>
         /// Builds and returns a <see cref="Container"/> instance from the current state of this builder instance.
         /// </summary>
-        public Container Build()
-        {
-            return new Container(options: GetContainerOptions(),
-                           resolverFactory: resolverFactory);
-        }
+        public IContainer Build() => BuildOptions().GetContainer();
 
-        ContainerOptions GetContainerOptions()
+        void AssertNotCreated()
         {
-            return new ContainerOptions(useNonPublicConstructors,
-                                                                    resolveUnregisteredTypes,
-                                                                    useInstanceCache,
-                                                                    throwOnCircularDependencies,
-                                                                    supportResolvingNamedInstanceDictionaries,
-                                                                    selfRegisterAResolver,
-                                                                    selfRegisterTheRegistry,
-                                                                    supportResolvingLazyInstances,
-                                                                    makeAllResolutionOptional);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContainerBuilder"/> class.
-        /// </summary>
-        public ContainerBuilder()
-        {
-            useNonPublicConstructors = ContainerOptions.Default.UseNonPublicConstructors;
-            resolveUnregisteredTypes = ContainerOptions.Default.ResolveUnregisteredTypes;
-            useInstanceCache = ContainerOptions.Default.UseInstanceCache;
-            throwOnCircularDependencies = ContainerOptions.Default.ThrowOnCircularDependencies;
-            supportResolvingNamedInstanceDictionaries = ContainerOptions.Default.SupportResolvingNamedInstanceDictionaries;
-            selfRegisterAResolver = ContainerOptions.Default.SelfRegisterAResolver;
-            selfRegisterTheRegistry = ContainerOptions.Default.SelfRegisterTheRegistry;
-            supportResolvingLazyInstances = ContainerOptions.Default.SupportResolvingLazyInstances;
-            makeAllResolutionOptional = ContainerOptions.Default.MakeAllResolutionOptional;
+            if(created)
+            {
+                var message = String.Format(Resources.ExceptionFormats.ContainerOptionsBuilderCannotBeUsedMoreThanOnce, nameof(ContainerBuilder));
+                throw new InvalidOperationException(message);
+            }
         }
     }
 }

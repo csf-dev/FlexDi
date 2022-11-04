@@ -33,8 +33,9 @@ namespace CSF.FlexDi
     {
         readonly IFulfilsResolutionRequests resolver;
         readonly IServiceRegistrationProvider registryStack;
-        readonly IDisposesOfResolvedInstances disposer;
         readonly IContainer parentContainer;
+
+        bool disposedValue = false;
 
         /// <inheritdoc/>
         public ICachesResolvedServiceInstances Cache { get; }
@@ -117,8 +118,6 @@ namespace CSF.FlexDi
         public bool IsResolvedInstanceCached(Type type, string name = null)
             => Cache.Has(new ServiceRegistrationKey(type, name));
 
-        bool disposedValue;
-
         /// <summary>
         /// Releases all resource used by the <see cref="Container"/> object.
         /// </summary>
@@ -129,7 +128,7 @@ namespace CSF.FlexDi
             {
                 if (disposing)
                 {
-                    disposer.DisposeInstances(Registry, Cache);
+                    Options.Disposer.DisposeInstances(Registry, Cache);
                 }
 
                 disposedValue = true;
@@ -168,34 +167,27 @@ namespace CSF.FlexDi
         /// <paramref name="parentContainer"/>.
         /// </para>
         /// </remarks>
-        /// <param name="registry">An optional service registry instance.</param>
-        /// <param name="cache">An optional service cache instance.</param>
-        /// <param name="resolver">An optional resolver instance.</param>
-        /// <param name="disposer">An optional service disposer instance.</param>
         /// <param name="options">A set of container options.</param>
         /// <param name="parentContainer">An optional parent container - indicating that this container is the child of another.</param>
-        /// <param name="resolverFactory">An optional resolver factory instance.</param>
-        public Container(IRegistersServices registry = null,
-                         ICachesResolvedServiceInstances cache = null,
-                         IFulfilsResolutionRequests resolver = null,
-                         IDisposesOfResolvedInstances disposer = null,
-                         ContainerOptions options = null,
-                         IContainer parentContainer = null,
-                         ICreatesResolvers resolverFactory = null)
+        public Container(ContainerOptions options = null,
+                         IContainer parentContainer = null)
         {
-            disposedValue = false;
-
             this.parentContainer = parentContainer;
-
             Options = options ?? ((parentContainer is IProvidesResolutionInfo resolutionInfoProvider) ? resolutionInfoProvider.Options : ContainerOptions.Default);
-            ConstructorSelector = new ConstructorWithMostParametersSelector(Options.UseNonPublicConstructors);
 
-            Registry = registry ?? new Registry();
-            Cache = cache ?? new ResolvedServiceCache();
-            this.disposer = disposer ?? new ServiceInstanceDisposer();
-            this.registryStack = new RegistryStackFactory().CreateRegistryStack(this);
-            this.resolver = resolver ?? GetResolver(resolverFactory);
-
+            ConstructorSelector = Options.GetConstructorSelector();
+            Cache = Options.CacheFactory.GetCache();
+            Registry = Options.RegistryFactory.GetRegistry();
+            registryStack = new RegistryStackFactory().CreateRegistryStack(this);
+            
+            resolver = Options.Resolver ?? Options.ResolverFactory.CreateResolver(this);
+            if (this.resolver == null)
+            {
+                var message = String.Format(Resources.ExceptionFormats.ResolverFactoryMustNotReturnNull,
+                                            nameof(ICreatesResolvers),
+                                            nameof(IResolver));
+                throw new ArgumentException(message, nameof(options));
+            }
             this.resolver.ServiceResolved += InvokeServiceResolved;
 
             if (Options.SelfRegisterAResolver)
@@ -203,22 +195,6 @@ namespace CSF.FlexDi
 
             if (Options.SelfRegisterTheRegistry)
                 SelfRegisterTheRegistry();
-        }
-
-        IResolver GetResolver(ICreatesResolvers resolverFactory)
-        {
-            var factory = resolverFactory ?? new ResolverFactory();
-            var output = factory.CreateResolver(this);
-
-            if (output == null)
-            {
-                var message = String.Format(Resources.ExceptionFormats.ResolverFactoryMustNotReturnNull,
-                                            nameof(ICreatesResolvers),
-                                            nameof(IResolver));
-                throw new ArgumentException(message, nameof(resolverFactory));
-            }
-
-            return output;
         }
 
         void SelfRegisterAResolver()

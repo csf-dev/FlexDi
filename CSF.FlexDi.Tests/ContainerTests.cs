@@ -25,81 +25,67 @@ using NUnit.Framework;
 
 namespace CSF.FlexDi.Tests
 {
-  [TestFixture,Parallelizable(ParallelScope.All)]
-  public class ContainerTests
-  {
-    [Test,AutoMoqData]
-    public void Constructor_should_self_register_a_resolver_when_options_indicate_to_do_so(IRegistersServices registry)
+    [TestFixture,Parallelizable(ParallelScope.All)]
+    public class ContainerTests
     {
-      // Arrange
-      var options = new ContainerOptions(selfRegisterAResolver: true);
-      IServiceRegistration registration = null;
-      Mock.Get(registry)
-          .Setup(x => x.Add(It.IsAny<IServiceRegistration>()))
-          .Callback((IServiceRegistration reg) => {
-            if(reg.ServiceType == typeof(IResolvesServices))
-              registration = reg;
-          });
+        [Test,AutoMoqData]
+        public void Constructor_should_self_register_a_resolver_when_options_indicate_to_do_so(ICreatesRegistry registryFactory, IRegistersServices registry)
+        {
+            IServiceRegistration registration = null;
+            Mock.Get(registry)
+                    .Setup(x => x.Add(It.IsAny<IServiceRegistration>()))
+                    .Callback((IServiceRegistration reg) => {
+                        if(reg.ServiceType == typeof(IResolvesServices))
+                            registration = reg;
+                    });
+            Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
 
-      // Act
-      var container = new Container(registry, options: options);
+            var container = Container.CreateBuilder().SelfRegisterAResolver().UseCustomRegistryFactory(registryFactory).Build();
 
-      // Assert
-      Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IResolvesServices))), Times.Once);
-      Assert.That(registration, Is.Not.Null, "Registration must not be null");
-      Assert.That(registration, Is.InstanceOf<InstanceRegistration>(), "Registration is an instance registration");
-      var instanceReg = (InstanceRegistration) registration;
-      Assert.That(instanceReg.Implementation, Is.SameAs(container), "The self-registered resolver is the container itself");
+            Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IResolvesServices))), Times.Once);
+            Assert.That(registration, Is.Not.Null, "Registration must not be null");
+            Assert.That(registration, Is.InstanceOf<InstanceRegistration>(), "Registration is an instance registration");
+            var instanceReg = (InstanceRegistration) registration;
+            Assert.That(instanceReg.Implementation, Is.SameAs(container), "The self-registered resolver is the container itself");
+        }
+
+        [Test,AutoMoqData]
+        public void Constructor_should_not_self_register_a_resolver_when_options_indicate_not_to_do_so(ICreatesRegistry registryFactory, IRegistersServices registry)
+        {
+            Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
+            var container = Container.CreateBuilder().DoNotSelfRegisterAResolver().UseCustomRegistryFactory(registryFactory).Build();
+
+            Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IResolvesServices))), Times.Never);
+        }
+
+        [Test,AutoMoqData]
+        public void Constructor_should_self_register_the_registry_when_options_indicate_to_do_so(ICreatesRegistry registryFactory, IRegistersServices registry)
+        {
+            IServiceRegistration registration = null;
+            Mock.Get(registry)
+                    .Setup(x => x.Add(It.IsAny<IServiceRegistration>()))
+                    .Callback((IServiceRegistration reg) => {
+                if(reg.ServiceType == typeof(IReceivesRegistrations))
+                    registration = reg;
+            });
+            Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
+
+            var container = Container.CreateBuilder().SelfRegisterTheRegistry().UseCustomRegistryFactory(registryFactory).Build();
+
+            Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IReceivesRegistrations))), Times.Once);
+            Assert.That(registration, Is.Not.Null, "Registration must not be null");
+            Assert.That(registration, Is.InstanceOf<InstanceRegistration>(), "Registration is an instance registration");
+            var instanceReg = (InstanceRegistration) registration;
+            Assert.That(instanceReg.Implementation, Is.SameAs(container), "The self-registered resolver is the container itself");
+        }
+
+        [Test,AutoMoqData]
+        public void Constructor_should_not_self_register_the_registry_when_options_indicate_not_to_do_so(ICreatesRegistry registryFactory, IRegistersServices registry)
+        {
+            Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
+            var container = Container.CreateBuilder().DoNotSelfRegisterTheRegistry().UseCustomRegistryFactory(registryFactory).Build();
+
+            Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IReceivesRegistrations))), Times.Never);
+        }
     }
-
-    [Test,AutoMoqData]
-    public void Constructor_should_not_self_register_a_resolver_when_options_indicate_not_to_do_so(IRegistersServices registry)
-    {
-      // Arrange
-      var options = new ContainerOptions(selfRegisterAResolver: false);
-
-      // Act
-      var container = new Container(registry, options: options);
-
-      // Assert
-      Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IResolvesServices))), Times.Never);
-    }
-
-    [Test,AutoMoqData]
-    public void Constructor_should_self_register_the_registry_when_options_indicate_to_do_so(IRegistersServices registry)
-    {
-      // Arrange
-      var options = new ContainerOptions(selfRegisterTheRegistry: true);
-      IServiceRegistration registration = null;
-      Mock.Get(registry)
-          .Setup(x => x.Add(It.IsAny<IServiceRegistration>()))
-          .Callback((IServiceRegistration reg) => {
-        if(reg.ServiceType == typeof(IReceivesRegistrations))
-          registration = reg;
-      });
-
-      // Act
-      var container = new Container(registry, options: options);
-
-      // Assert
-      Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IReceivesRegistrations))), Times.Once);
-      Assert.That(registration, Is.Not.Null, "Registration must not be null");
-      Assert.That(registration, Is.InstanceOf<InstanceRegistration>(), "Registration is an instance registration");
-      var instanceReg = (InstanceRegistration) registration;
-      Assert.That(instanceReg.Implementation, Is.SameAs(container), "The self-registered resolver is the container itself");
-    }
-
-    [Test,AutoMoqData]
-    public void Constructor_should_not_self_register_the_registry_when_options_indicate_not_to_do_so(IRegistersServices registry)
-    {
-      // Arrange
-      var options = new ContainerOptions(selfRegisterTheRegistry: false);
-
-      // Act
-      var container = new Container(registry, options: options);
-
-      // Assert
-      Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IReceivesRegistrations))), Times.Never);
-    }
-  }
 }

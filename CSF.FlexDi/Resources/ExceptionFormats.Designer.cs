@@ -196,5 +196,11 @@ namespace CSF.FlexDi.Resources {
                 return ResourceManager.GetString("TypeMustBeOpenGeneric", resourceCulture);
             }
         }
+        
+        internal static string ContainerOptionsBuilderCannotBeUsedMoreThanOnce {
+            get {
+                return ResourceManager.GetString("ContainerOptionsBuilderCannotBeUsedMoreThanOnce", resourceCulture);
+            }
+        }
     }
 }
