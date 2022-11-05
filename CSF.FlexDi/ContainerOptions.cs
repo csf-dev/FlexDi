@@ -357,12 +357,5 @@ namespace CSF.FlexDi
         /// </summary>
         /// <returns>A container.</returns>
         public IContainer GetContainer() => new Container(this);
-
-        /// <summary>
-        /// Gets a special singleton instance which represents the hard-coded default options, used when no options are
-        /// specified.
-        /// </summary>
-        /// <value>The default options.</value>
-        public static ContainerOptions Default { get; } = new ContainerOptions();
     }
 }

@@ -173,7 +173,7 @@ namespace CSF.FlexDi
                          IContainer parentContainer = null)
         {
             this.parentContainer = parentContainer;
-            Options = options ?? ((parentContainer is IProvidesResolutionInfo resolutionInfoProvider) ? resolutionInfoProvider.Options : ContainerOptions.Default);
+            Options = options ?? ((parentContainer is IProvidesResolutionInfo resolutionInfoProvider) ? resolutionInfoProvider.Options : new ContainerOptions());
 
             ConstructorSelector = Options.GetConstructorSelector();
             Cache = Options.CacheFactory.GetCache();

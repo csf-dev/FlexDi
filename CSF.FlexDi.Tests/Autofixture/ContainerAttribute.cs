@@ -26,17 +26,12 @@ namespace CSF.FlexDi.Tests.Autofixture
 {
     public class ContainerAttribute : CustomizeAttribute
     {
-        public bool ResolveUnregisteredTypes { get; set; }
+        public bool ResolveUnregisteredTypes { get; set; } = new ContainerOptions().ResolveUnregisteredTypes;
 
         public override ICustomization GetCustomization(ParameterInfo parameter) => new ContainerCustomization(GetContainer());
 
         IContainer GetContainer()
             => Container.CreateBuilder().ResolveUnregisteredTypes(ResolveUnregisteredTypes).BuildContainer();
-
-        public ContainerAttribute()
-        {
-            ResolveUnregisteredTypes = ContainerOptions.Default.ResolveUnregisteredTypes;
-        }
 
         class ContainerCustomization : ICustomization
         {

@@ -33,6 +33,40 @@ namespace CSF.FlexDi
         }
 
         /// <summary>
+        /// Resolves an instance of the specified type.
+        /// </summary>
+        /// <param name="container">The <see cref="IResolvesServices"/> instance from which to resolve the service.</param>
+        /// <param name="serviceType">The component type to be resolved.</param>
+        public static object Resolve(this IResolvesServices container, Type serviceType) => container.Resolve(serviceType, null);
+
+        /// <summary>
+        /// Resolves an instance of the specified type, using the given named registration.
+        /// </summary>
+        /// <param name="container">The <see cref="IResolvesServices"/> instance from which to resolve the service.</param>
+        /// <param name="serviceType">The component type to be resolved.</param>
+        /// <param name="name">The registration name.</param>
+        public static object Resolve(this IResolvesServices container, Type serviceType, string name)
+        {
+            if (!container.TryResolve(serviceType, name, out var output))
+                ThrowResolutionFailureException(serviceType);
+            return output;
+        }
+
+        /// <summary>
+        /// Resolves a component, as specified by a <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
+        /// </summary>
+        /// <param name="container">The <see cref="IResolvesServices"/> instance from which to resolve the service.</param>
+        /// <param name="request">The resolved component instance.</param>
+        public static object Resolve(this IResolvesServices container, ResolutionRequest request)
+        {
+            var result = container.TryResolve(request);
+            if (!result.IsSuccess)
+                ThrowResolutionFailureException(request.ServiceType);
+
+            return result.ResolvedObject;
+        }
+
+        /// <summary>
         /// Attempts to resolve an instance of the specified type, but does not raise an exception if resolution fails.
         /// </summary>
         /// <returns>
@@ -113,26 +147,6 @@ namespace CSF.FlexDi
         }
 
         /// <summary>
-        /// Resolves an instance of the specified type.
-        /// </summary>
-        /// <param name="container">The <see cref="IResolvesServices"/> instance from which to resolve the service.</param>
-        /// <param name="serviceType">The component type to be resolved.</param>
-        public static object Resolve(this IResolvesServices container, Type serviceType) => container.Resolve(serviceType, null);
-
-        /// <summary>
-        /// Resolves an instance of the specified type, using the given named registration.
-        /// </summary>
-        /// <param name="container">The <see cref="IResolvesServices"/> instance from which to resolve the service.</param>
-        /// <param name="serviceType">The component type to be resolved.</param>
-        /// <param name="name">The registration name.</param>
-        public static object Resolve(this IResolvesServices container, Type serviceType, string name)
-        {
-            if (!container.TryResolve(serviceType, name, out var output))
-                ThrowResolutionFailureException(serviceType);
-            return output;
-        }
-
-        /// <summary>
         /// Attempts to resolve an instance of the specified type, but does not raise an exception if resolution fails.
         /// </summary>
         /// <returns>
@@ -157,20 +171,6 @@ namespace CSF.FlexDi
             var result = container.TryResolve(new ResolutionRequest(serviceType, name));
             output = result.IsSuccess ? result.ResolvedObject : null;
             return result.IsSuccess;
-        }
-
-        /// <summary>
-        /// Resolves a component, as specified by a <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
-        /// </summary>
-        /// <param name="container">The <see cref="IResolvesServices"/> instance from which to resolve the service.</param>
-        /// <param name="request">The resolved component instance.</param>
-        public static object Resolve(this IResolvesServices container, ResolutionRequest request)
-        {
-            var result = container.TryResolve(request);
-            if (!result.IsSuccess)
-                ThrowResolutionFailureException(request.ServiceType);
-
-            return result.ResolvedObject;
         }
 
         /// <summary>
