@@ -31,7 +31,7 @@ namespace CSF.FlexDi.Tests.Integration
     public void Resolving_an_unregistered_interface_throws_resolution_exception_when_optional_resolution_is_off()
     {
       // Arrange
-      var container = Container.CreateBuilder().DoNotMakeAllResolutionOptional().Build();
+      var container = Container.CreateBuilder().DoNotMakeAllResolutionOptional().BuildContainer();
 
       // Act & assert
       Assert.That(() => container.Resolve<ISampleService>(), Throws.InstanceOf<ResolutionException>());
@@ -41,7 +41,7 @@ namespace CSF.FlexDi.Tests.Integration
     public void Resolving_an_unregistered_interface_returns_null_when_optional_resolution_is_on()
     {
       // Arrange
-      var container = Container.CreateBuilder().MakeAllResolutionOptional().Build();
+      var container = Container.CreateBuilder().MakeAllResolutionOptional().BuildContainer();
 
       // Act
       var result = container.Resolve<ISampleService>();
@@ -57,7 +57,7 @@ namespace CSF.FlexDi.Tests.Integration
       var container = Container.CreateBuilder()
                                .DoNotMakeAllResolutionOptional()
                                .DoNotResolveUnregisteredTypes()
-                               .Build();
+                               .BuildContainer();
       container.AddRegistrations(helper => {
         helper.RegisterType<ServiceWithOtherChildDependency>();
       });
@@ -73,7 +73,7 @@ namespace CSF.FlexDi.Tests.Integration
       var container = Container.CreateBuilder()
                                .MakeAllResolutionOptional()
                                .DoNotResolveUnregisteredTypes()
-                               .Build();
+                               .BuildContainer();
       container.AddRegistrations(helper => {
         helper.RegisterType<ServiceWithOtherChildDependency>();
       });

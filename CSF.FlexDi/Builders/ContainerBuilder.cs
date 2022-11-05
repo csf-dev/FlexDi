@@ -30,7 +30,7 @@ namespace CSF.FlexDi.Builders
     public class ContainerBuilder
     {
         bool created;
-        ContainerOptions options = new ContainerOptions();
+        readonly ContainerOptions options = new ContainerOptions();
 
         /// <summary>
         /// Indicates that the created container should not use non-public constructors.
@@ -326,8 +326,15 @@ namespace CSF.FlexDi.Builders
         /// <summary>
         /// Builds and returns an instance of <see cref="ContainerOptions"/> from the current state of this builder instance.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method (or <see cref="BuildContainer"/>) may only be called once per instance of <see cref="ContainerBuilder"/>.
+        /// Once a set of options (or a container) has been created, the container builder must not be used again.  To create
+        /// a new instance of either a container or container options, a new container builder must be used.
+        /// </para>
+        /// </remarks>
         /// <returns>The container options.</returns>
-        public ContainerOptions BuildOptions()
+        public ContainerOptions BuildContainerOptions()
         {
             AssertNotCreated();
             created = true;
@@ -337,7 +344,15 @@ namespace CSF.FlexDi.Builders
         /// <summary>
         /// Builds and returns a <see cref="Container"/> instance from the current state of this builder instance.
         /// </summary>
-        public IContainer Build() => BuildOptions().GetContainer();
+        /// <remarks>
+        /// <para>
+        /// This method (or <see cref="BuildContainerOptions"/>) may only be called once per instance of <see cref="ContainerBuilder"/>.
+        /// Once a container (or a set of options) has been created, the container builder must not be used again.  To create
+        /// a new instance of either a container or container options, a new container builder must be used.
+        /// </para>
+        /// </remarks>
+        /// <returns>A container.</returns>
+        public IContainer BuildContainer() => BuildContainerOptions().GetContainer();
 
         void AssertNotCreated()
         {

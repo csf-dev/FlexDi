@@ -15,7 +15,7 @@ namespace CSF.FlexDi.Tests.Integration
         public void Setup()
         {
             builder = new ContainerBuilder();
-            container = builder.Build();
+            container = builder.BuildContainer();
         }
 
         [Test]

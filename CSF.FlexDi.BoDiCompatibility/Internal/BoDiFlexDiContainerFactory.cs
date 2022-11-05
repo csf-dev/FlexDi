@@ -45,7 +45,7 @@ namespace BoDi.Internal
         .DoNotSelfRegisterAResolver()
         .DoNotSelfRegisterTheRegistry()
         .DoNotSupportResolvingLazyInstances()
-        .Build();
+        .BuildContainer();
     }
   }
 }

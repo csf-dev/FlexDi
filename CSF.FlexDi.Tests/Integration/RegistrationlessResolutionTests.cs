@@ -31,7 +31,7 @@ namespace CSF.FlexDi.Tests.Integration
     public void When_caching_and_registrationless_resolution_are_enabled_resolving_the_same_object_twice_uses_the_cache()
     {
       // Arrange
-      var container = Container.CreateBuilder().UseInstanceCache().ResolveUnregisteredTypes().Build();
+      var container = Container.CreateBuilder().UseInstanceCache().ResolveUnregisteredTypes().BuildContainer();
 
       // Act
       var obj1 = container.Resolve<SampleServiceImplementationOne>();

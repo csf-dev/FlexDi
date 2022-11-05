@@ -40,7 +40,7 @@ namespace CSF.FlexDi.Tests
                     });
             Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
 
-            var container = Container.CreateBuilder().SelfRegisterAResolver().UseCustomRegistryFactory(registryFactory).Build();
+            var container = Container.CreateBuilder().SelfRegisterAResolver().UseCustomRegistryFactory(registryFactory).BuildContainer();
 
             Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IResolvesServices))), Times.Once);
             Assert.That(registration, Is.Not.Null, "Registration must not be null");
@@ -53,7 +53,7 @@ namespace CSF.FlexDi.Tests
         public void Constructor_should_not_self_register_a_resolver_when_options_indicate_not_to_do_so(ICreatesRegistry registryFactory, IRegistersServices registry)
         {
             Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
-            var container = Container.CreateBuilder().DoNotSelfRegisterAResolver().UseCustomRegistryFactory(registryFactory).Build();
+            var container = Container.CreateBuilder().DoNotSelfRegisterAResolver().UseCustomRegistryFactory(registryFactory).BuildContainer();
 
             Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IResolvesServices))), Times.Never);
         }
@@ -70,7 +70,7 @@ namespace CSF.FlexDi.Tests
             });
             Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
 
-            var container = Container.CreateBuilder().SelfRegisterTheRegistry().UseCustomRegistryFactory(registryFactory).Build();
+            var container = Container.CreateBuilder().SelfRegisterTheRegistry().UseCustomRegistryFactory(registryFactory).BuildContainer();
 
             Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IReceivesRegistrations))), Times.Once);
             Assert.That(registration, Is.Not.Null, "Registration must not be null");
@@ -83,7 +83,7 @@ namespace CSF.FlexDi.Tests
         public void Constructor_should_not_self_register_the_registry_when_options_indicate_not_to_do_so(ICreatesRegistry registryFactory, IRegistersServices registry)
         {
             Mock.Get(registryFactory).Setup(x => x.GetRegistry()).Returns(registry);
-            var container = Container.CreateBuilder().DoNotSelfRegisterTheRegistry().UseCustomRegistryFactory(registryFactory).Build();
+            var container = Container.CreateBuilder().DoNotSelfRegisterTheRegistry().UseCustomRegistryFactory(registryFactory).BuildContainer();
 
             Mock.Get(registry).Verify(x => x.Add(It.Is<IServiceRegistration>(r => r.ServiceType == typeof(IReceivesRegistrations))), Times.Never);
         }

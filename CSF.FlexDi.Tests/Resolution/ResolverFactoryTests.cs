@@ -50,7 +50,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                    ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().UseInstanceCache().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().UseInstanceCache().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -65,7 +65,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                                                                                                         ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().DoNotUseInstanceCache().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().DoNotUseInstanceCache().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -104,7 +104,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                    ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().ResolveUnregisteredTypes().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().ResolveUnregisteredTypes().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -119,7 +119,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                                ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().DoNotResolveUnregisteredTypes().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().DoNotResolveUnregisteredTypes().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -135,8 +135,8 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                    ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().ResolveUnregisteredTypes().BuildOptions());
-            SetOptions(parentResInfo, Container.CreateBuilder().ResolveUnregisteredTypes().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().ResolveUnregisteredTypes().BuildContainerOptions());
+            SetOptions(parentResInfo, Container.CreateBuilder().ResolveUnregisteredTypes().BuildContainerOptions());
             Mock.Get(resInfo).SetupGet(x => x.Parent).Returns(parentResInfo);
 
             // Act
@@ -155,7 +155,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                    ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().ThrowOnCircularDependencies().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().ThrowOnCircularDependencies().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -170,7 +170,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                                ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().DoNotThrowOnCircularDependencies().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().DoNotThrowOnCircularDependencies().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -197,7 +197,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                  ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().SupportResolvingNamedInstanceDictionaries().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().SupportResolvingNamedInstanceDictionaries().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -212,7 +212,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                              ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().DoNotSupportResolvingNamedInstanceDictionaries().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().DoNotSupportResolvingNamedInstanceDictionaries().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -227,7 +227,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                                                                                                                     ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().SelfRegisterAResolver().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().SelfRegisterAResolver().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);
@@ -242,7 +242,7 @@ namespace CSF.FlexDi.Tests.Resolution
                                                                                                                                                                                                                             ResolverFactory sut)
         {
             // Arrange
-            SetOptions(resInfo, Container.CreateBuilder().DoNotSelfRegisterAResolver().BuildOptions());
+            SetOptions(resInfo, Container.CreateBuilder().DoNotSelfRegisterAResolver().BuildContainerOptions());
 
             // Act
             var resolver = sut.CreateResolver(resInfo);

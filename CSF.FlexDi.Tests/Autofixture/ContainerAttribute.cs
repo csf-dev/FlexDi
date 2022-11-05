@@ -31,7 +31,7 @@ namespace CSF.FlexDi.Tests.Autofixture
         public override ICustomization GetCustomization(ParameterInfo parameter) => new ContainerCustomization(GetContainer());
 
         IContainer GetContainer()
-            => Container.CreateBuilder().ResolveUnregisteredTypes(ResolveUnregisteredTypes).Build();
+            => Container.CreateBuilder().ResolveUnregisteredTypes(ResolveUnregisteredTypes).BuildContainer();
 
         public ContainerAttribute()
         {
