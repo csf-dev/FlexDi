@@ -57,7 +57,7 @@ namespace CSF.FlexDi.Tests.Autofixture
       IProvidesResolutionInfo CreateResolutionInfo()
       {
         var output = new Mock<IProvidesResolutionInfo> { DefaultValue = DefaultValue.Mock };
-        output.SetupGet(x => x.Options).Returns(ContainerOptions.Default);
+        output.SetupGet(x => x.Options).Returns(new ContainerOptions());
         return output.Object;
       }
 

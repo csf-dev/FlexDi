@@ -32,7 +32,7 @@ namespace CSF.FlexDi.Tests.Integration
       // Arrange
       var hasBeenResolved = false;
 
-      var container = Container.CreateBuilder().SupportResolvingLazyInstances().Build();
+      var container = Container.CreateBuilder().SupportResolvingLazyInstances().BuildContainer();
       container.AddRegistrations(r => {
         r.RegisterFactory(() => {
             var output = new SampleServiceImplementationOne();

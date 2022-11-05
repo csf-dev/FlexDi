@@ -24,33 +24,25 @@ using AutoFixture.NUnit3;
 
 namespace CSF.FlexDi.Tests.Autofixture
 {
-  public class ContainerAttribute : CustomizeAttribute
-  {
-    public bool ResolveUnregisteredTypes { get; set; }
-
-    public override ICustomization GetCustomization(ParameterInfo parameter) => new ContainerCustomization(GetOptions());
-
-    ContainerOptions GetOptions()
+    public class ContainerAttribute : CustomizeAttribute
     {
-      return new ContainerOptions(resolveUnregisteredTypes: ResolveUnregisteredTypes);
+        public bool ResolveUnregisteredTypes { get; set; } = new ContainerOptions().ResolveUnregisteredTypes;
+
+        public override ICustomization GetCustomization(ParameterInfo parameter) => new ContainerCustomization(GetContainer());
+
+        IContainer GetContainer()
+            => Container.CreateBuilder().ResolveUnregisteredTypes(ResolveUnregisteredTypes).BuildContainer();
+
+        class ContainerCustomization : ICustomization
+        {
+            readonly IContainer container;
+
+            public void Customize(IFixture fixture) => fixture.Inject(container);
+
+            public ContainerCustomization(IContainer container)
+            {
+                this.container = container ?? throw new ArgumentNullException(nameof(container));
+            }
+        }
     }
-
-    public ContainerAttribute()
-    {
-      ResolveUnregisteredTypes = ContainerOptions.Default.ResolveUnregisteredTypes;
-    }
-
-    class ContainerCustomization : ICustomization
-    {
-      readonly ContainerOptions options;
-
-      public void Customize(IFixture fixture)
-        => fixture.Customize<IContainer>(c => c.FromFactory(() => new Container(options: options)));
-
-      public ContainerCustomization(ContainerOptions options = null)
-      {
-        this.options = options;
-      }
-    }
-  }
 }

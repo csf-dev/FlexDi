@@ -33,7 +33,6 @@ namespace BoDi.Internal
     {
         readonly ResolutionPath resolutionPath;
         readonly ObjectContainer proxiedContainer;
-        readonly ExceptionTransformer exceptionTransformer;
 
         IContainer IProvidesFlexDiContainer.GetFlexDiContainer() => proxiedContainer.GetFlexDiContainer();
 
@@ -121,7 +120,7 @@ namespace BoDi.Internal
         /// </remarks>
         public T Resolve<T>()
         {
-            return exceptionTransformer.TransformExceptions(() => {
+            return ExceptionTransformer.TransformExceptions(() => {
                 return (T) proxiedContainer
                     .GetFlexDiContainer()
                     .Resolve(new ResolutionRequest(typeof(T), resolutionPath));
@@ -139,7 +138,7 @@ namespace BoDi.Internal
         /// </remarks>
         public T Resolve<T>(string name)
         {
-            return exceptionTransformer.TransformExceptions(() => {
+            return ExceptionTransformer.TransformExceptions(() => {
                 return (T) proxiedContainer
                     .GetFlexDiContainer()
                     .Resolve(new ResolutionRequest(typeof(T), name, resolutionPath));
@@ -157,7 +156,7 @@ namespace BoDi.Internal
         /// </remarks>
         public object Resolve(Type typeToResolve, string name = null)
         {
-            return exceptionTransformer.TransformExceptions(() => {
+            return ExceptionTransformer.TransformExceptions(() => {
                 return proxiedContainer
                     .GetFlexDiContainer()
                     .Resolve(new ResolutionRequest(typeToResolve, name, resolutionPath));
@@ -171,7 +170,7 @@ namespace BoDi.Internal
         /// <returns>An object implementing <typeparamref name="T" />.</returns>
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
-            return exceptionTransformer.TransformExceptions(() => {
+            return ExceptionTransformer.TransformExceptions(() => {
                 return proxiedContainer
                     .GetFlexDiContainer()
                     .GetRegistrations(typeof(T))
@@ -251,7 +250,6 @@ namespace BoDi.Internal
 
             this.proxiedContainer = proxiedContainer;
             this.resolutionPath = resolutionPath ?? new ResolutionPath();
-            exceptionTransformer = new ExceptionTransformer();
 
             proxiedContainer.ObjectCreated += InvokeObjectCreated;
         }

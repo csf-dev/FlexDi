@@ -31,7 +31,7 @@ namespace CSF.FlexDi.Tests.Integration
     public void Resolving_an_unregistered_interface_throws_resolution_exception()
     {
       // Arrange
-      var container = Container.CreateBuilder().SupportResolvingLazyInstances().Build();
+      var container = Container.CreateBuilder().SupportResolvingLazyInstances().BuildContainer();
 
       // Act & assert
       Assert.That(() => container.Resolve<ISampleService>(), Throws.InstanceOf<ResolutionException>());
@@ -41,7 +41,7 @@ namespace CSF.FlexDi.Tests.Integration
     public void Accessing_the_value_from_an_unregistered_lazy_interface_throws_resolution_exception()
     {
       // Arrange
-      var container = Container.CreateBuilder().SupportResolvingLazyInstances().Build();
+      var container = Container.CreateBuilder().SupportResolvingLazyInstances().BuildContainer();
 
       // Act
       var result = container.Resolve<Lazy<ISampleService>>();

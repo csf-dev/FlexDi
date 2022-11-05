@@ -32,9 +32,6 @@ namespace BoDi
     /// </summary>
     public class ObjectContainer : IObjectContainer, IProvidesFlexDiContainer
     {
-        static readonly ExceptionTransformer exceptionTransformer;
-        static readonly BoDiFlexDiContainerFactory containerFactory;
-
         /// <summary>
         /// The wrapped FlexDi container.
         /// </summary>
@@ -96,11 +93,11 @@ namespace BoDi
 
         void RegisterTypeAs(Type implementationType, Type interfaceType, string name)
         {
-            exceptionTransformer.TransformExceptions(() => {
+            ExceptionTransformer.TransformExceptions(() => {
                 container.AddRegistrations(x => {
                     x.RegisterType(implementationType)
-           .As(interfaceType)
-           .WithName(name);
+                     .As(interfaceType)
+                     .WithName(name);
                 });
             });
         }
@@ -120,12 +117,12 @@ namespace BoDi
         /// </remarks>
         public void RegisterInstanceAs(object instance, Type interfaceType, string name = null, bool dispose = false)
         {
-            exceptionTransformer.TransformExceptions(() => {
+            ExceptionTransformer.TransformExceptions(() => {
                 container.AddRegistrations(x => {
                     x.RegisterInstance(instance)
-           .As(interfaceType)
-           .WithName(name)
-           .DisposeWithContainer(dispose);
+                     .As(interfaceType)
+                     .WithName(name)
+                     .DisposeWithContainer(dispose);
                 });
             });
         }
@@ -189,10 +186,10 @@ namespace BoDi
         /// <param name="name">A name to resolve named instance, otherwise null.</param>
         public void RegisterFactoryAs(Delegate factoryDelegate, Type interfaceType, string name = null)
         {
-            exceptionTransformer.TransformExceptions(() => {
+            ExceptionTransformer.TransformExceptions(() => {
                 container.AddRegistrations(x => {
                     x.RegisterFactory(factoryDelegate, interfaceType)
-           .WithName(name);
+                     .WithName(name);
                 });
             });
         }
@@ -217,9 +214,7 @@ namespace BoDi
         /// <c>true</c> if the interface or type is registered; otherwise <c>false</c>.</returns>
         public bool IsRegistered<T>(string name)
         {
-            return exceptionTransformer.TransformExceptions(() => {
-                return container.HasRegistration<T>(name);
-            });
+            return ExceptionTransformer.TransformExceptions(() => container.HasRegistration<T>(name));
         }
 
         #if !BODI_LIMITEDRUNTIME && !BODI_DISABLECONFIGFILESUPPORT
@@ -291,9 +286,7 @@ namespace BoDi
         /// </remarks>
         public T Resolve<T>(string name)
         {
-            return exceptionTransformer.TransformExceptions(() => {
-                return container.Resolve<T>(name);
-            });
+            return ExceptionTransformer.TransformExceptions(() => container.Resolve<T>(name));
         }
 
         /// <summary>
@@ -307,9 +300,7 @@ namespace BoDi
         /// </remarks>
         public object Resolve(Type typeToResolve, string name = null)
         {
-            return exceptionTransformer.TransformExceptions(() => {
-                return container.Resolve(typeToResolve, name);
-            });
+            return ExceptionTransformer.TransformExceptions(() => container.Resolve(typeToResolve, name));
         }
 
         /// <summary>
@@ -319,16 +310,12 @@ namespace BoDi
         /// <typeparam name="T">The type to resolve.</typeparam>
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
-            return exceptionTransformer.TransformExceptions(() => {
-                return container.ResolveAll<T>();
-            });
+            return ExceptionTransformer.TransformExceptions(() => container.ResolveAll<T>());
         }
 
         IEnumerable<T> IObjectContainer.ResolveAll<T>()
         {
-            return exceptionTransformer.TransformExceptions(() => {
-                return ResolveAll<T>();
-            });
+            return ExceptionTransformer.TransformExceptions(() => ResolveAll<T>());
         }
 
         void OnServiceResolved(object sender, ServiceResolutionEventArgs args)
@@ -392,7 +379,7 @@ namespace BoDi
             }
         }
 
-        IProvidesFlexDiContainer GetFlexDiContainerProvider(IObjectContainer baseContainer)
+        static IProvidesFlexDiContainer GetFlexDiContainerProvider(IObjectContainer baseContainer)
         {
             if(baseContainer == null)
                 return null;
@@ -409,12 +396,12 @@ namespace BoDi
             }
         }
 
-        IContainer CreateFlexDiContainer(IProvidesFlexDiContainer flexDiProvider)
+        static IContainer CreateFlexDiContainer(IProvidesFlexDiContainer flexDiProvider)
         {
             if(flexDiProvider != null)
                 return new Container(parentContainer: flexDiProvider.GetFlexDiContainer());
 
-            return containerFactory.GetContainer();
+            return BoDiFlexDiContainerFactory.GetContainer();
         }
 
         IContainer GetFlexDiContainer(IProvidesFlexDiContainer flexDiProvider)
@@ -439,15 +426,6 @@ namespace BoDi
             var flexDiProvider = GetFlexDiContainerProvider(baseContainer);
             container = GetFlexDiContainer(flexDiProvider);
             RegisterInstanceAs<IObjectContainer>(this);
-        }
-
-        /// <summary>
-        /// Initializes the <see cref="T:BoDi.ObjectContainer"/> class.
-        /// </summary>
-        static ObjectContainer()
-        {
-            exceptionTransformer = new ExceptionTransformer();
-            containerFactory = new BoDiFlexDiContainerFactory();
         }
     }
 }

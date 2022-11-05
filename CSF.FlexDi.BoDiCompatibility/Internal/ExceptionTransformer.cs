@@ -29,9 +29,9 @@ namespace BoDi.Internal
     /// This class catches FlexDi exceptions and transforms them to the same exception type that BoDi would have raised
     /// under the same circumstances.
     /// </summary>
-    class ExceptionTransformer
+    static class ExceptionTransformer
     {
-        internal void TransformExceptions(Action action)
+        static internal void TransformExceptions(Action action)
         {
             if(action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -50,7 +50,7 @@ namespace BoDi.Internal
             }
         }
 
-        internal T TransformExceptions<T>(Func<T> action)
+        static internal T TransformExceptions<T>(Func<T> action)
         {
             if(action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -69,7 +69,7 @@ namespace BoDi.Internal
             }
         }
 
-        Type[] GetResolutionPath(ContainerException ex)
+        static Type[] GetResolutionPath(ContainerException ex)
         {
             if(ex.ResolutionPath != null)
                 return ex.ResolutionPath.GetRegistrations().Select(x => x.ServiceType).ToArray();
