@@ -26,7 +26,7 @@ namespace CSF.FlexDi.Registration
     /// <summary>
     /// A factory service which creates instances of <see cref="StackOfRegistriesRegistrationProvider"/>.
     /// </summary>
-    public class RegistryStackFactory
+    public static class RegistryStackFactory
     {
         /// <summary>
         /// Creates a registration provider for a given set of resolution information.
