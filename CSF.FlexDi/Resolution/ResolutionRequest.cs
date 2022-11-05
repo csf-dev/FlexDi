@@ -54,9 +54,9 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest"/>.
+    /// Returns a <see cref="System.String"/> that represents the current <see cref="CSF.FlexDi.Resolution.ResolutionRequest"/>.
     /// </summary>
-    /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest"/>.</returns>
+    /// <returns>A <see cref="System.String"/> that represents the current <see cref="CSF.FlexDi.Resolution.ResolutionRequest"/>.</returns>
     public override string ToString()
     {
       var namePart = (Name != null)? $"('{Name}')" : string.Empty;
@@ -64,7 +64,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.ResolutionRequest"/> class.
     /// </summary>
     /// <param name="serviceType">Service type.</param>
     /// <param name="resolutionPath">Resolution path.</param>
@@ -72,7 +72,7 @@ namespace CSF.FlexDi.Resolution
       : this(serviceType, null, resolutionPath) {}
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.ResolutionRequest"/> class.
     /// </summary>
     /// <param name="serviceType">Service type.</param>
     /// <param name="name">Name.</param>

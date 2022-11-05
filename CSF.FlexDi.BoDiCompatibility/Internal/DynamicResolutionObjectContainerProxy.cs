@@ -54,7 +54,7 @@ namespace BoDi.Internal
         /// <typeparam name="TType">Implementation type</typeparam>
         /// <typeparam name="TInterface">Interface will be resolved</typeparam>
         /// <param name="name">A name to register named instance, otherwise null.</param>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the <typeparamref name="TInterface" />.</para>
         /// </remarks>
@@ -70,8 +70,8 @@ namespace BoDi.Internal
         /// <param name="instance">The instance implements the interface.</param>
         /// <param name="name">A name to register named instance, otherwise null.</param>
         /// <param name="dispose">Whether the instance should be disposed on container dispose, otherwise <c>false</c>.</param>
-        /// <exception cref="T:System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
+        /// <exception cref="System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the <typeparamref name="TInterface" />.</para>
         /// <para>The instance will be registered in the object pool, so if a <see cref="M:BoDi.IObjectContainer.Resolve``1" /> (for another interface) would require an instance of the dynamic type of the <paramref name="instance" />, the <paramref name="instance" /> will be returned.</para>
@@ -88,8 +88,8 @@ namespace BoDi.Internal
         /// <param name="interfaceType">Interface will be resolved</param>
         /// <param name="name">A name to register named instance, otherwise null.</param>
         /// <param name="dispose">Whether the instance should be disposed on container dispose, otherwise <c>false</c>.</param>
-        /// <exception cref="T:System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the <paramref name="interfaceType" />.</exception>
+        /// <exception cref="System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the <paramref name="interfaceType" />.</exception>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the <paramref name="interfaceType" />.</para>
         /// <para>The instance will be registered in the object pool, so if a <see cref="M:BoDi.IObjectContainer.Resolve``1" /> (for another interface) would require an instance of the dynamic type of the <paramref name="instance" />, the <paramref name="instance" /> will be returned.</para>
@@ -204,14 +204,14 @@ namespace BoDi.Internal
         }
 
         /// <summary>
-        /// Releases all resource used by the <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> object.
+        /// Releases all resource used by the <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> object.
         /// </summary>
         /// <remarks>Call <see cref="Dispose()"/> when you are finished using the
-        /// <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/>. The <see cref="Dispose()"/> method leaves the
-        /// <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> in an unusable state. After calling
+        /// <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/>. The <see cref="Dispose()"/> method leaves the
+        /// <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> in an unusable state. After calling
         /// <see cref="Dispose()"/>, you must release all references to the
-        /// <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> so the garbage collector can reclaim the
-        /// memory that the <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> was occupying.</remarks>
+        /// <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> so the garbage collector can reclaim the
+        /// memory that the <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> was occupying.</remarks>
         public void Dispose()
         {
             Dispose(true);
@@ -219,14 +219,14 @@ namespace BoDi.Internal
         }
 
         /// <summary>
-        /// Releases all resource used by the <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> object.
+        /// Releases all resource used by the <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> object.
         /// </summary>
         /// <remarks>Call <see cref="Dispose(bool)"/> when you are finished using the
-        /// <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/>. The <see cref="Dispose(bool)"/> method leaves the
-        /// <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> in an unusable state. After calling
+        /// <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/>. The <see cref="Dispose(bool)"/> method leaves the
+        /// <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> in an unusable state. After calling
         /// <see cref="Dispose(bool)"/>, you must release all references to the
-        /// <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> so the garbage collector can reclaim the
-        /// memory that the <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> was occupying.</remarks>
+        /// <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> so the garbage collector can reclaim the
+        /// memory that the <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> was occupying.</remarks>
         /// <param name="disposing">Indicates whether or not explicit disposal is occurring.</param>
         protected virtual void Dispose(bool disposing)
         {
@@ -239,7 +239,7 @@ namespace BoDi.Internal
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BoDi.Internal.DynamicResolutionObjectContainerProxy"/> class.
+        /// Initializes a new instance of the <see cref="BoDi.Internal.DynamicResolutionObjectContainerProxy"/> class.
         /// </summary>
         /// <param name="proxiedContainer">The proxied container.</param>
         /// <param name="resolutionPath">The resolution path up to the point at which this instance was resolved.</param>

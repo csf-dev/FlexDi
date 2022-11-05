@@ -25,87 +25,84 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution
 {
-  /// <summary>
-  /// Implementation of <see cref="ICreatesObjectInstances"/> which creates service/component instances.
-  /// </summary>
-  public class InstanceCreator : ICreatesObjectInstances
-  {
-    readonly IFulfilsResolutionRequests resolver;
-
     /// <summary>
-    /// Creates a service/component instance from a factory adapter, resolution path and registration.s
+    /// Implementation of <see cref="ICreatesObjectInstances"/> which creates service/component instances.
     /// </summary>
-    /// <returns>The created component instance.</returns>
-    /// <param name="factory">The factory adapter from which to create the instance.</param>
-    /// <param name="path">The current resolution path.</param>
-    /// <param name="registration">The registration for the component to be created.</param>
-    public virtual object CreateFromFactory(IFactoryAdapter factory,
-                                            ResolutionPath path,
-                                            IServiceRegistration registration)
+    public class InstanceCreator : ICreatesObjectInstances
     {
-      if(factory == null)
-        throw new ArgumentNullException(nameof(factory));
-      
-      if(!factory.RequiresParameterResolution)
-        return factory.Execute(Enumerable.Empty<object>().ToArray());
+        readonly IFulfilsResolutionRequests resolver;
 
-      var parameters = factory.GetParameters();
+        /// <summary>
+        /// Creates a service/component instance from a factory adapter, resolution path and registration.s
+        /// </summary>
+        /// <returns>The created component instance.</returns>
+        /// <param name="factory">The factory adapter from which to create the instance.</param>
+        /// <param name="path">The current resolution path.</param>
+        /// <param name="registration">The registration for the component to be created.</param>
+        public virtual object CreateFromFactory(IFactoryAdapter factory,
+                                                ResolutionPath path,
+                                                IServiceRegistration registration)
+        {
+            if(factory == null)
+                throw new ArgumentNullException(nameof(factory));
+            
+            if(!factory.RequiresParameterResolution)
+                return factory.Execute(Enumerable.Empty<object>().ToArray());
 
-      var resolvedParameters = parameters
-        .Select(param => ResolveParameter(param, path, registration))
-        .ToArray();
+            var parameters = factory.GetParameters();
 
-      return factory.Execute(resolvedParameters);
+            var resolvedParameters = parameters
+                .Select(param => ResolveParameter(param, path, registration))
+                .ToArray();
+
+            return factory.Execute(resolvedParameters);
+        }
+
+        /// <summary>
+        /// Resolves a parameter for a <see cref="IFactoryAdapter"/>.
+        /// </summary>
+        /// <returns>The resolved parameter value.</returns>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="path">The resolution path.</param>
+        /// <param name="registration">The registration for the service currently being resolved.</param>
+        protected virtual object ResolveParameter(ParameterInfo parameter,
+                                                  ResolutionPath path,
+                                                  IServiceRegistration registration)
+        {
+            var request = ConvertToResolutionRequest(parameter, path, registration);
+            var result = resolver.Resolve(request);
+
+            if(!result.IsSuccess)
+            {
+                var message = String.Format(Resources.ExceptionFormats.FailedToResolveParameter,
+                                                                        parameter.ParameterType.FullName,
+                                                                        parameter.Name);
+                throw new CannotResolveParameterException(message) {
+                    ResolutionPath = path,
+                };
+            }
+
+            return result.ResolvedObject;
+        }
+
+        static ResolutionRequest ConvertToResolutionRequest(ParameterInfo parameter,
+                                                            ResolutionPath path,
+                                                            IServiceRegistration registration)
+        {
+            if(parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+
+            var childPath = path.CreateChild(registration);
+            return new ResolutionRequest(parameter.ParameterType, parameter.Name, childPath);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.InstanceCreator"/> class.
+        /// </summary>
+        /// <param name="resolver">A service which fulfils resolution requests.</param>
+        public InstanceCreator(IFulfilsResolutionRequests resolver)
+        {
+            this.resolver = resolver ?? throw new ArgumentNullException(nameof(resolver));
+        }
     }
-
-    /// <summary>
-    /// Resolves a parameter for a <see cref="IFactoryAdapter"/>.
-    /// </summary>
-    /// <returns>The resolved parameter value.</returns>
-    /// <param name="parameter">The parameter.</param>
-    /// <param name="path">The resolution path.</param>
-    /// <param name="registration">The registration for the service currently being resolved.</param>
-    protected virtual object ResolveParameter(ParameterInfo parameter,
-                                              ResolutionPath path,
-                                              IServiceRegistration registration)
-    {
-      var request = ConvertToResolutionRequest(parameter, path, registration);
-      var result = resolver.Resolve(request);
-
-      if(!result.IsSuccess)
-      {
-        var message = String.Format(Resources.ExceptionFormats.FailedToResolveParameter,
-                                    parameter.ParameterType.FullName,
-                                    parameter.Name);
-        throw new CannotResolveParameterException(message) {
-          ResolutionPath = path,
-        };
-      }
-
-      return result.ResolvedObject;
-    }
-
-    ResolutionRequest ConvertToResolutionRequest(ParameterInfo parameter,
-                                                 ResolutionPath path,
-                                                 IServiceRegistration registration)
-    {
-      if(parameter == null)
-        throw new ArgumentNullException(nameof(parameter));
-
-      var childPath = path.CreateChild(registration);
-      return new ResolutionRequest(parameter.ParameterType, parameter.Name, childPath);
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.InstanceCreator"/> class.
-    /// </summary>
-    /// <param name="resolver">A service which fulfils resolution requests.</param>
-    public InstanceCreator(IFulfilsResolutionRequests resolver)
-    {
-      if(resolver == null)
-        throw new ArgumentNullException(nameof(resolver));
-
-      this.resolver = resolver;
-    }
-  }
 }

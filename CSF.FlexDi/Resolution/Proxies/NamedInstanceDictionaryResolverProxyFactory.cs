@@ -38,7 +38,7 @@ namespace CSF.FlexDi.Resolution.Proxies
       if(!resolutionInfo.Options.SupportResolvingNamedInstanceDictionaries)
         return null;
 
-      var registryStack = new RegistryStackFactory().CreateRegistryStack(resolutionInfo);
+      var registryStack = RegistryStackFactory.CreateRegistryStack(resolutionInfo);
       return new NamedInstanceDictionaryResolverProxy(resolverToProxy, registryStack, new GenericDictionaryFactory());
     }
   }

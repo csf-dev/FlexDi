@@ -25,110 +25,105 @@ using CSF.FlexDi.Registration;
 
 namespace CSF.FlexDi.Resolution.Proxies
 {
-  /// <summary>
-  /// A proxying resolver which can create named instance dictionaries.
-  /// </summary>
-  /// <seealso cref="ContainerOptions.SupportResolvingNamedInstanceDictionaries"/>
-  public class NamedInstanceDictionaryResolverProxy : ProxyingResolver
-  {
-    readonly IServiceRegistrationProvider registrationAccessor;
-    readonly IDictionaryFactory dictionaryFactory;
-
     /// <summary>
-    /// Resolves the given resolution request and returns the result.
+    /// A proxying resolver which can create named instance dictionaries.
     /// </summary>
-    /// <param name="request">Request.</param>
-    public override ResolutionResult Resolve(ResolutionRequest request)
+    /// <seealso cref="ContainerOptions.SupportResolvingNamedInstanceDictionaries"/>
+    public class NamedInstanceDictionaryResolverProxy : ProxyingResolver
     {
-      if(request == null)
-        throw new ArgumentNullException(nameof(request));
+        readonly IServiceRegistrationProvider registrationAccessor;
+        readonly IDictionaryFactory dictionaryFactory;
 
-      if(!IsRequestForNamedInstanceDictionary(request))
-        return ProxiedResolver.Resolve(request);
-      
-      return ResolveNamedInstanceDictionary(request);
-    }
-
-    bool IsRequestForNamedInstanceDictionary(ResolutionRequest request)
-    {
-      if(!dictionaryFactory.IsGenericDictionaryType(request.ServiceType))
-        return false;
-
-      var keyType = dictionaryFactory.GetKeyType(request.ServiceType);
-      return (keyType == typeof(string) || keyType.GetTypeInfo().IsEnum);
-    }
-
-    ResolutionResult ResolveNamedInstanceDictionary(ResolutionRequest request)
-    {
-      var keyType = dictionaryFactory.GetKeyType(request.ServiceType);
-      var valueType = dictionaryFactory.GetValueType(request.ServiceType);
-      var dictionary = dictionaryFactory.Create(keyType, valueType);
-
-      var allServiceTypeRegistrations = registrationAccessor.GetAll(valueType);
-
-      foreach(var registration in allServiceTypeRegistrations)
-      {
-        var serviceResult = ResolveSingleInstance(registration, request);
-        if(!serviceResult.IsSuccess)
+        /// <summary>
+        /// Resolves the given resolution request and returns the result.
+        /// </summary>
+        /// <param name="request">Request.</param>
+        public override ResolutionResult Resolve(ResolutionRequest request)
         {
-          // TODO: Throw an exception? Return a failed resolution result? Currently I'm silently skipping the registration.
-          continue;
+            if(request == null)
+                throw new ArgumentNullException(nameof(request));
+
+            if(!IsRequestForNamedInstanceDictionary(request))
+                return ProxiedResolver.Resolve(request);
+            
+            return ResolveNamedInstanceDictionary(request);
         }
 
-        var dictionaryKey = ConvertToNameType(registration.Name, keyType);
-        dictionary.Add(dictionaryKey, serviceResult.ResolvedObject);
-      }
+        bool IsRequestForNamedInstanceDictionary(ResolutionRequest request)
+        {
+            if(!dictionaryFactory.IsGenericDictionaryType(request.ServiceType))
+                return false;
 
-      var dictionaryRegistration = CreateNamedInstanceDictionaryRegistration(request.ServiceType, dictionary);
-      var resolutionPath = request.ResolutionPath.CreateChild(dictionaryRegistration);
-      return ResolutionResult.Success(resolutionPath, dictionary);
+            var keyType = dictionaryFactory.GetKeyType(request.ServiceType);
+            return (keyType == typeof(string) || keyType.GetTypeInfo().IsEnum);
+        }
+
+        ResolutionResult ResolveNamedInstanceDictionary(ResolutionRequest request)
+        {
+            var keyType = dictionaryFactory.GetKeyType(request.ServiceType);
+            var valueType = dictionaryFactory.GetValueType(request.ServiceType);
+            var dictionary = dictionaryFactory.Create(keyType, valueType);
+
+            var allServiceTypeRegistrations = registrationAccessor.GetAll(valueType);
+
+            foreach(var registration in allServiceTypeRegistrations)
+            {
+                var serviceResult = ResolveSingleInstance(registration, request);
+                if(!serviceResult.IsSuccess)
+                {
+                    // TODO: Throw an exception? Return a failed resolution result? Currently I'm silently skipping the registration.
+                    continue;
+                }
+
+                var dictionaryKey = ConvertToNameType(registration.Name, keyType);
+                dictionary.Add(dictionaryKey, serviceResult.ResolvedObject);
+            }
+
+            var dictionaryRegistration = CreateNamedInstanceDictionaryRegistration(request.ServiceType, dictionary);
+            var resolutionPath = request.ResolutionPath.CreateChild(dictionaryRegistration);
+            return ResolutionResult.Success(resolutionPath, dictionary);
+        }
+
+        ResolutionResult ResolveSingleInstance(IServiceRegistration registration, ResolutionRequest request)
+        {
+            var subRequest = new ResolutionRequest(registration.ServiceType, registration.Name, request.ResolutionPath);
+            return ProxiedResolver.Resolve(subRequest);
+        }
+
+        static object ConvertToNameType(string registeredName, Type nameType)
+        {
+            if(nameType == typeof(string))
+                return registeredName;
+
+            try
+            {
+                return Enum.Parse(nameType, registeredName, true);
+            }
+            catch(ArgumentException ex)
+            {
+                var message = String.Format(Resources.ExceptionFormats.MissingEnumerationContant,
+                                                                        nameType.FullName,
+                                                                        registeredName);
+                throw new NoMatchingEnumerationConstantException(message, ex);
+            }
+        }
+
+        static IServiceRegistration CreateNamedInstanceDictionaryRegistration(Type serviceType, IDictionary dictionary)
+            => new InstanceRegistration(dictionary) { ServiceType = serviceType };
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="CSF.FlexDi.Resolution.Proxies.NamedInstanceDictionaryResolverProxy"/> class.
+        /// </summary>
+        /// <param name="proxiedResolver">Proxied resolver.</param>
+        /// <param name="registrationAccessor">Registration accessor.</param>
+        /// <param name="dictionaryFactory">Dictionary factory.</param>
+        public NamedInstanceDictionaryResolverProxy(IResolver proxiedResolver,
+                                                    IServiceRegistrationProvider registrationAccessor,
+                                                    IDictionaryFactory dictionaryFactory) : base(proxiedResolver)
+        {
+            this.registrationAccessor = registrationAccessor ?? throw new ArgumentNullException(nameof(registrationAccessor));
+            this.dictionaryFactory = dictionaryFactory ?? throw new ArgumentNullException(nameof(dictionaryFactory));
+        }
     }
-
-    ResolutionResult ResolveSingleInstance(IServiceRegistration registration, ResolutionRequest request)
-    {
-      var subRequest = new ResolutionRequest(registration.ServiceType, registration.Name, request.ResolutionPath);
-      return ProxiedResolver.Resolve(subRequest);
-    }
-
-    object ConvertToNameType(string registeredName, Type nameType)
-    {
-      if(nameType == typeof(string))
-        return registeredName;
-
-      try
-      {
-        return Enum.Parse(nameType, registeredName, true);
-      }
-      catch(ArgumentException ex)
-      {
-        var message = String.Format(Resources.ExceptionFormats.MissingEnumerationContant,
-                                    nameType.FullName,
-                                    registeredName);
-        throw new NoMatchingEnumerationConstantException(message, ex);
-      }
-    }
-
-    IServiceRegistration CreateNamedInstanceDictionaryRegistration(Type serviceType, IDictionary dictionary)
-      => new InstanceRegistration(dictionary) { ServiceType = serviceType };
-
-    /// <summary>
-    /// Initializes a new instance of the
-    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.NamedInstanceDictionaryResolverProxy"/> class.
-    /// </summary>
-    /// <param name="proxiedResolver">Proxied resolver.</param>
-    /// <param name="registrationAccessor">Registration accessor.</param>
-    /// <param name="dictionaryFactory">Dictionary factory.</param>
-    public NamedInstanceDictionaryResolverProxy(IResolver proxiedResolver,
-                                                IServiceRegistrationProvider registrationAccessor,
-                                                IDictionaryFactory dictionaryFactory) : base(proxiedResolver)
-    {
-      if(dictionaryFactory == null)
-        throw new ArgumentNullException(nameof(dictionaryFactory));
-      if(registrationAccessor == null)
-        throw new ArgumentNullException(nameof(registrationAccessor));
-
-      this.registrationAccessor = registrationAccessor;
-      this.dictionaryFactory = dictionaryFactory;
-    }
-  }
 }

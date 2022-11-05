@@ -34,7 +34,7 @@ namespace BoDi
     #region constructors
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:BoDi.ObjectContainerException"/> class.
+    /// Initializes a new instance of the <see cref="BoDi.ObjectContainerException"/> class.
     /// </summary>
     /// <param name="message">Message.</param>
     /// <param name="resolutionPath">Resolution path.</param>
@@ -42,7 +42,7 @@ namespace BoDi
       : base(GetMessage(message, resolutionPath)) {}
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:BoDi.ObjectContainerException"/> class.
+    /// Initializes a new instance of the <see cref="BoDi.ObjectContainerException"/> class.
     /// </summary>
     /// <param name="message">Message.</param>
     /// <param name="resolutionPath">Resolution path.</param>
@@ -51,7 +51,7 @@ namespace BoDi
       : base(GetMessage(message, resolutionPath), inner) {}
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:BoDi.ObjectContainerException"/> class.
+    /// Initializes a new instance of the <see cref="BoDi.ObjectContainerException"/> class.
     /// </summary>
     /// <param name="info">Info.</param>
     /// <param name="context">Context.</param>

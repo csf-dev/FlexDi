@@ -52,7 +52,7 @@ namespace BoDi
         /// </summary>
         /// <param name="implementationType">Implementation type.</param>
         /// <param name="name">A name to register named instance, otherwise null.</param>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
         /// <typeparam name="TInterface">Interface will be resolved.</typeparam>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the <typeparamref name="TInterface" />.</para>
@@ -68,7 +68,7 @@ namespace BoDi
         /// <typeparam name="TType">Implementation type</typeparam>
         /// <typeparam name="TInterface">Interface will be resolved</typeparam>
         /// <param name="name">A name to register named instance, otherwise null.</param>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the <typeparamref name="TInterface" />.</para>
         /// </remarks>
@@ -82,7 +82,7 @@ namespace BoDi
         /// </summary>
         /// <param name="implementationType">Implementation type.</param>
         /// <param name="interfaceType">Interface will be resolved.</param>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the interface type.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the interface type.</exception>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the interface type.</para>
         /// </remarks>
@@ -109,8 +109,8 @@ namespace BoDi
         /// <param name="interfaceType">Interface will be resolved</param>
         /// <param name="name">A name to register named instance, otherwise null.</param>
         /// <param name="dispose">Whether the instance should be disposed on container dispose, otherwise <c>false</c>.</param>
-        /// <exception cref="T:System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the <paramref name="interfaceType" />.</exception>
+        /// <exception cref="System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the <paramref name="interfaceType" />.</exception>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the <paramref name="interfaceType" />.</para>
         /// <para>The instance will be registered in the object pool, so if a <see cref="M:BoDi.IObjectContainer.Resolve``1" /> (for another interface) would require an instance of the dynamic type of the <paramref name="instance" />, the <paramref name="instance" /> will be returned.</para>
@@ -134,8 +134,8 @@ namespace BoDi
         /// <param name="instance">The instance implements the interface.</param>
         /// <param name="name">A name to register named instance, otherwise null.</param>
         /// <param name="dispose">Whether the instance should be disposed on container dispose, otherwise <c>false</c>.</param>
-        /// <exception cref="T:System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
-        /// <exception cref="T:BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
+        /// <exception cref="System.ArgumentNullException">If <paramref name="instance" /> is null.</exception>
+        /// <exception cref="BoDi.ObjectContainerException">If there was already a resolve for the <typeparamref name="TInterface" />.</exception>
         /// <remarks>
         /// <para>Previous registrations can be overridden before the first resolution for the <typeparamref name="TInterface" />.</para>
         /// <para>The instance will be registered in the object pool, so if a <see cref="M:BoDi.IObjectContainer.Resolve``1" /> (for another interface) would require an instance of the dynamic type of the <paramref name="instance" />, the <paramref name="instance" /> will be returned.</para>
@@ -339,21 +339,21 @@ namespace BoDi
         }
 
         /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:BoDi.ObjectContainer"/>.
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="BoDi.ObjectContainer"/>.
         /// </summary>
-        /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:BoDi.ObjectContainer"/>.</returns>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="BoDi.ObjectContainer"/>.</returns>
         public override string ToString()
         {
             return string.Join(Environment.NewLine, RegistrationFormatter.Format(container.GetRegistrations()));
         }
 
         /// <summary>
-        /// Releases all resource used by the <see cref="T:BoDi.ObjectContainer"/> object.
+        /// Releases all resource used by the <see cref="BoDi.ObjectContainer"/> object.
         /// </summary>
-        /// <remarks>Call <see cref="Dispose()"/> when you are finished using the <see cref="T:BoDi.ObjectContainer"/>. The
-        /// <see cref="Dispose()"/> method leaves the <see cref="T:BoDi.ObjectContainer"/> in an unusable state. After calling
-        /// <see cref="Dispose()"/>, you must release all references to the <see cref="T:BoDi.ObjectContainer"/> so the
-        /// garbage collector can reclaim the memory that the <see cref="T:BoDi.ObjectContainer"/> was occupying.</remarks>
+        /// <remarks>Call <see cref="Dispose()"/> when you are finished using the <see cref="BoDi.ObjectContainer"/>. The
+        /// <see cref="Dispose()"/> method leaves the <see cref="BoDi.ObjectContainer"/> in an unusable state. After calling
+        /// <see cref="Dispose()"/>, you must release all references to the <see cref="BoDi.ObjectContainer"/> so the
+        /// garbage collector can reclaim the memory that the <see cref="BoDi.ObjectContainer"/> was occupying.</remarks>
         public void Dispose()
         {
             Dispose(true);
@@ -361,12 +361,12 @@ namespace BoDi
         }
 
         /// <summary>
-        /// Releases all resource used by the <see cref="T:BoDi.ObjectContainer"/> object.
+        /// Releases all resource used by the <see cref="BoDi.ObjectContainer"/> object.
         /// </summary>
-        /// <remarks>Call <see cref="Dispose(bool)"/> when you are finished using the <see cref="T:BoDi.ObjectContainer"/>. The
-        /// <see cref="Dispose(bool)"/> method leaves the <see cref="T:BoDi.ObjectContainer"/> in an unusable state. After calling
-        /// <see cref="Dispose(bool)"/>, you must release all references to the <see cref="T:BoDi.ObjectContainer"/> so the
-        /// garbage collector can reclaim the memory that the <see cref="T:BoDi.ObjectContainer"/> was occupying.</remarks>
+        /// <remarks>Call <see cref="Dispose(bool)"/> when you are finished using the <see cref="BoDi.ObjectContainer"/>. The
+        /// <see cref="Dispose(bool)"/> method leaves the <see cref="BoDi.ObjectContainer"/> in an unusable state. After calling
+        /// <see cref="Dispose(bool)"/>, you must release all references to the <see cref="BoDi.ObjectContainer"/> so the
+        /// garbage collector can reclaim the memory that the <see cref="BoDi.ObjectContainer"/> was occupying.</remarks>
         /// <param name="disposing">Indicates whether or not explicit disposal is occurring.</param>
         protected virtual void Dispose(bool disposing)
         {
@@ -412,7 +412,7 @@ namespace BoDi
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BoDi.ObjectContainer"/> class.
+        /// Initializes a new instance of the <see cref="BoDi.ObjectContainer"/> class.
         /// </summary>
         /// <remarks>
         /// <para>

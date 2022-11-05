@@ -42,7 +42,7 @@ namespace CSF.FlexDi.Resolution.Proxies
     public IContainer ProxiedResolver => proxiedResolver;
 
     /// <summary>
-    /// Resolves a component, as specified by a <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
+    /// Resolves a component, as specified by a <see cref="CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
     /// </summary>
     /// <param name="request">The resolved component instance.</param>
     public object Resolve(ResolutionRequest request)
@@ -114,7 +114,7 @@ namespace CSF.FlexDi.Resolution.Proxies
     }
 
     /// <summary>
-    /// Attempts to resolve a component, as specified by a <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
+    /// Attempts to resolve a component, as specified by a <see cref="CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
     /// The result indicates whether resolution was successful or not, and if it is, contains a reference to the resolved
     /// component.
     /// </summary>
@@ -247,7 +247,7 @@ namespace CSF.FlexDi.Resolution.Proxies
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.ServiceResolvingContainerProxy"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.Proxies.ServiceResolvingContainerProxy"/> class.
     /// </summary>
     /// <param name="proxiedResolver">Proxied resolver.</param>
     /// <param name="resolutionPath">Resolution path.</param>

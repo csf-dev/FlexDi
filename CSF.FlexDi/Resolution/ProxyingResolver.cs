@@ -51,7 +51,7 @@ namespace CSF.FlexDi.Resolution
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ProxyingResolver"/> class.
+        /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.ProxyingResolver"/> class.
         /// </summary>
         /// <param name="proxiedResolver">Proxied resolver.</param>
         protected ProxyingResolver(IResolver proxiedResolver)

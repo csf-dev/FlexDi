@@ -30,7 +30,7 @@ namespace CSF.FlexDi.Resolution
   public class ResolverFactory : ResolverFactoryBase
   {
     /// <summary>
-    /// Configures a collection of <see cref="T:CSF.FlexDi.Resolution.Proxies.ICreatesProxyingResolver" />.  This method should add any number of
+    /// Configures a collection of <see cref="CSF.FlexDi.Resolution.Proxies.ICreatesProxyingResolver" />.  This method should add any number of
     /// such factories to the <paramref name="factories" /> collection.  These will be added, in order, to the 'stack'
     /// of proxies in which to wrap created resolvers.
     /// </summary>

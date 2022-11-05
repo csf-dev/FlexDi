@@ -52,9 +52,9 @@ namespace CSF.FlexDi.Registration
             => new ConstructorFactory(ConstructorSelector.SelectConstructor(type));
 
         /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="TypeRegistration"/>.
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="TypeRegistration"/>.
         /// </summary>
-        /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="TypeRegistration"/>.</returns>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="TypeRegistration"/>.</returns>
         public override string ToString()
         {
             return $"[{nameof(TypeRegistration)} for `{ServiceType.FullName}', using  `{ImplementationType.FullName}']";

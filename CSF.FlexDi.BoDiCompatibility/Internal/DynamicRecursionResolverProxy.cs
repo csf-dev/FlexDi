@@ -70,7 +70,7 @@ namespace BoDi.Internal
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BoDi.Internal.DynamicRecursionResolverProxy"/> class.
+        /// Initializes a new instance of the <see cref="BoDi.Internal.DynamicRecursionResolverProxy"/> class.
         /// </summary>
         /// <param name="proxiedResolver">Proxied resolver.</param>
         public DynamicRecursionResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}

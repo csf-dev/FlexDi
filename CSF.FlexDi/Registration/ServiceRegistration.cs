@@ -29,7 +29,7 @@ namespace CSF.FlexDi.Registration
     public abstract class ServiceRegistration : IServiceRegistration
     {
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:CSF.FlexDi.Registration.IServiceRegistration" /> is cacheable.
+        /// Gets a value indicating whether this <see cref="CSF.FlexDi.Registration.IServiceRegistration" /> is cacheable.
         /// </summary>
         /// <value>
         /// <c>true</c> if the registration is cacheable; otherwise, <c>false</c>.</value>
@@ -48,7 +48,7 @@ namespace CSF.FlexDi.Registration
         public virtual Type ServiceType { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether component instances created from this <see cref="T:CSF.FlexDi.Registration.IServiceRegistration" />
+        /// Gets a value indicating whether component instances created from this <see cref="CSF.FlexDi.Registration.IServiceRegistration" />
         /// should be disposed with the container which created them.
         /// </summary>
         /// <seealso cref="M:CSF.FlexDi.Builders.IRegistrationOptionsBuilder.DoNotDisposeWithContainer" />

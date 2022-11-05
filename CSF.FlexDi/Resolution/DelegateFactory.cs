@@ -38,7 +38,7 @@ namespace CSF.FlexDi.Resolution
     public Delegate Delegate => factory;
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="T:CSF.FlexDi.Resolution.IFactoryAdapter" /> requires the resolution/provision
+    /// Gets a value indicating whether this <see cref="CSF.FlexDi.Resolution.IFactoryAdapter" /> requires the resolution/provision
     /// of any parameters.
     /// </summary>
     /// <remarks>
@@ -95,7 +95,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.DelegateFactory"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.DelegateFactory"/> class.
     /// </summary>
     /// <param name="factory">The delegate/factory to execute.</param>
     public DelegateFactory(Delegate factory)

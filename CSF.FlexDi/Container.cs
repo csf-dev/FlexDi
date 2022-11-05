@@ -178,7 +178,7 @@ namespace CSF.FlexDi
             ConstructorSelector = Options.GetConstructorSelector();
             Cache = Options.CacheFactory.GetCache();
             Registry = Options.RegistryFactory.GetRegistry();
-            registryStack = new RegistryStackFactory().CreateRegistryStack(this);
+            registryStack = RegistryStackFactory.CreateRegistryStack(this);
             
             resolver = Options.Resolver ?? Options.ResolverFactory.CreateResolver(this);
             if (this.resolver == null)

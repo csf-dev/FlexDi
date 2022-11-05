@@ -80,7 +80,7 @@ namespace CSF.FlexDi.Resolution.Proxies
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.UnregisteredServiceResolverProxy"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.Proxies.UnregisteredServiceResolverProxy"/> class.
     /// </summary>
     /// <param name="proxiedResolver">Proxied resolver.</param>
     /// <param name="registrationResolver">Registration resolver.</param>

@@ -53,7 +53,7 @@ namespace CSF.FlexDi
         }
 
         /// <summary>
-        /// Resolves a component, as specified by a <see cref="T:CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
+        /// Resolves a component, as specified by a <see cref="CSF.FlexDi.Resolution.ResolutionRequest" /> instance.
         /// </summary>
         /// <param name="container">The <see cref="IResolvesServices"/> instance from which to resolve the service.</param>
         /// <param name="request">The resolved component instance.</param>

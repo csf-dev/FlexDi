@@ -20,58 +20,48 @@
 using System;
 namespace CSF.FlexDi.Resolution.Proxies
 {
-  /// <summary>
-  /// A proxying resolver which resolves lazy object instances.
-  /// </summary>
-  public class LazyInstanceResolverProxy : ProxyingResolver
-  {
-    static readonly LazyFactory lazyFactory;
-
     /// <summary>
-    /// Resolves the given resolution request and returns the result.
+    /// A proxying resolver which resolves lazy object instances.
     /// </summary>
-    /// <param name="request">Request.</param>
-    public override ResolutionResult Resolve(ResolutionRequest request)
+    public class LazyInstanceResolverProxy : ProxyingResolver
     {
-      if(!lazyFactory.IsLazyType(request.ServiceType))
-        return ProxiedResolver.Resolve(request);
-
-      var lazyInnerType = lazyFactory.GetInnerLazyType(request.ServiceType);
-      var lazyRequest = GetLazyResolutionRequest(request, lazyInnerType);
-
-      var lazyObject = lazyFactory.GetLazyObject(lazyInnerType, GetObjectFactory(lazyRequest));
-      return ResolutionResult.Success(request.ResolutionPath, lazyObject);
-    }
-
-    ResolutionRequest GetLazyResolutionRequest(ResolutionRequest sourceRequest, Type lazyInnerType)
-      => new ResolutionRequest(lazyInnerType, sourceRequest.Name, sourceRequest.ResolutionPath);
-
-    Func<object> GetObjectFactory(ResolutionRequest lazyRequest)
-    {
-      return () => {
-        var result = ProxiedResolver.Resolve(lazyRequest);
-        if(!result.IsSuccess)
+        /// <summary>
+        /// Resolves the given resolution request and returns the result.
+        /// </summary>
+        /// <param name="request">Request.</param>
+        public override ResolutionResult Resolve(ResolutionRequest request)
         {
-          var message = String.Format(Resources.ExceptionFormats.LazyResolutionFailure,
-                                      lazyRequest.ServiceType.FullName);
-          throw new ResolutionException(message) { ResolutionPath = lazyRequest.ResolutionPath };
+            if(!LazyFactory.IsLazyType(request.ServiceType))
+                return ProxiedResolver.Resolve(request);
+
+            var lazyInnerType = LazyFactory.GetInnerLazyType(request.ServiceType);
+            var lazyRequest = GetLazyResolutionRequest(request, lazyInnerType);
+
+            var lazyObject = LazyFactory.GetLazyObject(lazyInnerType, GetObjectFactory(lazyRequest));
+            return ResolutionResult.Success(request.ResolutionPath, lazyObject);
         }
-        return result.ResolvedObject;
-      };
-    }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Proxies.LazyInstanceResolverProxy"/> class.
-    /// </summary>
-    /// <param name="proxiedResolver">Proxied resolver.</param>
-    public LazyInstanceResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}
+        static ResolutionRequest GetLazyResolutionRequest(ResolutionRequest sourceRequest, Type lazyInnerType)
+            => new ResolutionRequest(lazyInnerType, sourceRequest.Name, sourceRequest.ResolutionPath);
 
-    /// <summary>
-    /// Initializes the <see cref="T:CSF.FlexDi.Resolution.Proxies.LazyInstanceResolverProxy"/> class.
-    /// </summary>
-    static LazyInstanceResolverProxy()
-    {
-      lazyFactory = new LazyFactory();
+        Func<object> GetObjectFactory(ResolutionRequest lazyRequest)
+        {
+            return () => {
+                var result = ProxiedResolver.Resolve(lazyRequest);
+                if(!result.IsSuccess)
+                {
+                    var message = String.Format(Resources.ExceptionFormats.LazyResolutionFailure,
+                                                                            lazyRequest.ServiceType.FullName);
+                    throw new ResolutionException(message) { ResolutionPath = lazyRequest.ResolutionPath };
+                }
+                return result.ResolvedObject;
+            };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.Proxies.LazyInstanceResolverProxy"/> class.
+        /// </summary>
+        /// <param name="proxiedResolver">Proxied resolver.</param>
+        public LazyInstanceResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}
     }
-  }
 }

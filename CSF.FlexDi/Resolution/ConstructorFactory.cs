@@ -38,7 +38,7 @@ namespace CSF.FlexDi.Resolution
     public ConstructorInfo Constructor => ctor;
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="T:CSF.FlexDi.Resolution.IFactoryAdapter" /> requires the resolution/provision
+    /// Gets a value indicating whether this <see cref="CSF.FlexDi.Resolution.IFactoryAdapter" /> requires the resolution/provision
     /// of any parameters.
     /// </summary>
     /// <remarks>
@@ -81,7 +81,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ConstructorFactory"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.ConstructorFactory"/> class.
     /// </summary>
     /// <param name="ctor">The constructor.</param>
     public ConstructorFactory(ConstructorInfo ctor)

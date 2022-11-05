@@ -76,7 +76,7 @@ namespace CSF.FlexDi.Resolution
         }
 #endif
 
-        void AssertAConstructorIsFound(Type type, ConstructorInfo ctor)
+        static void AssertAConstructorIsFound(Type type, ConstructorInfo ctor)
         {
             if (ctor == null)
             {
@@ -85,9 +85,9 @@ namespace CSF.FlexDi.Resolution
             }
         }
 
-        void AssertConstructorIsNotAmbiguous(Type type,
-                                             ConstructorInfo constructorWithMostParameters,
-                                             IEnumerable<ConstructorInfo> allConstructors)
+        static void AssertConstructorIsNotAmbiguous(Type type,
+                                                    ConstructorInfo constructorWithMostParameters,
+                                                    IEnumerable<ConstructorInfo> allConstructors)
         {
             var paramCount = constructorWithMostParameters.GetParameters().Count();
             if (allConstructors.Count(x => x.GetParameters().Count() == paramCount) > 1)
@@ -99,15 +99,10 @@ namespace CSF.FlexDi.Resolution
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ConstructorWithMostParametersSelector"/> class.
-        /// </summary>
-        public ConstructorWithMostParametersSelector() : this(false) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ConstructorWithMostParametersSelector"/> class.
+        /// Initializes a new instance of the <see cref="Resolution.ConstructorWithMostParametersSelector"/> class.
         /// </summary>
         /// <param name="includeNonPublicConstructors">If set to <c>true</c> then non-public constructors will be considered, otherwise they will not.</param>
-        public ConstructorWithMostParametersSelector(bool includeNonPublicConstructors)
+        public ConstructorWithMostParametersSelector(bool includeNonPublicConstructors = false)
         {
             this.includeNonPublicConstructors = includeNonPublicConstructors;
         }

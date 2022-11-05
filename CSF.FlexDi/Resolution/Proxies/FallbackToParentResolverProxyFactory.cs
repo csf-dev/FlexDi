@@ -49,7 +49,7 @@ namespace CSF.FlexDi.Resolution.Proxies
 
     /// <summary>
     /// Initializes a new instance of the
-    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.FallbackToParentResolverProxyFactory"/> class.
+    /// <see cref="CSF.FlexDi.Resolution.Proxies.FallbackToParentResolverProxyFactory"/> class.
     /// </summary>
     /// <param name="parentResolverCreator">Parent resolver creator.</param>
     public FallbackToParentResolverProxyFactory(Func<IProvidesResolutionInfo,IResolver> parentResolverCreator)

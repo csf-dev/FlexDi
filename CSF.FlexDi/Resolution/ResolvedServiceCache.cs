@@ -113,7 +113,7 @@ namespace CSF.FlexDi.Resolution
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ResolvedServiceCache"/> class.
+        /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.ResolvedServiceCache"/> class.
         /// </summary>
         public ResolvedServiceCache()
         {

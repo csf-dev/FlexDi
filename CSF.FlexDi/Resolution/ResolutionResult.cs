@@ -27,7 +27,7 @@ namespace CSF.FlexDi.Resolution
   public class ResolutionResult
   {
     /// <summary>
-    /// Gets a value indicating whether this <see cref="T:CSF.FlexDi.Resolution.ResolutionResult"/> is a success.
+    /// Gets a value indicating whether this <see cref="CSF.FlexDi.Resolution.ResolutionResult"/> is a success.
     /// </summary>
     /// <value><c>true</c> if is success; otherwise, <c>false</c>.</value>
     public bool IsSuccess { get; }
@@ -45,7 +45,7 @@ namespace CSF.FlexDi.Resolution
     public object ResolvedObject { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ResolutionResult"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.ResolutionResult"/> class.
     /// </summary>
     /// <param name="success">If set to <c>true</c> success.</param>
     /// <param name="resolutionPath">Resolution path.</param>

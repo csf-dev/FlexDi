@@ -222,7 +222,7 @@ namespace CSF.FlexDi.Builders
 
     /// <summary>
     /// Registers a component via a factory function.  The parameter to this factory function is an instance of
-    /// <see cref="T:CSF.FlexDi.IResolvesServices" /> which may be used to dynamically resolve any other dependencies for the
+    /// <see cref="CSF.FlexDi.IResolvesServices" /> which may be used to dynamically resolve any other dependencies for the
     /// creation of the component.
     /// </summary>
     /// <returns>A builder instance.</returns>

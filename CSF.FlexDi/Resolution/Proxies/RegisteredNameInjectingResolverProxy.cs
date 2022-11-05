@@ -63,7 +63,7 @@ namespace CSF.FlexDi.Resolution.Proxies
 
     /// <summary>
     /// Initializes a new instance of the
-    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.RegisteredNameInjectingResolverProxy"/> class.
+    /// <see cref="CSF.FlexDi.Resolution.Proxies.RegisteredNameInjectingResolverProxy"/> class.
     /// </summary>
     /// <param name="proxiedResolver">Proxied resolver.</param>
     public RegisteredNameInjectingResolverProxy(IResolver proxiedResolver) : base(proxiedResolver) {}

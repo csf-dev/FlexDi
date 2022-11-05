@@ -40,7 +40,7 @@ namespace CSF.FlexDi.Resolution
     public object Instance => instance;
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="T:CSF.FlexDi.Resolution.IFactoryAdapter" /> requires the resolution/provision
+    /// Gets a value indicating whether this <see cref="CSF.FlexDi.Resolution.IFactoryAdapter" /> requires the resolution/provision
     /// of any parameters.
     /// </summary>
     /// <remarks>
@@ -77,7 +77,7 @@ namespace CSF.FlexDi.Resolution
     public IReadOnlyList<ParameterInfo> GetParameters() => Enumerable.Empty<ParameterInfo>().ToArray();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.InstanceFactory"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.InstanceFactory"/> class.
     /// </summary>
     /// <param name="instance">The component instance.</param>
     public InstanceFactory(object instance)

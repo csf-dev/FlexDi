@@ -107,7 +107,7 @@ namespace CSF.FlexDi.Resolution
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.Resolver"/> class.
+    /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.Resolver"/> class.
     /// </summary>
     /// <param name="registrationProvider">Registration provider.</param>
     /// <param name="instanceCreator">Instance creator.</param>

@@ -46,9 +46,9 @@ namespace CSF.FlexDi.Registration
         }
 
         /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="InstanceRegistration"/>.
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="InstanceRegistration"/>.
         /// </summary>
-        /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="InstanceRegistration"/>.</returns>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="InstanceRegistration"/>.</returns>
         public override string ToString()
             => $"[{nameof(InstanceRegistration)} for `{ServiceType.FullName}', using an instance of `{ImplementationType.FullName}']";
 

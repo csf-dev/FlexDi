@@ -44,7 +44,7 @@ namespace CSF.FlexDi.Resolution.Proxies
 
     /// <summary>
     /// Initializes a new instance of the
-    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.CircularDependencyPreventingResolverProxy"/> class.
+    /// <see cref="CSF.FlexDi.Resolution.Proxies.CircularDependencyPreventingResolverProxy"/> class.
     /// </summary>
     /// <param name="proxiedResolver">Proxied resolver.</param>
     /// <param name="circularDependencyDetector">Circular dependency detector.</param>

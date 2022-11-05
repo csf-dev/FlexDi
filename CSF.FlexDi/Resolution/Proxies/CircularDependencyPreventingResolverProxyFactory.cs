@@ -43,7 +43,7 @@ namespace CSF.FlexDi.Resolution.Proxies
 
     /// <summary>
     /// Initializes a new instance of the
-    /// <see cref="T:CSF.FlexDi.Resolution.Proxies.CircularDependencyPreventingResolverProxyFactory"/> class.
+    /// <see cref="CSF.FlexDi.Resolution.Proxies.CircularDependencyPreventingResolverProxyFactory"/> class.
     /// </summary>
     /// <param name="detector">Detector.</param>
     public CircularDependencyPreventingResolverProxyFactory(IDetectsCircularDependencies detector = null)

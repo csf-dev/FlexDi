@@ -44,22 +44,22 @@ namespace CSF.FlexDi.Resolution
         public string Name { get; private set; }
 
         /// <summary>
-        /// Determines whether the specified <see cref="object"/> is equal to the current <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/>.
+        /// Determines whether the specified <see cref="object"/> is equal to the current <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/>.
         /// </summary>
-        /// <param name="obj">The <see cref="object"/> to compare with the current <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/>.</param>
+        /// <param name="obj">The <see cref="object"/> to compare with the current <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/>.</param>
         /// <returns><c>true</c> if the specified <see cref="object"/> is equal to the current
-        /// <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/>; otherwise, <c>false</c>.</returns>
+        /// <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/>; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             return Equals(obj as ServiceCacheKey);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ServiceCacheKey"/> is equal to the current <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/>.
+        /// Determines whether the specified <see cref="ServiceCacheKey"/> is equal to the current <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/>.
         /// </summary>
-        /// <param name="other">The <see cref="ServiceCacheKey"/> to compare with the current <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/>.</param>
+        /// <param name="other">The <see cref="ServiceCacheKey"/> to compare with the current <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/>.</param>
         /// <returns><c>true</c> if the specified <see cref="ServiceCacheKey"/> is equal to the current
-        /// <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/>; otherwise, <c>false</c>.</returns>
+        /// <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/>; otherwise, <c>false</c>.</returns>
         public bool Equals(ServiceCacheKey other)
         {
             if(ReferenceEquals(other, null))
@@ -72,7 +72,7 @@ namespace CSF.FlexDi.Resolution
         }
 
         /// <summary>
-        /// Serves as a hash function for a <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/> object.
+        /// Serves as a hash function for a <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/> object.
         /// </summary>
         /// <returns>A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a hash table.</returns>
         public override int GetHashCode()
@@ -84,7 +84,7 @@ namespace CSF.FlexDi.Resolution
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:CSF.FlexDi.Resolution.ServiceCacheKey"/> class.
+        /// Initializes a new instance of the <see cref="CSF.FlexDi.Resolution.ServiceCacheKey"/> class.
         /// </summary>
         /// <param name="implementationType">Implementation type.</param>
         /// <param name="name">Name.</param>

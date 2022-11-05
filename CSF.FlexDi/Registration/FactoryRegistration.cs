@@ -38,9 +38,9 @@ namespace CSF.FlexDi.Registration
     public override IFactoryAdapter GetFactoryAdapter(ResolutionRequest request) => new DelegateFactory(factory);
 
     /// <summary>
-    /// Returns a <see cref="T:System.String"/> that represents the current <see cref="FactoryRegistration"/>.
+    /// Returns a <see cref="System.String"/> that represents the current <see cref="FactoryRegistration"/>.
     /// </summary>
-    /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="FactoryRegistration"/>.</returns>
+    /// <returns>A <see cref="System.String"/> that represents the current <see cref="FactoryRegistration"/>.</returns>
     public override string ToString()
     {
       return $"[{nameof(FactoryRegistration)} for `{ServiceType.FullName}']";

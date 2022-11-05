@@ -23,31 +23,31 @@ using System.Collections.Generic;
 
 namespace CSF.FlexDi.Registration
 {
-  /// <summary>
-  /// A factory service which creates instances of <see cref="StackOfRegistriesRegistrationProvider"/>.
-  /// </summary>
-  public class RegistryStackFactory
-  {
     /// <summary>
-    /// Creates a registration provider for a given set of resolution information.
+    /// A factory service which creates instances of <see cref="StackOfRegistriesRegistrationProvider"/>.
     /// </summary>
-    /// <returns>The registration provider.</returns>
-    /// <param name="resolutionInfo">Resolution info.</param>
-    public IServiceRegistrationProvider CreateRegistryStack(IProvidesResolutionInfo resolutionInfo)
+    public class RegistryStackFactory
     {
-      if(resolutionInfo == null)
-        throw new ArgumentNullException(nameof(resolutionInfo));
+        /// <summary>
+        /// Creates a registration provider for a given set of resolution information.
+        /// </summary>
+        /// <returns>The registration provider.</returns>
+        /// <param name="resolutionInfo">Resolution info.</param>
+        public static IServiceRegistrationProvider CreateRegistryStack(IProvidesResolutionInfo resolutionInfo)
+        {
+            if(resolutionInfo == null)
+                throw new ArgumentNullException(nameof(resolutionInfo));
       
-      var providers = new List<IServiceRegistrationProvider>();
-      var currentResolutionInfo = resolutionInfo;
+            var providers = new List<IServiceRegistrationProvider>();
+            var currentResolutionInfo = resolutionInfo;
 
-      while(currentResolutionInfo != null)
-      {
-        providers.Add(currentResolutionInfo.Registry);
-        currentResolutionInfo = currentResolutionInfo.Parent;
-      }
+            while(currentResolutionInfo != null)
+            {
+                providers.Add(currentResolutionInfo.Registry);
+                currentResolutionInfo = currentResolutionInfo.Parent;
+            }
 
-      return new StackOfRegistriesRegistrationProvider(providers.ToArray());
+            return new StackOfRegistriesRegistrationProvider(providers.ToArray());
+        }
     }
-  }
 }
