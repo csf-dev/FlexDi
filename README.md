@@ -1,3 +1,11 @@
+As of September 2023 this repository is archived; no further development will happen here and _I am retiring FlexDi_.
+Prompted by [issue #20](https://github.com/csf-dev/FlexDi/issues/20) & [issue #18](https://github.com/csf-dev/FlexDi/issues/18),
+I have moved future development to [**CSF.Extensions.DependencyInjection**](https://github.com/csf-dev/CSF.Extensions.DependencyInjection).
+
+That project is based on extending Microsoft's standard/minimal DI container instead of writing a whole new DI container from scratch.
+
+---
+
 # FlexDi
 
 _A small dependency injection container for .NET, inspired by [BoDi]._
